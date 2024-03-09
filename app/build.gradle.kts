@@ -8,6 +8,10 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        manifestPlaceholders += mapOf(
+            "redirectHostName" to "auth",
+            "redirectSchemeName" to "CS2340 Project 2"
+        )
         applicationId = "com.example.cs2340project2"
         minSdk = 33
         targetSdk = 34
@@ -47,4 +51,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.spotify.android:auth:2.1.1")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
 }
