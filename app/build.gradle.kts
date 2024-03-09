@@ -10,7 +10,7 @@ android {
     defaultConfig {
         manifestPlaceholders += mapOf(
             "redirectHostName" to "auth",
-            "redirectSchemeName" to "CS2340 Project 2"
+            "redirectSchemeName" to "cs2340project2"
         )
         applicationId = "com.example.cs2340project2"
         minSdk = 33
