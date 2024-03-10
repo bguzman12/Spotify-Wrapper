@@ -28,7 +28,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     public static final String CLIENT_ID = "0c1ab344cf3f402289d24caf1efc8885";
-    public static final String REDIRECT_URI = "CS2340 Project 2://auth";
+    public static final String REDIRECT_URI = "cs2340project2://auth";
 
     public static final int AUTH_TOKEN_REQUEST_CODE = 0;
     public static final int AUTH_CODE_REQUEST_CODE = 1;

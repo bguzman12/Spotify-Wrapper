@@ -19,8 +19,8 @@
             android:theme="@style/Theme.CS2340Project2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <data android:host="auth" android:scheme="@string/app_name"/>
                 <category android:name="android.intent.category.LAUNCHER" />
+                <data android:host="auth" android:scheme="cs2340project2"/>
             </intent-filter>
         </activity>
     </application>
