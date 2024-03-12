@@ -1,4 +1,4 @@
-package com.example.cs2340project2.ui;
+package com.example.cs2340project2.ui.login;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
