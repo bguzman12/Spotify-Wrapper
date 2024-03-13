@@ -16,4 +16,7 @@ public class LoginTabFragment extends Fragment {
 
         return root;
     }
+    // TODO : Button- get user info from firebase
+    // TODO : Toast- for invalid login (within button click)
+    // TODO : Redirect- to to main home screen (within button click)
 }

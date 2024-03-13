@@ -3,18 +3,15 @@ package com.example.cs2340project2.ui.login;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.cs2340project2.R;
-import com.example.cs2340project2.databinding.ActivityLoginBinding;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class LoginActivity extends AppCompatActivity {
-
-    private ActivityLoginBinding binding;
     private TabLayout tabLayout;
-    ViewPager viewPager;
+    ViewPager2 viewPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,18 +20,24 @@ public class LoginActivity extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
-        //final ProgressBar loadingProgressBar = binding.loading;
 
         tabLayout.addTab(tabLayout.newTab().setText("Login"));
         tabLayout.addTab(tabLayout.newTab().setText("Signup"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final LoginAdapter adapter = new LoginAdapter(getSupportFragmentManager(), this, tabLayout.getTabCount());
+        final LoginAdapter adapter = new LoginAdapter(this);
         viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) ->
+                tab.setText(adapter.getPageTitle(position))
+        ).attach();
 
 
-/*
+        /**
+         * The following code may be useful when implementing login logic, but if so, this code
+         * should go into one of the fragments. Feel free to delete once backend has been completed.
+         *
+         */
+        /*
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
             public void onChanged(@Nullable LoginFormState loginFormState) {
@@ -116,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
 /*
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
+        //initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
