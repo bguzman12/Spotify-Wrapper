@@ -37,6 +37,11 @@
                     android:scheme="cs2340project2" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.editlogin.EditLoginActivity"
+            android:exported="true"
+            android:label="@string/title_activity_editlogin">
+        </activity>
     </application>
 
 </manifest>

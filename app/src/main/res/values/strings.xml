@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">CS2340Project2</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_editlogin">EditLoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -10,4 +11,8 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="confirm_password">"Confirm Password</string>
+    <string name="editAcc_label"><u>Edit Account</u></string>
+    <string name="saveChanges">Save Changes</string>
+    <string name="signOut">Sign Out</string>
+    <string name="deleteAccount">Delete Account</string>
 </resources>
