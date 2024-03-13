@@ -54,7 +54,7 @@
         android:layout_marginBottom="64dp"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:text="SIGN IN"
+        android:text="LOG IN"
         android:background="@drawable/signin_button_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
