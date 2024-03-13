@@ -51,7 +51,7 @@ public class Summary_Wrapped extends AppCompatActivity {
     }
 
     public void postButtonClicked(View view) {
-        // TODO : make relative layout img public
+        // TODO : make relative layout img public (or add to separate public wraps database?)
         // TODO : needs to go to public wraps page
     }
 }
