@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/aquamarine"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/artistName1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_constraintEnd_toEndOf="parent"
+        android:layout_constraintStart_toStartOf="parent"
+        android:layout_constraintTop_toTopOf="parent"
+        android:text="WRAPPED"
+        android:textAlignment="center"
+        tools:layout_editor_absoluteX="173dp"
+        tools:layout_editor_absoluteY="44dp" />
+
+    <TextView
+        android:id="@+id/artistName2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_constraintEnd_toEndOf="parent"
+        android:layout_constraintStart_toStartOf="parent"
+        android:layout_constraintTop_toTopOf="parent"
+        android:text="Artist 1"
+        android:textAlignment="center"
+        tools:layout_editor_absoluteX="61dp"
+        tools:layout_editor_absoluteY="169dp" />
+
+    <TextView
+        android:id="@+id/artistName3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_constraintTop_toBottomOf="@id/artistName1"
+        android:layout_constraintEnd_toEndOf="parent"
+        android:layout_constraintStart_toStartOf="parent"
+        android:text="Artist 2"
+        android:textAlignment="center"
+        tools:layout_editor_absoluteX="61dp"
+        tools:layout_editor_absoluteY="236dp" />
+
+    <TextView
+        android:id="@+id/artistName4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_constraintTop_toBottomOf="@id/artistName2"
+        android:layout_constraintEnd_toEndOf="parent"
+        android:layout_constraintStart_toStartOf="parent"
+        android:text="Artist 3"
+        android:textAlignment="center"
+        tools:layout_editor_absoluteX="61dp"
+        tools:layout_editor_absoluteY="313dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
