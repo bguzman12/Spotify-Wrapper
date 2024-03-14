@@ -9,9 +9,9 @@
 
     <TextView
         android:id="@+id/artistName1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_constraintEnd_toEndOf="parent"
+        android:layout_constraintStart_toStartOf="parent"
+        android:layout_constraintTop_toTopOf="parent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Here are your top artists!"
@@ -21,9 +21,9 @@
 
     <TextView
         android:id="@+id/artistName1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_constraintEnd_toEndOf="parent"
+        android:layout_constraintStart_toStartOf="parent"
+        android:layout_constraintTop_toTopOf="parent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Artist 1"
@@ -33,9 +33,9 @@
 
     <TextView
         android:id="@+id/artistName2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/artistName1"
+        android:layout_constraintEnd_toEndOf="parent"
+        android:layout_constraintStart_toStartOf="parent"
+        android:layout_constraintTop_toBottomOf="@id/artistName1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Artist 2"
@@ -45,9 +45,9 @@
 
     <TextView
         android:id="@+id/artistName3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/artistName2"
+        android:layout_constraintEnd_toEndOf="parent"
+        android:layout_constraintStart_toStartOf="parent"
+        android:layout_constraintTop_toBottomOf="@id/artistName2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Artist 3"
