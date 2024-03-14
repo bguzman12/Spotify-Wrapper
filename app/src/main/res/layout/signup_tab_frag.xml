@@ -19,16 +19,17 @@
         android:selectAllOnFocus="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias=".5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".3" />
+        app:layout_constraintVertical_bias="0.222" />
 
     <EditText
         android:id="@+id/signupPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:autofillHints="@string/prompt_password"
+        android:background="@drawable/signin_text_bg"
         android:hint="@string/prompt_password"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
@@ -38,12 +39,10 @@
         android:paddingEnd="20dp"
         android:paddingBottom="10dp"
         android:selectAllOnFocus="true"
-        android:background="@drawable/signin_text_bg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias=".5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupEmail"
-        app:layout_constraintVertical_bias="0" />
+        app:layout_constraintTop_toBottomOf="@+id/signupEmail" />
 
     <EditText
         android:id="@+id/confirmSignupPassword"

@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
         profileBtn.setOnClickListener((v) -> {
             onGetUserProfileClicked();
-            startActivity(new Intent(this, EditLoginActivity.class));
         });
 
     }

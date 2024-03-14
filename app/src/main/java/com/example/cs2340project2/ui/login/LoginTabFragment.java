@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.cs2340project2.Homescreen;
-import com.example.cs2340project2.MainActivity;
 import com.example.cs2340project2.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
