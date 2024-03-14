@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.cs2340project2.Homescreen;
 import com.example.cs2340project2.MainActivity;
 import com.example.cs2340project2.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,7 +48,7 @@ public class LoginTabFragment extends Fragment {
             mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            startActivity(new Intent(getActivity(), MainActivity.class));
+                            startActivity(new Intent(getActivity(), Homescreen.class));
                         } else {
                             Toast.makeText(getContext(), "Login failed.", Toast.LENGTH_SHORT).show();
                         }

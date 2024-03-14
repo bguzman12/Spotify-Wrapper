@@ -17,9 +17,9 @@ public class LoginAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new SignupTabFragment();
-            case 1:
                 return new LoginTabFragment();
+            case 1:
+                return new SignupTabFragment();
             default:
                 return null;
         }

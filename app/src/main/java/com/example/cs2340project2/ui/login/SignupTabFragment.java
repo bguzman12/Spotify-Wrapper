@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.cs2340project2.Homescreen;
 import com.example.cs2340project2.MainActivity;
 import com.example.cs2340project2.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,7 +53,7 @@ public class SignupTabFragment extends Fragment {
                     Toast.makeText(getContext(), "The passwords do not match.", Toast.LENGTH_SHORT).show();
                 } else {
                     mAuth.createUserWithEmailAndPassword(email.getText().toString().trim(), password.getText().toString());
-                    startActivity(new Intent(getActivity(), MainActivity.class));
+                    startActivity(new Intent(getActivity(), Homescreen.class));
                 }
             }
         });
