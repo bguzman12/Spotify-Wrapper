@@ -5,18 +5,18 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/loginEmail"
+        android:id="@+id/signupEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:autofillHints="Username"
-        android:hint="Username"
+        android:background="@drawable/signin_text_bg"
+        android:hint="@string/prompt_email"
+        android:inputType="text"
         android:paddingStart="20dp"
         android:paddingTop="10dp"
         android:paddingEnd="20dp"
         android:paddingBottom="10dp"
         android:selectAllOnFocus="true"
-        android:background="@drawable/signin_text_bg"
-        android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".5"
@@ -25,7 +25,7 @@
         app:layout_constraintVertical_bias=".3" />
 
     <EditText
-        android:id="@+id/loginPassword"
+        android:id="@+id/signupPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:autofillHints="@string/prompt_password"
@@ -42,11 +42,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginEmail"
+        app:layout_constraintTop_toBottomOf="@+id/signupEmail"
         app:layout_constraintVertical_bias="0" />
 
     <EditText
-        android:id="@+id/confirmPassword"
+        android:id="@+id/confirmSignupPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
@@ -64,24 +64,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/signupEmail" />
 
     <Button
-        android:id="@+id/login_btn"
+        android:id="@+id/signup_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="64dp"
+        android:background="@drawable/signin_button_bg"
+        android:text="SIGN UP"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:text="SIGN UP"
-        android:background="@drawable/signin_button_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginPassword"
-        app:layout_constraintVertical_bias="0.7" />
+        app:layout_constraintTop_toBottomOf="@+id/confirmSignupPassword" />
 
     <!--This button needs to navigate to get token login, instead of having user input spotify login-->
 </androidx.constraintlayout.widget.ConstraintLayout>

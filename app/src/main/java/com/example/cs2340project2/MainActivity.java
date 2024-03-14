@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cs2340project2.ui.editlogin.EditLoginActivity;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         profileBtn.setOnClickListener((v) -> {
             onGetUserProfileClicked();
+            startActivity(new Intent(this, EditLoginActivity.class));
         });
 
     }
