@@ -25,7 +25,6 @@ public class Homescreen extends AppCompatActivity {
     }
 
     public void viewAccountClicked(View view) {
-        //TODO: go to myaccount ui (not currently created)
-        startActivity(new Intent(this, EditLoginActivity.class));
+        startActivity(new Intent(this, MyAccount.class));
     }
 }
