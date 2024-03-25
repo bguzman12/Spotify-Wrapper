@@ -24,6 +24,10 @@ public class Homescreen extends AppCompatActivity {
         //TODO: go to public wraps ui (not currently created)
     }
 
+    public void previousWrapsClicked(View view) {
+        //TODO: go to previous wrap ui (not currently created)
+    }
+
     public void viewAccountClicked(View view) {
         startActivity(new Intent(this, MyAccount.class));
     }
