@@ -2,6 +2,7 @@ package com.example.cs2340project2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -36,7 +37,10 @@ public class Summary_Wrapped extends AppCompatActivity {
 
 
     public void backButtonClicked(View view) {
-        // TODO : go to home screen (alternatively, back to previous ui as well)
+        Intent intent = new Intent(this, Homescreen.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
     public void shareButtonClicked(View view) {
