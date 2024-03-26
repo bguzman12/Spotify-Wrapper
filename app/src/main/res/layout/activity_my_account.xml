@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Homescreen">
-
-    <!--TODO make this look pretty-->
-
+    tools:context=".MyAccount">
+    <!--TODO this title could be similar to spotify account screen, with username and pic?-->
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(insert title here)"
+        android:layout_marginTop="30dp"
         android:textSize="48sp"
         app:layout_constraintBottom_toTopOf="@+id/button_new_wrapped"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,8 +23,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="212dp"
-        android:text="Create New Wrapped"
-        android:onClick="newWrappedClicked"
+        android:text="See Posts"
+        android:onClick="viewPostsClicked"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,22 +35,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="72dp"
-        android:onClick="publicWrapsClicked"
-        android:text="Public Wraps"
+        android:onClick="prevWrapsClicked"
+        android:text="Previous Wraps"
         app:layout_constraintBottom_toTopOf="@+id/button_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_new_wrapped"
-        app:layout_constraintVertical_bias="0.884" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/button_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="160dp"
-        android:text="View Account"
-        android:onClick="viewAccountClicked"
+        android:text="Edit Account Info"
+        android:onClick="editLoginClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
