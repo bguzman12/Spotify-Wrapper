@@ -54,20 +54,32 @@ public class SignupTabFragment extends Fragment {
         super.onStart();
 
         signUpBtn.setOnClickListener(view -> {
-            if (!Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()) {
-                Toast.makeText(getContext(), "Email address is invalid.", Toast.LENGTH_SHORT).show();
-            } else {
-                if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
-                    Toast.makeText(getContext(), "The passwords do not match.", Toast.LENGTH_SHORT).show();
+            if (checkSignupFull()) {
+                if (!Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()) {
+                    Toast.makeText(getContext(), "Email address is invalid.", Toast.LENGTH_SHORT).show();
                 } else {
-                    mAccessToken = ((LoginActivity)getActivity()).getmAccessToken();
-                    mAuth.createUserWithEmailAndPassword(email.getText().toString().trim(), password.getText().toString());
-                    startActivity(new Intent(getActivity(), Homescreen.class));
+                    if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
+                        Toast.makeText(getContext(), "The passwords do not match.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        mAccessToken = ((LoginActivity) getActivity()).getmAccessToken();
+                        mAuth.createUserWithEmailAndPassword(email.getText().toString().trim(), password.getText().toString());
+                        startActivity(new Intent(getActivity(), Homescreen.class));
+                    }
                 }
+            } else {
+                Toast.makeText(getContext(), "Please fill in all fields.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * check that all fields contain text
+     * @return true if all fields are full
+     */
+    private boolean checkSignupFull() {
+        return !email.getText().toString().trim().isEmpty() && !password.getText().toString().trim().isEmpty()
+                && !confirmPassword.getText().toString().trim().isEmpty();
+    }
 
 
 }

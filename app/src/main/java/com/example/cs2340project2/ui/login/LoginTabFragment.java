@@ -44,14 +44,26 @@ public class LoginTabFragment extends Fragment {
         super.onStart();
 
         loginBtn.setOnClickListener(view -> {
-            mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            startActivity(new Intent(getActivity(), Homescreen.class));
-                        } else {
-                            Toast.makeText(getContext(), "Login failed.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-            });
+            if (checkLoginFull()) {
+                mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                startActivity(new Intent(getActivity(), Homescreen.class));
+                            } else {
+                                Toast.makeText(getContext(), "Login failed.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            } else {
+                Toast.makeText(getContext(), "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * check that all fields contain text
+     * @return true if all fields are full
+     */
+    private boolean checkLoginFull() {
+        return !email.getText().toString().trim().isEmpty() && !password.getText().toString().trim().isEmpty();
     }
 }
