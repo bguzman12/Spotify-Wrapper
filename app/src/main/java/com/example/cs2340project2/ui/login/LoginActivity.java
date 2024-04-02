@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) ->
                 tab.setText(adapter.getPageTitle(position))
         ).attach();
+
     }
 
     public String getmAccessToken() {
