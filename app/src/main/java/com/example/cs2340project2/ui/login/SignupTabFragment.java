@@ -17,6 +17,8 @@ import com.example.cs2340project2.Homescreen;
 import com.example.cs2340project2.R;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -27,16 +29,16 @@ import javax.annotation.Nullable;
 
 public class SignupTabFragment extends Fragment {
 
-    private String mAccessToken;
-    private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
     private EditText email;
     private EditText password;
     private EditText confirmPassword;
     private Button signUpBtn;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.signup_tab_frag, container, false);
 
-        mAuth = FirebaseAuth.getInstance();
 
         return root;
     }
@@ -61,8 +63,14 @@ public class SignupTabFragment extends Fragment {
                     if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
                         Toast.makeText(getContext(), "The passwords do not match.", Toast.LENGTH_SHORT).show();
                     } else {
-                        mAccessToken = ((LoginActivity) getActivity()).getmAccessToken();
-                        mAuth.createUserWithEmailAndPassword(email.getText().toString().trim(), password.getText().toString());
+                        database = FirebaseDatabase.getInstance();
+                        reference = database.getReference("users");
+
+                        String emailStr = email.getText().toString();
+                        String passwordStr = password.getText().toString();
+                        //String token = ((LoginActivity) this.getActivity()).getmAccessToken();
+                        Firebase user = new Firebase(emailStr, passwordStr, "token");
+                        reference.child(emailStr).setValue(user);
                         startActivity(new Intent(getActivity(), Homescreen.class));
                     }
                 }
@@ -80,6 +88,8 @@ public class SignupTabFragment extends Fragment {
         return !email.getText().toString().trim().isEmpty() && !password.getText().toString().trim().isEmpty()
                 && !confirmPassword.getText().toString().trim().isEmpty();
     }
+
+
 
 
 }
