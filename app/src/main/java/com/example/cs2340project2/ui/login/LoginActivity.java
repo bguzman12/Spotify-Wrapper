@@ -10,14 +10,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.cs2340project2.Homescreen;
-import com.example.cs2340project2.MainActivity;
 import com.example.cs2340project2.R;
-import com.example.cs2340project2.ui.editlogin.EditLoginActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -105,11 +100,21 @@ public class LoginActivity extends AppCompatActivity {
         // Check which request code is present (if any)
         if (AUTH_TOKEN_REQUEST_CODE == requestCode) {
             mAccessToken = response.getAccessToken();
-
+            // Handle token retrieval completion here
+            // For example, you can trigger further actions that depend on the token availability
+            if (mAccessToken != null) {
+                // Token retrieved successfully, you can proceed with Firebase operations
+                // For example, you can call a method in your fragment/activity to handle Firebase operations
+                // e.g., ((YourFragmentOrActivity) getActivity()).handleFirebaseOperations();
+            } else {
+                // Token retrieval failed, handle the failure scenario
+                Toast.makeText(this, "Failed to retrieve access token.", Toast.LENGTH_SHORT).show();
+            }
         } else if (AUTH_CODE_REQUEST_CODE == requestCode) {
             mAccessCode = response.getCode();
         }
     }
+
 
     /**
      * Get user profile
