@@ -36,6 +36,8 @@ public class SignupTabFragment extends Fragment {
     private EditText confirmPassword;
     private Button signUpBtn;
 
+    private String token;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.signup_tab_frag, container, false);
 
@@ -60,7 +62,7 @@ public class SignupTabFragment extends Fragment {
                     if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
                         Toast.makeText(getContext(), "The passwords do not match.", Toast.LENGTH_SHORT).show();
                     } else {
-                        String token = ((LoginActivity) this.getActivity()).getmAccessToken();
+                        token = ((LoginActivity) this.getActivity()).getmAccessToken();
 
 
 
@@ -90,6 +92,9 @@ public class SignupTabFragment extends Fragment {
     private boolean checkSignupFull() {
         return !email.getText().toString().trim().isEmpty() && !password.getText().toString().trim().isEmpty()
                 && !confirmPassword.getText().toString().trim().isEmpty();
+    }
+    public String getToken() {
+        return token;
     }
 
 
