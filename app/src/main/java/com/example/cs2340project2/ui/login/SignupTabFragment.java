@@ -62,6 +62,8 @@ public class SignupTabFragment extends Fragment {
                     } else {
                         String token = ((LoginActivity) this.getActivity()).getmAccessToken();
 
+
+
                         if (token != null) {
                             database = FirebaseDatabase.getInstance();
                             reference = database.getReference("users");
@@ -69,7 +71,7 @@ public class SignupTabFragment extends Fragment {
                             String emailStr = email.getText().toString();
                             String passwordStr = password.getText().toString();
 
-                            Firebase user = new Firebase(emailStr, passwordStr, "token");
+                            Firebase user = new Firebase(emailStr, passwordStr, token);
 
                             reference.child(emailStr).setValue(user);
                             startActivity(new Intent(getActivity(), Homescreen.class));
