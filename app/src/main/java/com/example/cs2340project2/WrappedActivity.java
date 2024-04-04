@@ -11,7 +11,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class WrappedActivity extends Firebase {
@@ -20,13 +23,33 @@ public class WrappedActivity extends Firebase {
     // private static final String ACCESS_TOKEN = token;
 
 
-    public void fetchUserInfo() {
+    //TODO : implement logic elsewhere to choose start and end range
+    public void fetchUserInfo(String startTime, String endTime) {
         try {
+            String formattedStartTime, formattedEndTime;
+
+            //if null, set time range to YTD
+            if (startTime == null && endTime == null) {
+                // Set startTime to the first day of the year
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.DAY_OF_YEAR, 1);
+                formattedStartTime = sdf.format(calendar.getTime());
+
+                // Set endTime to the current date and time
+                formattedEndTime = sdf.format(new Date());
+            } else {
+                // Format the start and end time to match the API's expected format, can move this elsewhere later
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                formattedStartTime = sdf.format(sdf.parse(startTime));
+                formattedEndTime = sdf.format(sdf.parse(endTime));
+            }
+
             // Get the access token
             String accessToken = getToken();
 
             // Create a URL object for the API endpoint
-            URL url = new URL(API_URL + "?limit=50");
+            URL url = new URL(API_URL + "?limit=50&start_time=" + formattedStartTime + "&end_time=" + formattedEndTime);
 
             // Open a connection to the URL
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -52,6 +75,7 @@ public class WrappedActivity extends Firebase {
         } catch (Exception e) {
             // Handle any exceptions
             e.printStackTrace();
+            System.out.print("your call failed :/");
         }
     }
 
@@ -62,6 +86,12 @@ public class WrappedActivity extends Firebase {
             JSONObject item = items.getJSONObject(i);
             JSONObject track = item.getJSONObject("track");
             String songName = track.getString("name");
+
+            // Get the artist's name
+            JSONArray artists = track.getJSONArray("artists");
+            JSONObject artist = artists.getJSONObject(0); // Assuming the first artist is the main artist
+            String artistName = artist.getString("name");
+
             long durationMs = track.getLong("duration_ms");
             long listeningTimeInSeconds = durationMs / 1000;
             songList.add(new SongInfo(songName, listeningTimeInSeconds));
