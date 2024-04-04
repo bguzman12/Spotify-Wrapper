@@ -19,7 +19,7 @@ public class WrappedActivity extends Firebase {
     private static final String API_URL = "https://api.spotify.com/v1/me/player/recently-played";
     // private static final String ACCESS_TOKEN = token;
 
-    // Inside WrappedActivity class
+
     public void fetchUserInfo() {
         try {
             String accessToken = getToken();
@@ -44,7 +44,6 @@ public class WrappedActivity extends Firebase {
 
         } catch (Exception e) {
             e.printStackTrace();
-            // Handle exceptions, e.g., display an error message to the user
         }
     }
 
@@ -72,7 +71,6 @@ public class WrappedActivity extends Firebase {
             this.listeningTimeInSeconds = listeningTimeInSeconds;
         }
 
-        // Getter methods
         public String getName() {
             return name;
         }
