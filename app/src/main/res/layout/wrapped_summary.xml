@@ -2,55 +2,50 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/aquamarine"
-    android:layout_height="match_parent">
+    android:background="@drawable/wrapped1purple"
+    android:layout_height="match_parent"
+
+
+    >
 
     <TextView
-        android:id="@+id/artistName1"
-        android:layout_width="0dp"
+        android:id="@+id/artist1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_constraintEnd_toEndOf="parent"
-        android:layout_constraintStart_toStartOf="parent"
-        android:layout_constraintTop_toTopOf="parent"
-        android:text="WRAPPED"
-        android:textAlignment="center"
-        tools:layout_editor_absoluteX="173dp"
-        tools:layout_editor_absoluteY="44dp" />
-
-    <TextView
-        android:id="@+id/artistName2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_constraintEnd_toEndOf="parent"
-        android:layout_constraintStart_toStartOf="parent"
-        android:layout_constraintTop_toTopOf="parent"
         android:text="Artist 1"
-        android:textAlignment="center"
-        tools:layout_editor_absoluteX="61dp"
-        tools:layout_editor_absoluteY="169dp" />
+        tools:layout_editor_absoluteX="52dp"
+        tools:layout_editor_absoluteY="436dp" />
 
     <TextView
-        android:id="@+id/artistName3"
-        android:layout_width="0dp"
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_constraintTop_toBottomOf="@id/artistName1"
-        android:layout_constraintEnd_toEndOf="parent"
-        android:layout_constraintStart_toStartOf="parent"
-        android:text="Artist 2"
-        android:textAlignment="center"
-        tools:layout_editor_absoluteX="61dp"
-        tools:layout_editor_absoluteY="236dp" />
+        android:text="TextView"
+        tools:layout_editor_absoluteX="52dp"
+        tools:layout_editor_absoluteY="536dp" />
 
     <TextView
-        android:id="@+id/artistName4"
-        android:layout_width="0dp"
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_constraintTop_toBottomOf="@id/artistName2"
-        android:layout_constraintEnd_toEndOf="parent"
-        android:layout_constraintStart_toStartOf="parent"
-        android:text="Artist 3"
-        android:textAlignment="center"
-        tools:layout_editor_absoluteX="61dp"
-        tools:layout_editor_absoluteY="313dp" />
+        android:text="TextView"
+        tools:layout_editor_absoluteX="52dp"
+        tools:layout_editor_absoluteY="509dp" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="52dp"
+        tools:layout_editor_absoluteY="483dp" />
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="52dp"
+        tools:layout_editor_absoluteY="455dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
