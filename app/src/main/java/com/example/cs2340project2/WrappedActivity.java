@@ -23,7 +23,7 @@ public class WrappedActivity extends Firebase {
     public void fetchUserInfo() {
         try {
             String accessToken = getToken();
-            URL url = new URL(API_URL + "?limit=50");
+            URL url = new URL(API_URL + "?limit=100");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Authorization", "Bearer " + accessToken);
