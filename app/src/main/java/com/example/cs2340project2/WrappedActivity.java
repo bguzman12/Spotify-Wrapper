@@ -1,5 +1,6 @@
 package com.example.cs2340project2;
 
+import com.example.cs2340project2.ui.login.Firebase;
 import com.example.cs2340project2.ui.login.SignupTabFragment;
 
 import org.json.JSONArray;
@@ -11,18 +12,19 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class WrappedActivity extends SignupTabFragment {
+public class WrappedActivity extends Firebase {
 
     private static final String API_URL = "https://api.spotify.com/v1/me/player/recently-played";
     // private static final String ACCESS_TOKEN = token;
 
-    public static void main(String[] args) {
+    // Inside WrappedActivity class
+    public void fetchUserInfo() {
         try {
-            String ACCESS_TOKEN = ((SignupTabFragment) new SignupTabFragment()).getToken();
+            String accessToken = getToken();
             URL url = new URL(API_URL + "?limit=50");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            connection.setRequestProperty("Authorization", "Bearer " + ACCESS_TOKEN);
+            connection.setRequestProperty("Authorization", "Bearer " + accessToken);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
@@ -36,11 +38,13 @@ public class WrappedActivity extends SignupTabFragment {
             JSONArray items = jsonResponse.getJSONArray("items");
 
             long totalListeningTime = getTotalListeningTime(items);
-            System.out.println("Total listening time: " + totalListeningTime + " seconds");
+            // Update UI with totalListeningTime, e.g., display it in a TextView
         } catch (Exception e) {
             e.printStackTrace();
+            // Handle exceptions, e.g., display an error message to the user
         }
     }
+
 
     private static long getTotalListeningTime(JSONArray items) throws JSONException {
         long totalListeningTime = 0;
