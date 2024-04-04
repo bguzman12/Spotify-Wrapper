@@ -79,19 +79,13 @@ public class WrappedActivity extends Firebase {
         }
     }
 
-    // Extracts song information from a JSON array and returns a list of SongInfo objects
+
     private static List<SongInfo> extractSongInfo(JSONArray items) throws JSONException {
         List<SongInfo> songList = new ArrayList<>();
         for (int i = 0; i < items.length(); i++) {
             JSONObject item = items.getJSONObject(i);
             JSONObject track = item.getJSONObject("track");
             String songName = track.getString("name");
-
-            // Get the artist's name
-            JSONArray artists = track.getJSONArray("artists");
-            JSONObject artist = artists.getJSONObject(0); // Assuming the first artist is the main artist
-            String artistName = artist.getString("name");
-
             long durationMs = track.getLong("duration_ms");
             long listeningTimeInSeconds = durationMs / 1000;
             songList.add(new SongInfo(songName, listeningTimeInSeconds));
@@ -99,32 +93,22 @@ public class WrappedActivity extends Firebase {
         return songList;
     }
 
-    // Inner class to represent song information
+
     private static class SongInfo {
         private String name;
-        private String artist;
         private long listeningTimeInSeconds;
 
-
-        // Constructor
         public SongInfo(String name, long listeningTimeInSeconds) {
-            this(name, null, listeningTimeInSeconds);
-        }
-        public SongInfo(String name, String artist, long listeningTimeInSeconds) {
             this.name = name;
-            this.artist = artist;
             this.listeningTimeInSeconds = listeningTimeInSeconds;
         }
 
-        // Getter for song name
         public String getName() {
             return name;
         }
 
-        // Getter for listening time in seconds
         public long getListeningTimeInSeconds() {
             return listeningTimeInSeconds;
         }
     }
-
 }
