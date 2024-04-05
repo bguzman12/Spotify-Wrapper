@@ -24,8 +24,10 @@
             android:label="@string/title_activity_login">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
-
                 <action android:name="android.intent.action.MAIN" />
+                <data
+                    android:host="auth"
+                    android:scheme="cs2340project2" />
             </intent-filter>
         </activity>
         <activity
