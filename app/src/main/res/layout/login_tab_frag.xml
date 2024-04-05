@@ -5,12 +5,11 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/loginEmail"
+        android:id="@+id/loginUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/signin_text_bg"
-        android:hint="@string/prompt_email"
-        android:inputType="textEmailAddress"
+        android:hint="@string/prompt_username"
         android:paddingStart="20dp"
         android:paddingTop="10dp"
         android:paddingEnd="20dp"
@@ -42,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/loginUsername" />
 
     <Button
         android:id="@+id/login_btn"

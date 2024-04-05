@@ -13,9 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cs2340project2.R;
 import com.example.cs2340project2.ui.login.LoginActivity;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 
 
@@ -34,7 +32,7 @@ public class EditLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_editlogin);
         mAuth = FirebaseAuth.getInstance();
 
-        email = findViewById(R.id.editEmail_ET);
+        email = findViewById(R.id.editUsername_ET);
         password = findViewById(R.id.editPassword_ET);
         saveEdits = findViewById(R.id.saveEdits_btn);
         deleteAccount = findViewById(R.id.deleteAcc_btn);
