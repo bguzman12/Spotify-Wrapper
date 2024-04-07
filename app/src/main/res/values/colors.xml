@@ -12,4 +12,10 @@
     <color name="fuchsia">#F037A5</color>
     <color name="tangerine">#FF4632</color>
     <color name="spotify_black">#191414</color>
+    <color name="background">#121212</color>
+    <color name="secondaryOnBackground">#414141</color>
+    <color name="primaryOnBackground">#292929</color>
+    <color name="toolbar">#191919</color>
+    <color name="subtitle">#b8b8b8</color>
+    <color name="warning">#ffcc00</color>
 </resources>

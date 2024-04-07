@@ -1,206 +1,178 @@
 package com.example.cs2340project2.ui.login;
 
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Patterns;
+import android.view.inputmethod.InputMethodManager;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.cs2340project2.Homescreen;
 import com.example.cs2340project2.R;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
+import com.example.cs2340project2.SpotifyAuthentication;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.spotify.sdk.android.auth.AuthorizationClient;
-import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
-    private TabLayout tabLayout;
-    public static final String CLIENT_ID = "fd02c77ee13e4dd2a8a5b88ecd17f2cc";
-    public static final String REDIRECT_URI = "cs2340project2://auth";
-
-    public static final int AUTH_TOKEN_REQUEST_CODE = 0;
-    public static final int AUTH_CODE_REQUEST_CODE = 1;
-
-    private final OkHttpClient mOkHttpClient = new OkHttpClient();
-    private String mAccessToken, mAccessCode;
-    private Call mCall;
-    ViewPager2 viewPager;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private Map<String, Object> userData;
+    private MaterialToolbar toolbar;
+    private TextInputLayout emailLayout;
+    private TextInputEditText emailText;
+    private TextInputLayout passwordLayout;
+    private TextInputEditText passwordText;
+    private MaterialButton spotify;
+    private MaterialButton login;
+    private ActivityResultLauncher<Intent> spotifyAuthResLauncher;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        userData = new HashMap<>();
 
-        tabLayout = findViewById(R.id.tab_layout);
-        viewPager = findViewById(R.id.view_pager);
+        toolbar = findViewById(R.id.topAppBar_login);
+        emailLayout = findViewById(R.id.email_layout);
+        emailText = findViewById(R.id.email_input);
+        passwordLayout = findViewById(R.id.password_layout);
+        passwordText = findViewById(R.id.password_input);
+        spotify = findViewById(R.id.spotify_btn);
+        login = findViewById(R.id.login_btn);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Login"));
-        tabLayout.addTab(tabLayout.newTab().setText("Signup"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        final LoginAdapter adapter = new LoginAdapter(this);
-        viewPager.setAdapter(adapter);
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) ->
-                tab.setText(adapter.getPageTitle(position))
-        ).attach();
-
+        spotifyAuthResLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    final AuthorizationResponse response = AuthorizationClient.getResponse(result.getResultCode(), result.getData());
+                    if (response.getType() == AuthorizationResponse.Type.TOKEN) {
+                        userData.put("access_token", response.getAccessToken());
+                        Timestamp currTime = Timestamp.now();
+                        userData.put("expires", new Timestamp(currTime.getSeconds() + response.getExpiresIn(), currTime.getNanoseconds()));
+                        if (validate()) {
+                            enableButton();
+                        }
+                    } else {
+                        Snackbar.make(findViewById(R.id.login_container), "Connect your Spotify account", Snackbar.LENGTH_SHORT).show();
+                    }
+                });
     }
 
-    public String getmAccessToken() {
-        getToken();
-        return mAccessToken;
-    }
-
-    /**
-     * Get token from Spotify
-     * This method will open the Spotify login activity and get the token
-     * What is token?
-     * https://developer.spotify.com/documentation/general/guides/authorization-guide/
-     */
-    public void getToken() {
-        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
-        AuthorizationClient.openLoginActivity(LoginActivity.this, AUTH_TOKEN_REQUEST_CODE, request);
-    }
-
-    /**
-     * Get code from Spotify
-     * This method will open the Spotify login activity and get the code
-     * What is code?
-     * https://developer.spotify.com/documentation/general/guides/authorization-guide/
-     */
-    public void getCode() {
-        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.CODE);
-        AuthorizationClient.openLoginActivity(LoginActivity.this, AUTH_CODE_REQUEST_CODE, request);
-    }
-
-
-    /**
-     * When the app leaves this activity to momentarily get a token/code, this function
-     * fetches the result of that external activity to get the response from Spotify
-     */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        final AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, data);
+    public void onStart() {
+        super.onStart();
 
-        // Check which request code is present (if any)
-        if (AUTH_TOKEN_REQUEST_CODE == requestCode) {
-            mAccessToken = response.getAccessToken();
-            // Handle token retrieval completion here
-            // For example, you can trigger further actions that depend on the token availability
-            if (mAccessToken != null) {
-                // Token retrieved successfully, you can proceed with Firebase operations
-                // For example, you can call a method in your fragment/activity to handle Firebase operations
-                // e.g., ((YourFragmentOrActivity) getActivity()).handleFirebaseOperations();
-            } else {
-                // Token retrieval failed, handle the failure scenario
-                Toast.makeText(this, "Failed to retrieve access token.", Toast.LENGTH_SHORT).show();
-            }
-        } else if (AUTH_CODE_REQUEST_CODE == requestCode) {
-            mAccessCode = response.getCode();
-        }
-    }
+        toolbar.setNavigationOnClickListener(view -> {
+            finish();
+        });
 
-
-    /**
-     * Get user profile
-     * This method will get the user profile using the token
-     */
-    public void onGetUserProfileClicked() {
-        if (mAccessToken == null) {
-            Toast.makeText(this, "You need to get an access token first!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Create a request to get the user profile
-        final Request request = new Request.Builder()
-                .url("https://api.spotify.com/v1/me")
-                .addHeader("Authorization", "Bearer " + mAccessToken)
-                .build();
-
-        cancelCall();
-        mCall = mOkHttpClient.newCall(request);
-
-        mCall.enqueue(new Callback() {
+        emailText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("HTTP", "Failed to fetch data: " + e);
-                Toast.makeText(LoginActivity.this, "Failed to fetch data, watch Logcat for more details",
-                        Toast.LENGTH_SHORT).show();
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    final JSONObject jsonObject = new JSONObject(response.body().string());
-                } catch (JSONException e) {
-                    Log.d("JSON", "Failed to parse data: " + e);
-                    Toast.makeText(LoginActivity.this, "Failed to parse data, watch Logcat for more details",
-                            Toast.LENGTH_SHORT).show();
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (validate()) {
+                    enableButton();
+                } else {
+                    disableButton();
+                    if (!Patterns.EMAIL_ADDRESS.matcher(emailText.getText().toString()).matches()) {
+                        emailLayout.setError("Email address is not a valid email address");
+                    } else {
+                        emailLayout.setError("");
+                    }
                 }
             }
         });
+
+        passwordText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (validate()) {
+                    enableButton();
+                } else {
+                    disableButton();
+                    if (passwordText.getText().length() == 0) {
+                        passwordLayout.setError("Password cannot be empty");
+                    } else {
+                        passwordLayout.setError("");
+                    }
+                }
+            }
+        });
+
+        spotify.setOnClickListener(view -> {
+            spotifyAuthResLauncher.launch(new Intent(AuthorizationClient.createLoginActivityIntent(this, SpotifyAuthentication.getAuthenticationRequest(AuthorizationResponse.Type.TOKEN, false))));
+        });
+
+        login.setOnClickListener(view -> {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            mAuth.signInWithEmailAndPassword(emailText.getText().toString(), passwordText.getText().toString())
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            db.collection("tokens").document(mAuth.getUid()).set(userData);
+                            startActivity(new Intent(this, Homescreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                            LoginActivity.this.finish();
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                Snackbar.make(view, "Incorrect login credentials", Snackbar.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        });
     }
 
-    /**
-     * Creates a UI thread to update a TextView in the background
-     * Reduces UI latency and makes the system perform more consistently
-     *
-     * @param text the text to set
-     * @param textView TextView object to update
-     */
-    private void setTextAsync(final String text, TextView textView) {
-        runOnUiThread(() -> textView.setText(text));
+    private boolean validate() {
+        return Patterns.EMAIL_ADDRESS.matcher(emailText.getText().toString()).matches()
+                && passwordText.getText().length() != 0
+                && !userData.isEmpty();
     }
 
-    /**
-     * Get authentication request
-     *
-     * @param type the type of the request
-     * @return the authentication request
-     */
-    private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
-        return new AuthorizationRequest.Builder(CLIENT_ID, type, getRedirectUri().toString())
-                .setShowDialog(false)
-                .setScopes(new String[] { "user-read-email" }) // <--- Change the scope of your requested token here
-                .setCampaign("your-campaign-token")
-                .build();
+    private void enableButton() {
+        login.setEnabled(true);
+        login.setBackgroundColor(Color.WHITE);
+        emailLayout.setError("");
+        passwordLayout.setError("");
     }
-
-    /**
-     * Gets the redirect Uri for Spotify
-     *
-     * @return redirect Uri object
-     */
-    private Uri getRedirectUri() {
-        return Uri.parse(REDIRECT_URI);
+    private void disableButton() {
+        login.setEnabled(false);
+        login.setBackgroundColor(Color.parseColor("#414141"));
     }
-
-    private void cancelCall() {
-        if (mCall != null) {
-            mCall.cancel();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        cancelCall();
-        super.onDestroy();
-    }
-
 }
