@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:background="@drawable/wrapped1purple"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/artist2"
@@ -36,6 +36,7 @@
         android:text="Artist 4"
         app:layout_constraintBottom_toTopOf="@+id/artist5"
         app:layout_constraintStart_toStartOf="parent" />
+    android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/artist1"
