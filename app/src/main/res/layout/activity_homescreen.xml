@@ -10,31 +10,18 @@
 
     <!--TODO make this look pretty-->
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Spotify"
-        android:textColor="@color/white"
-        android:textSize="48sp"
-        app:layout_constraintBottom_toTopOf="@+id/button_new_wrapped"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/button_new_wrapped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="212dp"
         android:backgroundTint="@color/green"
-        android:textColor="@color/spotify_black"
         android:onClick="newWrappedClicked"
         android:text="Create New Wrapped"
+        android:textColor="@color/spotify_black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+        tools:layout_editor_absoluteY="277dp" />
 
     <Button
         android:id="@+id/button_public_wraps"
@@ -64,4 +51,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="305dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="124dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_new_wrapped"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.396"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.469"
+        app:srcCompat="@drawable/spotify_logo" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
