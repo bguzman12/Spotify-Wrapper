@@ -16,6 +16,26 @@
             android:name=".MyAccount"
             android:exported="false" />
         <activity
+            android:name=".Wrapped2"
+            android:exported="true">
+            <intent-filter>
+                <data
+                    android:host="auth"
+                    android:scheme="cs2340project2" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Wrapped1"
+            android:exported="true">
+            <intent-filter>
+                <data
+                    android:host="auth"
+                    android:scheme="cs2340project2" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
             android:name=".Homescreen"
             android:exported="false" />
         <activity
