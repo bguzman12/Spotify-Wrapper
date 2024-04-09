@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/topsongs1">
+
+    <TextView
+        android:id="@+id/artist1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Artist 1"
+        tools:layout_editor_absoluteX="193dp"
+        tools:layout_editor_absoluteY="187dp" />
+
+    <TextView
+        android:id="@+id/artist2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Artist 2"
+        tools:layout_editor_absoluteX="196dp"
+        tools:layout_editor_absoluteY="279dp" />
+
+    <TextView
+        android:id="@+id/artist3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Artist 3"
+        tools:layout_editor_absoluteX="191dp"
+        tools:layout_editor_absoluteY="379dp" />
+
+    <TextView
+        android:id="@+id/artist4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Artist 4"
+        tools:layout_editor_absoluteX="187dp"
+        tools:layout_editor_absoluteY="463dp" />
+
+    <TextView
+        android:id="@+id/artist5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Artist 5"
+        tools:layout_editor_absoluteX="186dp"
+        tools:layout_editor_absoluteY="555dp" />
+
+    //invisible button to go to wrapped 2
+</androidx.constraintlayout.widget.ConstraintLayout>
