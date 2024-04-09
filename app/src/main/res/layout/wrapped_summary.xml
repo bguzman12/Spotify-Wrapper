@@ -2,16 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/wrapped1purple"
     android:layout_height="match_parent"
-
-
     >
 
     <TextView
         android:id="@+id/artist1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="46dp"
+        android:layout_height="21dp"
         android:text="Artist 1"
         tools:layout_editor_absoluteX="52dp"
         tools:layout_editor_absoluteY="436dp" />
