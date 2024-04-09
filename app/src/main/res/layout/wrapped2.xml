@@ -47,5 +47,5 @@
         tools:layout_editor_absoluteX="186dp"
         tools:layout_editor_absoluteY="555dp" />
 
-    // invisible button to go to wrapped summary
+    <!--invisible button to go to wrapped summary-->
 </androidx.constraintlayout.widget.ConstraintLayout>
