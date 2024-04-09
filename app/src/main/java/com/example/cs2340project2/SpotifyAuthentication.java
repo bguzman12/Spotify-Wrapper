@@ -17,7 +17,7 @@ public class SpotifyAuthentication {
         return new AuthorizationRequest.Builder(CLIENT_ID, type, getRedirectUri().toString())
                 .setShowDialog(showDialog)
                 .setScopes(scope)
-                .setCampaign("your-campaign-token") // TODO: change to name of app
+                .setCampaign("CS2340Project2") // TODO: change to name of app
                 .build();
     }
 

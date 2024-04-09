@@ -33,8 +33,15 @@
                     android:scheme="cs2340project2" />
             </intent-filter>
         </activity>
-
-
+        <activity
+            android:name=".WrappedActivity"
+            android:exported="true">
+            <intent-filter>
+                <data
+                    android:host="auth"
+                    android:scheme="cs2340project2" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Homescreen"
             android:exported="false" />
