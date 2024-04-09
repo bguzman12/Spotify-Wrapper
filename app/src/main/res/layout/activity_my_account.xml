@@ -6,29 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".MyAccount">
     <!--TODO this title could be similar to spotify account screen, with username and pic?-->
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="(insert title here)"
-        android:layout_marginTop="30dp"
-        android:textSize="48sp"
-        app:layout_constraintBottom_toTopOf="@+id/button_new_wrapped"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button_new_wrapped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="212dp"
-        android:text="See Posts"
+        android:layout_marginBottom="172dp"
         android:onClick="viewPostsClicked"
+        android:text="See Posts"
+        app:layout_constraintBottom_toTopOf="@+id/button_account"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_public_wraps"
@@ -48,10 +37,22 @@
         android:id="@+id/button_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="160dp"
-        android:text="Edit Account Info"
+        android:layout_marginBottom="196dp"
         android:onClick="editLoginClicked"
+        android:text="Edit Account Info"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="257dp"
+        android:layout_height="78dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_new_wrapped"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.28"
+        app:srcCompat="@drawable/spotify_logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>
