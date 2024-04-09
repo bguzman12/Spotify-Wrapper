@@ -32,7 +32,7 @@ public class Wrapped2 extends AppCompatActivity {
     }
 
     private void fetchTopSongs() {
-        List<WrappedActivity.SongInfo> songList = wrappedActivity.fetchUserInfo(WrappedActivity.TimeRange.WEEK);
+        List<WrappedActivity.SongInfo> songList = wrappedActivity.fetchUserInfo(WrappedActivity.TimeRange.YEAR);
 
         song1.setText(songList.get(0).getName());
         song2.setText(songList.get(1).getName());

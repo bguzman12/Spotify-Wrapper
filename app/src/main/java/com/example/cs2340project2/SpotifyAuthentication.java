@@ -11,7 +11,7 @@ import okhttp3.OkHttpClient;
 public class SpotifyAuthentication {
     private static final String CLIENT_ID = "fd02c77ee13e4dd2a8a5b88ecd17f2cc";
     private static final String REDIRECT_URI = "cs2340project2://auth";
-    private static String[] scope = {"user-read-email"}; // TODO: change scope to required scope
+    private static String[] scope = {"user-read-email", "user-top-read"}; // TODO: change scope to required scope
 
     public static AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type, boolean showDialog) {
         return new AuthorizationRequest.Builder(CLIENT_ID, type, getRedirectUri().toString())
