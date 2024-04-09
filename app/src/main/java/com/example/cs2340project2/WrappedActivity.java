@@ -37,7 +37,8 @@ public class WrappedActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
-    public void fetchUserInfo(TimeRange timeRange) {
+    public List<SongInfo> fetchUserInfo(TimeRange timeRange) {
+        List<SongInfo> songList = new ArrayList<>();
         try {
             String formattedStartTime, formattedEndTime;
 
@@ -77,18 +78,13 @@ public class WrappedActivity {
             JSONObject jsonResponse = new JSONObject(response.toString());
             JSONArray items = jsonResponse.getJSONArray("items");
 
-            List<SongInfo> songList = extractSongInfo(items);
+            songList = extractSongInfo(items);
 
-            // Save songList to Firebase Database
-            FirebaseUser currentUser = mAuth.getCurrentUser();
-            if (currentUser != null) {
-                DatabaseReference userRef = mDatabase.child("users").child(currentUser.getUid()).child("songs");
-                userRef.setValue(songList);
-            }
         } catch (Exception e) {
             e.printStackTrace();
             System.out.print("your call failed :/");
         }
+        return songList;
     }
 
     private String getToken() {
@@ -117,7 +113,7 @@ public class WrappedActivity {
         return songList;
     }
 
-    private static class SongInfo {
+    static class SongInfo {
         private String name;
         private String artist;
         private long listeningTimeInSeconds;
