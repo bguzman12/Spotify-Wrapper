@@ -12,13 +12,16 @@ public class Wrapped2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wrapped2);
 
-        View myBackgroundView = findViewById(R.id.myBackgroundView);
-        myBackgroundView.setBackgroundResource(getRandomDrawable());
+        //View myBackgroundView = findViewById(R.id.myBackgroundView);
+        //myBackgroundView.setBackgroundResource(getRandomDrawable());
     }
 
+    /*
     private int getRandomDrawable() {
         int[] drawables = new int[] {R.drawable.wrapped1purple, R.drawable.wrapped2orange, R.drawable.wrapped3blue, R.drawable.wrapped4yellow};
         int randomIndex = new Random().nextInt(drawables.length);
         return drawables[randomIndex];
     }
+
+     */
 }
