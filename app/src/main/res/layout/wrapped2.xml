@@ -5,51 +5,48 @@
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/topsongs1">
 
     <TextView
         android:id="@+id/song1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
         android:text="Song 1"
-        app:layout_constraintBottom_toTopOf="@+id/song2"
-        tools:layout_editor_absoluteX="191dp" />
+        tools:layout_editor_absoluteX="193dp"
+        tools:layout_editor_absoluteY="187dp" />
 
     <TextView
         android:id="@+id/song2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
         android:text="Song 2"
-        app:layout_constraintBottom_toTopOf="@+id/song3"
-        tools:layout_editor_absoluteX="191dp" />
+        tools:layout_editor_absoluteX="196dp"
+        tools:layout_editor_absoluteY="279dp" />
 
     <TextView
         android:id="@+id/song3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
         android:text="Song 3"
-        app:layout_constraintBottom_toTopOf="@+id/song4"
-        tools:layout_editor_absoluteX="191dp" />
+        tools:layout_editor_absoluteX="191dp"
+        tools:layout_editor_absoluteY="379dp" />
 
     <TextView
         android:id="@+id/song4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
         android:text="Song 4"
-        app:layout_constraintBottom_toTopOf="@+id/song5"
-        tools:layout_editor_absoluteX="191dp" />
+        tools:layout_editor_absoluteX="187dp"
+        tools:layout_editor_absoluteY="463dp" />
 
     <TextView
         android:id="@+id/song5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Song 5"
-        tools:layout_editor_absoluteX="191dp"
-        tools:layout_editor_absoluteY="557dp" />
+        tools:layout_editor_absoluteX="186dp"
+        tools:layout_editor_absoluteY="555dp" />
 
     // invisible button to go to wrapped summary
 </androidx.constraintlayout.widget.ConstraintLayout>
