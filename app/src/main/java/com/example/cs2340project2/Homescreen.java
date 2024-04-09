@@ -17,7 +17,9 @@ public class Homescreen extends AppCompatActivity {
     }
 
     public void newWrappedClicked(View view) {
-        //TODO: go to new wrapped ui (not currently created)
+        //TODO: change to go to wrapped1 first
+        startActivity(new Intent(this, Wrapped2.class));
+
     }
 
     public void publicWrapsClicked(View view) {
