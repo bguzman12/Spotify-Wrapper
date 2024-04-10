@@ -1,48 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent">
-    <!-- TODO : add back background stuff -->
+    android:background="@drawable/wrapped1purple"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/artist2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="3dp"
+        android:text="Artist 2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artist1" />
+
+    <TextView
+        android:id="@+id/artist5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="7dp"
+        android:text="Artist 5"
+        app:layout_constraintEnd_toStartOf="@+id/song5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artist4" />
+
+    <TextView
+        android:id="@+id/artist4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="9dp"
+        android:text="Artist 4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artist3" />
 
     <TextView
         android:id="@+id/artist1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="436dp"
         android:text="Artist 1"
-        tools:layout_editor_absoluteX="52dp"
-        tools:layout_editor_absoluteY="436dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView0"
+        android:id="@+id/artist3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="52dp"
-        tools:layout_editor_absoluteY="536dp" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="52dp"
-        tools:layout_editor_absoluteY="509dp" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="52dp"
-        tools:layout_editor_absoluteY="483dp" />
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="3dp"
+        android:text="Artist 3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artist2" />
 
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/song2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="52dp"
-        tools:layout_editor_absoluteY="455dp" />
+        android:layout_marginEnd="128dp"
+        android:layout_marginBottom="8dp"
+        android:text="Song 2"
+        app:layout_constraintBottom_toTopOf="@+id/song3"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/song4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="128dp"
+        android:text="Song 4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/song3" />
+
+    <TextView
+        android:id="@+id/song5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="128dp"
+        android:text="Song 5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/song4" />
+
+    <TextView
+        android:id="@+id/song3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="128dp"
+        android:layout_marginBottom="100dp"
+        android:text="Song 3"
+        app:layout_constraintBottom_toTopOf="@id/mins_listened"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/song1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="128dp"
+        android:layout_marginBottom="4dp"
+        android:text="Song 1"
+        app:layout_constraintBottom_toTopOf="@+id/song2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.995" />
+
+    <TextView
+        android:id="@+id/top_genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="120dp"
+        android:text="Top Genre"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/song5" />
+
+    <TextView
+        android:id="@+id/mins_listened"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="84dp"
+        android:text="Minutes Listened"
+        app:layout_constraintEnd_toStartOf="@+id/top_genre"
+        app:layout_constraintTop_toBottomOf="@+id/artist5" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

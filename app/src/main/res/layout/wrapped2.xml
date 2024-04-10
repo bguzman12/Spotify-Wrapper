@@ -4,48 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <!-- TODO : add back background stuff -->
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/topsongs1">
+
 
     <TextView
         android:id="@+id/song1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="176dp"
+        android:layout_marginBottom="92dp"
         android:text="Song 1"
-        tools:layout_editor_absoluteX="193dp"
-        tools:layout_editor_absoluteY="187dp" />
+        app:layout_constraintBottom_toTopOf="@+id/song2"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/song2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="176dp"
+        android:layout_marginBottom="72dp"
         android:text="Song 2"
-        tools:layout_editor_absoluteX="196dp"
-        tools:layout_editor_absoluteY="279dp" />
+        app:layout_constraintBottom_toTopOf="@+id/song3"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/song3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="176dp"
+        android:layout_marginBottom="76dp"
         android:text="Song 3"
-        tools:layout_editor_absoluteX="191dp"
-        tools:layout_editor_absoluteY="379dp" />
+        app:layout_constraintBottom_toTopOf="@+id/song4"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/song4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="176dp"
+        android:layout_marginBottom="84dp"
         android:text="Song 4"
-        tools:layout_editor_absoluteX="187dp"
-        tools:layout_editor_absoluteY="463dp" />
+        app:layout_constraintBottom_toTopOf="@+id/song5"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/song5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="176dp"
+        android:layout_marginBottom="144dp"
         android:text="Song 5"
-        tools:layout_editor_absoluteX="186dp"
-        tools:layout_editor_absoluteY="555dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
-    <!--invisible button to go to wrapped summary-->
 </androidx.constraintlayout.widget.ConstraintLayout>
