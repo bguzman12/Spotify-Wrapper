@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:text="Artist 5"
+        app:layout_constraintStart_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="534dp" />
 
@@ -36,7 +37,6 @@
         android:text="Artist 4"
         app:layout_constraintBottom_toTopOf="@+id/artist5"
         app:layout_constraintStart_toStartOf="parent" />
-    android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/artist1"
@@ -64,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="128dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         android:text="Song 2"
         app:layout_constraintBottom_toTopOf="@+id/song3"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -80,20 +80,10 @@
         app:layout_constraintTop_toBottomOf="@+id/song3" />
 
     <TextView
-        android:id="@+id/song1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="128dp"
-        android:layout_marginBottom="4dp"
-        android:text="Song 1"
-        app:layout_constraintBottom_toTopOf="@+id/song2"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
         android:id="@+id/song5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="128dp"
         android:text="Song 5"
         app:layout_constraintEnd_toEndOf="parent"
@@ -104,9 +94,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="128dp"
+        android:layout_marginBottom="100dp"
         android:text="Song 3"
+        app:layout_constraintBottom_toTopOf="@id/mins_listened"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/song1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="128dp"
+        android:layout_marginBottom="4dp"
+        android:text="Song 1"
+        app:layout_constraintBottom_toTopOf="@+id/song2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/top_genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="84dp"
+        android:text="Minutes Listened"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="483dp" />
+        app:layout_constraintTop_toTopOf="@+id/song5" />
 
     <TextView
         android:id="@+id/mins_listened"
@@ -117,15 +128,5 @@
         android:text="Minutes Listened"
         app:layout_constraintEnd_toStartOf="@+id/top_genre"
         app:layout_constraintTop_toBottomOf="@+id/artist5" />
-
-    <TextView
-        android:id="@+id/top_genre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="84dp"
-        android:text="Minutes Listened"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/song5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
