@@ -1,5 +1,7 @@
 package com.example.cs2340project2;
 
+import android.app.Activity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -19,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class WrappedActivity {
+public class WrappedActivity extends Activity {
 
     private static final String API_URL = "https://api.spotify.com/v1/me/player/recently-played";
 
