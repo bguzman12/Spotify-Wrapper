@@ -16,6 +16,7 @@
         android:layout_marginEnd="176dp"
         android:layout_marginBottom="92dp"
         android:text="Song 1"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/song2"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="176dp"
         android:layout_marginBottom="72dp"
+        android:textColor="@color/black"
         android:text="Song 2"
         app:layout_constraintBottom_toTopOf="@+id/song3"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -35,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="176dp"
         android:layout_marginBottom="76dp"
+        android:textColor="@color/black"
         android:text="Song 3"
         app:layout_constraintBottom_toTopOf="@+id/song4"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -45,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="176dp"
         android:layout_marginBottom="84dp"
+        android:textColor="@color/black"
         android:text="Song 4"
         app:layout_constraintBottom_toTopOf="@+id/song5"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -55,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="176dp"
         android:layout_marginBottom="144dp"
+        android:textColor="@color/black"
         android:text="Song 5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

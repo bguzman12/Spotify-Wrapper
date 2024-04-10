@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="176dp"
         android:layout_marginBottom="92dp"
+        android:textColor="@color/black"
         android:text="Artist 3"
         app:layout_constraintBottom_toTopOf="@+id/artist4"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -24,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="176dp"
         android:layout_marginBottom="72dp"
+        android:textColor="@color/black"
         android:text="Artist 1"
         app:layout_constraintBottom_toTopOf="@+id/artist2"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -34,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="176dp"
         android:layout_marginBottom="76dp"
+        android:textColor="@color/black"
         android:text="Artist 2"
         app:layout_constraintBottom_toTopOf="@+id/artist3"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -44,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="176dp"
         android:layout_marginBottom="84dp"
+        android:textColor="@color/black"
         android:text="Artist 4"
         app:layout_constraintBottom_toTopOf="@+id/artist5"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -54,6 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="176dp"
         android:layout_marginBottom="144dp"
+        android:textColor="@color/black"
         android:text="Artist 5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
