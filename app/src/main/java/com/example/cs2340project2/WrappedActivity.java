@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import android.os.AsyncTask;
 
 public class WrappedActivity extends Activity {
 
@@ -39,55 +40,90 @@ public class WrappedActivity extends Activity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
-    public List<SongInfo> fetchUserInfo(TimeRange timeRange) {
-        List<SongInfo> songList = new ArrayList<>();
-        try {
-            String formattedStartTime, formattedEndTime;
+    public void fetchUserInfoAsync(TimeRange timeRange, FetchUserInfoListener listener) {
+        new FetchUserInfoTask(listener).execute(timeRange);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            Calendar calendar = Calendar.getInstance();
-
-            switch (timeRange) {
-                case WEEK:
-                    calendar.add(Calendar.DAY_OF_YEAR, -7);
-                    break;
-                case MONTH:
-                    calendar.add(Calendar.MONTH, -1);
-                    break;
-                case YEAR:
-                    calendar.add(Calendar.YEAR, -1);
-                    break;
-            }
-
-            formattedStartTime = sdf.format(calendar.getTime());
-            formattedEndTime = sdf.format(new Date());
-
-            String accessToken = getToken();
-
-            URL url = new URL(API_URL + "?limit=50&start_time=" + formattedStartTime + "&end_time=" + formattedEndTime);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("Authorization", "Bearer " + accessToken);
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            JSONObject jsonResponse = new JSONObject(response.toString());
-            JSONArray items = jsonResponse.getJSONArray("items");
-
-            songList = extractSongInfo(items);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.print("your call failed :/");
-        }
-        return songList;
     }
+
+
+    private class FetchUserInfoTask extends AsyncTask<TimeRange, Void, List<SongInfo>> {
+        private FetchUserInfoListener listener;
+
+        public FetchUserInfoTask(FetchUserInfoListener listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        protected List<SongInfo> doInBackground(TimeRange... timeRanges) {
+            TimeRange timeRange = timeRanges[0];
+            List<SongInfo> songList = new ArrayList<>();
+            try {
+                String formattedStartTime, formattedEndTime;
+
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                Calendar calendar = Calendar.getInstance();
+
+
+                switch (timeRange) {
+                    case WEEK:
+                        calendar.add(Calendar.DAY_OF_YEAR, -7);
+                        break;
+                    case MONTH:
+                        calendar.add(Calendar.MONTH, -1);
+                        break;
+                    case YEAR:
+                        calendar.add(Calendar.YEAR, -1);
+                        break;
+                }
+
+
+                formattedStartTime = sdf.format(calendar.getTime());
+                formattedEndTime = sdf.format(new Date());
+
+
+                String accessToken = getToken();
+
+
+                URL url = new URL(API_URL + "?limit=50&start_time=" + formattedStartTime + "&end_time=" + formattedEndTime);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Authorization", "Bearer " + accessToken);
+
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+
+                JSONObject jsonResponse = new JSONObject(response.toString());
+                JSONArray items = jsonResponse.getJSONArray("items");
+
+
+                songList = extractSongInfo(items);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.print("your call failed :/");
+            }
+            return songList;
+        }
+
+        @Override
+        protected void onPostExecute(List<SongInfo> songList) {
+            super.onPostExecute(songList);
+            listener.onUserInfoFetched(songList);
+        }
+    }
+
+    public interface FetchUserInfoListener {
+        void onUserInfoFetched(List<SongInfo> songList);
+    }
+
 
     private String getToken() {
         FirebaseUser currentUser = mAuth.getCurrentUser();

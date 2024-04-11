@@ -1,17 +1,11 @@
 package com.example.cs2340project2;
 
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
 import android.widget.TextView;
-
 import java.util.List;
-import java.util.Random;
 
-
-
-public class Wrapped2 extends AppCompatActivity {
+public class Wrapped2 extends AppCompatActivity implements WrappedActivity.FetchUserInfoListener {
     private WrappedActivity wrappedActivity;
     private TextView song1, song2, song3, song4, song5;
 
@@ -20,12 +14,11 @@ public class Wrapped2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wrapped2);
 
-        //View myBackgroundView = findViewById(R.id.myBackgroundView);
-
-        //myBackgroundView.setBackgroundResource(getRandomDrawable());
-
-   
         wrappedActivity = new WrappedActivity();
+        wrappedActivity.fetchUserInfoAsync(WrappedActivity.TimeRange.YEAR, this);
+
+
+
 
         song1 = findViewById(R.id.song1);
         song2 = findViewById(R.id.song2);
@@ -33,18 +26,23 @@ public class Wrapped2 extends AppCompatActivity {
         song4 = findViewById(R.id.song4);
         song5 = findViewById(R.id.song5);
 
-        fetchTopSongs();
+
     }
 
-    private void fetchTopSongs() {
-        List<WrappedActivity.SongInfo> songList = wrappedActivity.fetchUserInfo(WrappedActivity.TimeRange.YEAR);
-
-        song1.setText(songList.get(0).getName());
-        song2.setText(songList.get(1).getName());
-        song3.setText(songList.get(2).getName());
-        song4.setText(songList.get(3).getName());
-        song5.setText(songList.get(4).getName());
+    @Override
+    public void onUserInfoFetched(List<WrappedActivity.SongInfo> songList) {
+        // Check if the songList is not empty and has at least 5 songs
+        if (songList != null && songList.size() >= 5) {
+            song1.setText(songList.get(0).getName());
+            song2.setText(songList.get(1).getName());
+            song3.setText(songList.get(2).getName());
+            song4.setText(songList.get(3).getName());
+            song5.setText(songList.get(4).getName());
+        } else {
+            // Handle the case where there are not enough songs
+        }
     }
+
 
     /*
     private int getRandomDrawable1() {
