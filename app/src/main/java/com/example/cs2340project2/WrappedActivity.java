@@ -1,7 +1,5 @@
 package com.example.cs2340project2;
 
-import static android.content.ContentValues.TAG;
-
 import android.app.Activity;
 import android.util.Log;
 
@@ -15,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -42,75 +39,90 @@ public class WrappedActivity extends Activity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
-
-    public List<SongInfo> fetchUserInfo(TimeRange timeRange) {
-        List<SongInfo> songList = new ArrayList<>();
-        try {
-            String formattedStartTime, formattedEndTime;
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            Calendar calendar = Calendar.getInstance();
-
-            switch (timeRange) {
-                case WEEK:
-                    calendar.add(Calendar.DAY_OF_YEAR, -7);
-                    break;
-                case MONTH:
-                    calendar.add(Calendar.MONTH, -1);
-                    break;
-                case YEAR:
-                    calendar.add(Calendar.YEAR, -1);
-                    break;
-            }
-
-            formattedStartTime = sdf.format(calendar.getTime());
-            formattedEndTime = sdf.format(new Date());
-
-            String accessToken = getToken();
-
-            URL url = new URL(API_URL + "?limit=50&start_time=" + formattedStartTime + "&end_time=" + formattedEndTime);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("Authorization", "Bearer " + accessToken);
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            JSONObject jsonResponse = new JSONObject(response.toString());
-            JSONArray items = jsonResponse.getJSONArray("items");
-
-            songList = extractSongInfo(items);
-
-        } catch (IOException e) {
-            // Handle network errors or issues with the API request
-            e.printStackTrace();
-            Log.e(TAG, "Error making API request or reading response: " + e.getMessage());
-
-        } catch (JSONException e) {
-            // Handle JSON parsing errors
-            e.printStackTrace();
-            Log.e(TAG, "Error parsing JSON response: " + e.getMessage());
-
-        } catch (Exception e) {
-            // Handle other unexpected errors
-            e.printStackTrace();
-            Log.e(TAG, "Unexpected error: " + e.getMessage());
-        }
-        return songList;
+    private interface TokenCallback {
+        void onTokenReceived(String accessToken);
     }
 
-    private String getToken() {
+    private void getToken(TokenCallback callback) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            return currentUser.getUid(); // Replace with your logic to retrieve the access token
+            currentUser.getIdToken(true)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            // Token retrieved successfully
+                            String accessToken = task.getResult().getToken();
+                            // Invoke the callback with the access token
+                            callback.onTokenReceived(accessToken);
+                        } else {
+                            // Failed to retrieve token
+                            Log.e("getToken", "Failed to retrieve access token: " + task.getException());
+                            callback.onTokenReceived(null); // Pass null token to callback
+                        }
+                    });
+        } else {
+            // No user signed in
+            Log.e("getToken", "No user signed in.");
+            callback.onTokenReceived(null); // Pass null token to callback
         }
-        return null;
     }
+
+    public List<SongInfo> fetchUserInfo(TimeRange timeRange) {
+        final List<SongInfo>[] songList = new List[]{new ArrayList<>()};
+        getToken(new TokenCallback() {
+            @Override
+            public void onTokenReceived(String accessToken) {
+                if (accessToken != null) {
+                    try {
+                        String formattedStartTime, formattedEndTime;
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                        Calendar calendar = Calendar.getInstance();
+
+                        switch (timeRange) {
+                            case WEEK:
+                                calendar.add(Calendar.DAY_OF_YEAR, -7);
+                                break;
+                            case MONTH:
+                                calendar.add(Calendar.MONTH, -1);
+                                break;
+                            case YEAR:
+                                calendar.add(Calendar.YEAR, -1);
+                                break;
+                        }
+
+                        formattedStartTime = sdf.format(calendar.getTime());
+                        formattedEndTime = sdf.format(new Date());
+
+                        URL url = new URL(API_URL + "?limit=50&start_time=" + formattedStartTime + "&end_time=" + formattedEndTime);
+                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                        connection.setRequestMethod("GET");
+                        connection.setRequestProperty("Authorization", "Bearer " + accessToken);
+
+                        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        StringBuilder response = new StringBuilder();
+                        String inputLine;
+                        while ((inputLine = in.readLine()) != null) {
+                            response.append(inputLine);
+                        }
+                        in.close();
+
+                        JSONObject jsonResponse = new JSONObject(response.toString());
+                        JSONArray items = jsonResponse.getJSONArray("items");
+
+                        songList[0] = extractSongInfo(items);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e("fetchUserInfo", "Fetching user info failed :/");
+                    }
+                } else {
+                    Log.e("fetchUserInfo", "Access token is null.");
+                }
+            }
+        });
+        return songList[0];
+    }
+
 
     private List<SongInfo> extractSongInfo(JSONArray items) throws JSONException {
         List<SongInfo> songList = new ArrayList<>();
