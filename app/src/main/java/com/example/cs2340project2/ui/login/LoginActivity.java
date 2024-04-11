@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cs2340project2.Homescreen;
 import com.example.cs2340project2.R;
 import com.example.cs2340project2.SpotifyAuthentication;
+import com.example.cs2340project2.WrappedActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -65,9 +66,14 @@ public class LoginActivity extends AppCompatActivity {
                 result -> {
                     final AuthorizationResponse response = AuthorizationClient.getResponse(result.getResultCode(), result.getData());
                     if (response.getType() == AuthorizationResponse.Type.TOKEN) {
-                        userData.put("access_token", response.getAccessToken());
+                        SpotifyAuthentication.setAccessToken(response.getAccessToken()); // Set access token
                         Timestamp currTime = Timestamp.now();
+                        userData.put("access_token", response.getAccessToken());
                         userData.put("expires", new Timestamp(currTime.getSeconds() + response.getExpiresIn(), currTime.getNanoseconds()));
+
+                        WrappedActivity wrappedActivity = new WrappedActivity();
+                        wrappedActivity.setAccessToken(response.getAccessToken());
+
                         if (validate()) {
                             enableButton();
                         }
@@ -162,7 +168,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validate() {
         return Patterns.EMAIL_ADDRESS.matcher(emailText.getText().toString()).matches()
                 && passwordText.getText().length() != 0
-                && !userData.isEmpty();
+                && SpotifyAuthentication.getAccessToken() != null;
     }
 
     private void enableButton() {
