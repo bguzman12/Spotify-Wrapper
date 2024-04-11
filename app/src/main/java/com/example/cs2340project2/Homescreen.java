@@ -18,7 +18,7 @@ public class Homescreen extends AppCompatActivity {
 
     public void newWrappedClicked(View view) {
         //TODO: change to go to wrapped1 first
-        startActivity(new Intent(this, Wrapped2.class));
+        startActivity(new Intent(this, Wrapped1.class));
 
     }
 

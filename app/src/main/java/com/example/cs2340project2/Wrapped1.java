@@ -8,8 +8,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.Timestamp;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 
@@ -17,7 +15,7 @@ import java.util.List;
 
 public class Wrapped1 extends AppCompatActivity {
 
-    private TextView song1, song2, song3, song4, song5;
+    private TextView artist1, artist2, artist3, artist4, artist5;
     private ActivityResultLauncher<Intent> spotifyAuthResLauncher;
 
     @Override
@@ -27,23 +25,43 @@ public class Wrapped1 extends AppCompatActivity {
 
         // Initialize WrappedActivity instance
 
+        artist1 = findViewById(R.id.artist1);
+        artist2 = findViewById(R.id.artist2);
+        artist3 = findViewById(R.id.artist3);
+        artist4 = findViewById(R.id.artist4);
+        artist5 = findViewById(R.id.artist5);
 
-        song1 = findViewById(R.id.artist1);
-        song2 = findViewById(R.id.artist2);
-        song3 = findViewById(R.id.artist3);
-        song4 = findViewById(R.id.artist4);
-        song5 = findViewById(R.id.artist5);
-
+        // Fetch top songs
         spotifyAuthResLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     final AuthorizationResponse response = AuthorizationClient.getResponse(result.getResultCode(), result.getData());
                     if (response.getType() == AuthorizationResponse.Type.TOKEN) {
+                        Wrapped wrapped = new Wrapped(response.getAccessToken());
+                        wrapped.getTopArtists(Wrapped.TimeRange.MONTH, new Wrapped.TopArtistsCallback() {
+                            @Override
+                            public void onSuccess(List<ArtistInfo> topArtists) {
+                                runOnUiThread(() -> {
+                                    if (topArtists.size() >= 5) {
+                                        artist1.setText(topArtists.get(0).getArtist());
+                                        artist2.setText(topArtists.get(1).getArtist());
+                                        artist3.setText(topArtists.get(2).getArtist());
+                                        artist4.setText(topArtists.get(3).getArtist());
+                                        artist5.setText(topArtists.get(4).getArtist());
+                                    } else {
+                                        // Handle case where fewer than 5 songs are fetched
+                                        // For example, show a message or handle it as needed
+                                    }
+                                });
+                            }
 
+                            @Override
+                            public void onFailure(String errorMessage) {
+                                // Handle failure
+                            }
+                        });
                     }
                 });
         spotifyAuthResLauncher.launch(new Intent(AuthorizationClient.createLoginActivityIntent(this, SpotifyAuthentication.getAuthenticationRequest(AuthorizationResponse.Type.TOKEN, false))));
-        // Fetch top songs
-
     }
 }
