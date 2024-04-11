@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+
 public class WrappedActivity extends Activity {
 
     private static final String API_URL = "https://api.spotify.com/v1/me/player/recently-played";
@@ -33,6 +34,9 @@ public class WrappedActivity extends Activity {
         WEEK,
         MONTH,
         YEAR
+    }
+    public interface FetchUserInfoCallback {
+        void onUserInfoFetched(List<SongInfo> songList);
     }
 
     public WrappedActivity() {
@@ -66,11 +70,11 @@ public class WrappedActivity extends Activity {
         }
     }
 
-    public List<SongInfo> fetchUserInfo(TimeRange timeRange) {
-        final List<SongInfo>[] songList = new List[]{new ArrayList<>()};
+    public void fetchUserInfo(TimeRange timeRange, FetchUserInfoCallback callback) {
         getToken(new TokenCallback() {
             @Override
             public void onTokenReceived(String accessToken) {
+                List<SongInfo> songList = new ArrayList<>();
                 if (accessToken != null) {
                     try {
                         String formattedStartTime, formattedEndTime;
@@ -109,8 +113,20 @@ public class WrappedActivity extends Activity {
                         JSONObject jsonResponse = new JSONObject(response.toString());
                         JSONArray items = jsonResponse.getJSONArray("items");
 
-                        songList[0] = extractSongInfo(items);
+                        // Extract song info and add to the songList
+                        for (int i = 0; i < items.length(); i++) {
+                            JSONObject item = items.getJSONObject(i);
+                            JSONObject track = item.getJSONObject("track");
+                            String songName = track.getString("name");
 
+                            JSONArray artists = track.getJSONArray("artists");
+                            JSONObject artist = artists.getJSONObject(0);
+                            String artistName = artist.getString("name");
+
+                            long durationMs = track.getLong("duration_ms");
+                            long listeningTimeInSeconds = durationMs / 1000;
+                            songList.add(new SongInfo(songName, artistName, listeningTimeInSeconds));
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e("fetchUserInfo", "Fetching user info failed :/");
@@ -118,9 +134,10 @@ public class WrappedActivity extends Activity {
                 } else {
                     Log.e("fetchUserInfo", "Access token is null.");
                 }
+                // Once all operations are completed, invoke the callback with the songList.
+                callback.onUserInfoFetched(songList);
             }
         });
-        return songList[0];
     }
 
 
