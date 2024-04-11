@@ -39,7 +39,7 @@ public class LaunchActivity extends AppCompatActivity {
         super.onStart();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null && currentUser.reload().isSuccessful()) {
+        if (currentUser != null) {
             startActivity(new Intent(this, Homescreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
             LaunchActivity.this.finish();
         }

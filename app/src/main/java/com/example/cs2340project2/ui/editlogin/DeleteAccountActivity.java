@@ -134,6 +134,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
                                     .setPositiveButton("Yes", (dialog2, which) -> {
                                         db.collection("tokens").document(currentUser.getUid()).delete();
                                         currentUser.delete();
+                                        mAuth.signOut();
                                         startActivity(new Intent(this, LaunchActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                                         DeleteAccountActivity.this.finish();
                                     })
