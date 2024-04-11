@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.cs2340project2.ui.editlogin.EditLoginActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Homescreen extends AppCompatActivity {
 
@@ -17,10 +19,30 @@ public class Homescreen extends AppCompatActivity {
     }
 
     public void newWrappedClicked(View view) {
-        //TODO: change to go to wrapped1 first
-        startActivity(new Intent(this, Wrapped2.class));
+        String accessToken = retrieveAccessTokenFromFirestore(); // Implement this method
+
+        Intent intent = new Intent(this, Wrapped2.class);
+        intent.putExtra("accessToken", accessToken);
+        startActivity(intent);
 
     }
+    private String retrieveAccessTokenFromFirestore() {
+        String userId = FirebaseAuth.getInstance().getUid();
+        if (userId != null) {
+            FirebaseFirestore.getInstance().collection("tokens").document(userId).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String accessToken = documentSnapshot.getString("access_token");
+                            // You can use the accessToken here or return it to the caller
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle failure
+                    });
+        }
+        return null; // Return null if unable to retrieve access token
+    }
+
 
     public void publicWrapsClicked(View view) {
         //TODO: go to public wraps ui (not currently created)

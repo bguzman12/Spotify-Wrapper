@@ -1,6 +1,8 @@
 package com.example.cs2340project2;
 
+import android.content.Intent;
 import android.os.Bundle;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.TextView;
 
@@ -17,7 +19,7 @@ public class Wrapped2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wrapped2);
 
-        // Receive access token from LoginActivity
+        // Retrieve access token from SpotifyAuthentication
         String accessToken = getIntent().getStringExtra("accessToken");
 
         // Pass the access token to WrappedActivity constructor
