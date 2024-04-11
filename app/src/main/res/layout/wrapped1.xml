@@ -8,6 +8,20 @@
     android:orientation="vertical"
     android:background="@drawable/topartist1">
 
+    <ImageButton
+        android:id="@+id/button_public_wraps2"
+        android:layout_width="51dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="44dp"
+        android:background="@drawable/round_button"
+        android:contentDescription="Next"
+        android:onClick="prevWrapsClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.958"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/arrow_forward_icon" />
+
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="77dp"
