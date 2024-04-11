@@ -1,16 +1,24 @@
 package com.example.cs2340project2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.Timestamp;
+import com.spotify.sdk.android.auth.AuthorizationClient;
+import com.spotify.sdk.android.auth.AuthorizationResponse;
 
 import java.util.List;
 
-public class Wrapped1 extends AppCompatActivity implements WrappedActivity.FetchUserInfoCallback {
+public class Wrapped1 extends AppCompatActivity {
 
-    private WrappedActivity wrappedActivity;
     private TextView song1, song2, song3, song4, song5;
+    private ActivityResultLauncher<Intent> spotifyAuthResLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +26,7 @@ public class Wrapped1 extends AppCompatActivity implements WrappedActivity.Fetch
         setContentView(R.layout.wrapped1);
 
         // Initialize WrappedActivity instance
-        wrappedActivity = new WrappedActivity();
+
 
         song1 = findViewById(R.id.artist1);
         song2 = findViewById(R.id.artist2);
@@ -26,22 +34,16 @@ public class Wrapped1 extends AppCompatActivity implements WrappedActivity.Fetch
         song4 = findViewById(R.id.artist4);
         song5 = findViewById(R.id.artist5);
 
-        // Fetch top songs
-        wrappedActivity.fetchUserInfo(WrappedActivity.TimeRange.WEEK, this);
-    }
+        spotifyAuthResLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    final AuthorizationResponse response = AuthorizationClient.getResponse(result.getResultCode(), result.getData());
+                    if (response.getType() == AuthorizationResponse.Type.TOKEN) {
 
-    @Override
-    public void onUserInfoFetched(List<WrappedActivity.SongInfo> songList) {
-        // Handle the fetched song list here
-        if (songList.size() >= 5) {
-            song1.setText(songList.get(0).getName());
-            song2.setText(songList.get(1).getName());
-            song3.setText(songList.get(2).getName());
-            song4.setText(songList.get(3).getName());
-            song5.setText(songList.get(4).getName());
-        } else {
-            // Handle case where fewer than 5 songs are fetched
-            // For example, show a message or handle it as needed
-        }
+                    }
+                });
+        spotifyAuthResLauncher.launch(new Intent(AuthorizationClient.createLoginActivityIntent(this, SpotifyAuthentication.getAuthenticationRequest(AuthorizationResponse.Type.TOKEN, false))));
+        // Fetch top songs
+
     }
 }
