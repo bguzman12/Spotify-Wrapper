@@ -44,7 +44,7 @@ public class Wrapped1 extends AppCompatActivity {
 
     /*
     private int getRandomDrawable1() {
-        int[] drawables = new int[] {R.drawable.topsongs1, R.drawable.topsongs2, R.drawable.topsongs3, R.drawable.topsongs4};
+        int[] drawables = new int[] {R.drawable.topartist1, R.drawable.topartist2, R.drawable.topartist3, R.drawable.topartist4};
         int randomIndex = new Random().nextInt(drawables.length);
         return drawables[randomIndex];
     }
