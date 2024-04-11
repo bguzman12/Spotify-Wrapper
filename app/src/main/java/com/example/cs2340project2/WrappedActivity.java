@@ -1,12 +1,5 @@
 package com.example.cs2340project2;
 
-import android.app.Activity;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,12 +14,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class WrappedActivity extends Activity {
+public class WrappedActivity {
 
     private static final String API_URL = "https://api.spotify.com/v1/me/player/recently-played";
-
-    private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
+    private String accessToken;
 
     public enum TimeRange {
         WEEK,
@@ -34,9 +25,8 @@ public class WrappedActivity extends Activity {
         YEAR
     }
 
-    public WrappedActivity() {
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+    public WrappedActivity(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public List<SongInfo> fetchUserInfo(TimeRange timeRange) {
@@ -62,8 +52,6 @@ public class WrappedActivity extends Activity {
             formattedStartTime = sdf.format(calendar.getTime());
             formattedEndTime = sdf.format(new Date());
 
-            String accessToken = getToken();
-
             URL url = new URL(API_URL + "?limit=50&start_time=" + formattedStartTime + "&end_time=" + formattedEndTime);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -87,14 +75,6 @@ public class WrappedActivity extends Activity {
             System.out.print("your call failed :/");
         }
         return songList;
-    }
-
-    private String getToken() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            return currentUser.getUid(); // Replace with your logic to retrieve the access token
-        }
-        return null;
     }
 
     private List<SongInfo> extractSongInfo(JSONArray items) throws JSONException {
