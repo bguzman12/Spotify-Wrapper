@@ -1,14 +1,12 @@
 package com.example.cs2340project2;
 
-import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.List;
 import java.util.Random;
-
 
 
 public class Wrapped2 extends AppCompatActivity {
@@ -21,10 +19,7 @@ public class Wrapped2 extends AppCompatActivity {
         setContentView(R.layout.wrapped2);
 
         //View myBackgroundView = findViewById(R.id.myBackgroundView);
-
-        //myBackgroundView.setBackgroundResource(getRandomDrawable());
-
-   
+        //myBackgroundView.setBackgroundResource(getRandomDrawable1());
         wrappedActivity = new WrappedActivity();
 
         song1 = findViewById(R.id.song1);
