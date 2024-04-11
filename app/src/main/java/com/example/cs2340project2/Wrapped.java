@@ -23,18 +23,23 @@ public class Wrapped {
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
     private Call mCall;
     private static final String API_URL = "https://api.spotify.com/v1/me/top/";
+
+    public interface TopSongsCallback {
+        void onSuccess(List<SongInfo> topSongs);
+        void onFailure(String errorMessage);
+    }
+
     public enum TimeRange {
         MONTH,
         SIX_MONTHS,
         YEAR
     }
+
     public Wrapped(String accessToken) {
         this.accessToken = accessToken;
     }
 
-    public List<SongInfo> getTopSongs(TimeRange timeRange) {
-        List<SongInfo> songList = new LinkedList<>();
-
+    public void getTopSongs(TimeRange timeRange, TopSongsCallback callback) {
         String time;
 
         switch (timeRange) {
@@ -63,6 +68,7 @@ public class Wrapped {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 Log.d("fetchUserInfo", "failed: " + e.getMessage());
+                callback.onFailure(e.getMessage());
             }
 
             @Override
@@ -70,6 +76,8 @@ public class Wrapped {
                 try {
                     final JSONObject jsonObject = new JSONObject(response.body().string());
                     JSONArray items = jsonObject.getJSONArray("items");
+
+                    List<SongInfo> songList = new LinkedList<>();
 
                     // Extract song info and add to the songList
                     for (int i = 0; i < items.length(); i++) {
@@ -84,13 +92,13 @@ public class Wrapped {
                         long listeningTimeInSeconds = durationMs / 1000;
                         songList.add(new SongInfo(songName, artistName, listeningTimeInSeconds));
                     }
+                    callback.onSuccess(songList);
                 } catch (JSONException e) {
                     Log.d("fetchUserInfoJSON", "failed: " + e.getMessage());
+                    callback.onFailure(e.getMessage());
                 }
             }
         });
-
-        return songList;
     }
 
     private void cancelCall() {
