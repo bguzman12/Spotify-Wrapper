@@ -25,13 +25,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button_public_wraps"
+        android:id="@+id/button_past_wraps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="72dp"
         android:backgroundTint="@color/green"
-        android:onClick="publicWrapsClicked"
-        android:text="Public Wraps"
+        android:onClick="pastWrapsClicked"
+        android:text="Past Wraps"
         android:textColor="@color/spotify_black"
         app:layout_constraintBottom_toTopOf="@+id/button_account"
         app:layout_constraintEnd_toEndOf="parent"

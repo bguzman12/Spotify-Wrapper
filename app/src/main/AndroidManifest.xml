@@ -55,6 +55,9 @@
             android:name=".Homescreen"
             android:exported="false" />
         <activity
+            android:name=".PastWraps"
+            android:exported="false" />
+        <activity
             android:name=".Summary_Wrapped"
             android:exported="true" />
         <activity

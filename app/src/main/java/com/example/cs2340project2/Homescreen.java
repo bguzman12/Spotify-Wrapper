@@ -2,7 +2,6 @@ package com.example.cs2340project2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,8 +20,9 @@ public class Homescreen extends AppCompatActivity {
 
     }
 
-    public void publicWrapsClicked(View view) {
+    public void pastWrapsClicked(View view) {
         //TODO: go to public wraps ui (not currently created)
+        startActivity(new Intent(this, PastWraps.class));
     }
 
     public void viewAccountClicked(View view) {
