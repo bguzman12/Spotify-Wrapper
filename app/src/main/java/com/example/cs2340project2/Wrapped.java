@@ -37,6 +37,11 @@ public class Wrapped {
         void onFailure(String errorMessage);
     }
 
+    public interface TimeListenedCallback {
+        void onSuccess(long timeListened);
+        void onFailure(String errorMessage);
+    }
+
     public enum TimeRange {
         MONTH,
         SIX_MONTHS,
@@ -236,6 +241,68 @@ public class Wrapped {
                     }
 
                     callback.onSuccess(genreList);
+                } catch (JSONException e) {
+                    callback.onFailure(e.getMessage());
+                } finally {
+                    if (response.body() != null) {
+                        response.body().close();
+                    }
+                }
+            }
+        });
+    }
+
+    public void getTimeListened(TimeRange timeRange, TimeListenedCallback callback) {
+        String time;
+
+        switch (timeRange) {
+            case MONTH:
+                time = "short_term";
+                break;
+            case SIX_MONTHS:
+                time = "medium_term";
+                break;
+            case YEAR:
+            default:
+                time = "long_term";
+                break;
+        }
+
+        final Request request = new Request.Builder()
+                .url(API_URL + "tracks?limit=45&time_range=" + time)
+                .addHeader("Authorization", "Bearer " + accessToken)
+                .build();
+
+        cancelCall();
+
+        mCall = mOkHttpClient.newCall(request);
+
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                callback.onFailure(e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                try {
+                    if (!response.isSuccessful()) {
+                        throw new IOException("Unexpected code " + response);
+                    }
+
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    JSONArray items = jsonObject.getJSONArray("items");
+
+                    long timeListened = 0;
+
+                    for (int i = 0; i < items.length(); i++) {
+                        JSONObject item = items.getJSONObject(i);
+                        long durationMs = item.getLong("duration_ms");
+                        long listeningTimeInSeconds = durationMs / 1000;
+                        timeListened += listeningTimeInSeconds;
+                    }
+                    timeListened = timeListened / 60;
+                    callback.onSuccess(timeListened);
                 } catch (JSONException e) {
                     callback.onFailure(e.getMessage());
                 } finally {

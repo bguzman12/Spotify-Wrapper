@@ -33,7 +33,7 @@ import java.util.List;
 
 public class Comb_wrap extends AppCompatActivity {
 
-    private TextView song1, song2, song3, song4, song5, artist1, artist2, artist3, artist4, artist5, topGenre;
+    private TextView song1, song2, song3, song4, song5, artist1, artist2, artist3, artist4, artist5, topGenre, minsListened;
     private ImageView imageView1;
     public ImageButton exportBtn;
     private Wrapped.TimeRange timeRange;
@@ -73,6 +73,9 @@ public class Comb_wrap extends AppCompatActivity {
 
         // Genre
         topGenre = findViewById(R.id.top_genre);
+
+        // Time
+        minsListened = findViewById(R.id.mins_listened);
 
         // ImageViews
         imageView1 = findViewById(R.id.imageView1);
@@ -178,6 +181,38 @@ public class Comb_wrap extends AppCompatActivity {
             @Override
             public void onFailure(String errorMessage) {
 
+            }
+        });
+
+        SpotifyAuthentication.refreshToken(new SpotifyAuthentication.AccessTokenCallback() {
+            public void onSuccess(String accessToken) {
+                Wrapped wrapped = new Wrapped(accessToken);
+                wrapped.getTimeListened(timeRange, new Wrapped.TimeListenedCallback() {
+                    @Override
+                    public void onSuccess(long timeListened) {
+                        runOnUiThread(() -> {
+                            if (timeListened >= 1) {
+                                String text = timeListened + " Minutes Listened";
+                                minsListened.setText(text);
+                            } else {
+                                Toast.makeText(Comb_wrap.this, "Must have listened to at least 1 song", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        // Handle failure
+                    }
+                });
+
+
+
+            }
+
+
+            public void onFailure(String errorMessage) {
+                // Handle failure
             }
         });
 
