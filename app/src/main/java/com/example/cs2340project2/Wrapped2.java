@@ -17,11 +17,13 @@ public class Wrapped2 extends AppCompatActivity {
     private TextView song1, song2, song3, song4, song5;
     private ImageView imageView1, imageView2, imageView3, imageView4, imageView5;
     private ImageButton wrapped2_next_btn, wrapped2_back_btn;
+    private Wrapped.TimeRange timeRange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wrapped2);
+        timeRange = Wrapped.TimeRange.valueOf(getIntent().getStringExtra("time"));
 
         // Initialize WrappedActivity instance
 
@@ -51,18 +53,18 @@ public class Wrapped2 extends AppCompatActivity {
         super.onStart();
 
         wrapped2_next_btn.setOnClickListener(view -> {
-            startActivity(new Intent(this, Comb_wrap.class));
+            startActivity(new Intent(this, Comb_wrap.class).putExtra("time", timeRange.toString()));
         });
 
         wrapped2_back_btn.setOnClickListener(view -> {
-            startActivity(new Intent(this, Wrapped1.class));
+            finish();
         });
 
         SpotifyAuthentication.refreshToken(new SpotifyAuthentication.AccessTokenCallback() {
             @Override
             public void onSuccess(String accessToken) {
                 Wrapped wrapped = new Wrapped(accessToken);
-                wrapped.getTopSongs(Wrapped.TimeRange.MONTH, new Wrapped.TopSongsCallback() {
+                wrapped.getTopSongs(timeRange, new Wrapped.TopSongsCallback() {
                     @Override
                     public void onSuccess(List<SongInfo> topSongs) {
                         runOnUiThread(() -> {

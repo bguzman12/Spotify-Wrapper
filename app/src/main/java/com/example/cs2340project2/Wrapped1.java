@@ -16,6 +16,7 @@ public class Wrapped1 extends AppCompatActivity {
 
     private TextView artist1, artist2, artist3, artist4, artist5;
     private ImageView imageView1, imageView2, imageView3, imageView4, imageView5;
+    private Wrapped.TimeRange timeRange;
 
     private ImageButton wrapped1_next_btn;
 
@@ -23,6 +24,7 @@ public class Wrapped1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wrapped1);
+        timeRange = Wrapped.TimeRange.valueOf(getIntent().getStringExtra("time"));
 
         // Initialize WrappedActivity instance
 
@@ -45,14 +47,14 @@ public class Wrapped1 extends AppCompatActivity {
         super.onStart();
 
         wrapped1_next_btn.setOnClickListener(view -> {
-            startActivity(new Intent(this, Wrapped2.class));
+            startActivity(new Intent(this, Wrapped2.class).putExtra("time", timeRange.toString()));
         });
 
         SpotifyAuthentication.refreshToken(new SpotifyAuthentication.AccessTokenCallback() {
             @Override
             public void onSuccess(String accessToken) {
                 Wrapped wrapped = new Wrapped(accessToken);
-                wrapped.getTopArtists(Wrapped.TimeRange.MONTH, new Wrapped.TopArtistsCallback() {
+                wrapped.getTopArtists(timeRange, new Wrapped.TopArtistsCallback() {
                     @Override
                     public void onSuccess(List<ArtistInfo> topArtists) {
                         runOnUiThread(() -> {

@@ -36,6 +36,7 @@ public class Comb_wrap extends AppCompatActivity {
     private TextView song1, song2, song3, song4, song5, artist1, artist2, artist3, artist4, artist5, topGenre;
     private ImageView imageView1;
     public ImageButton exportBtn;
+    private Wrapped.TimeRange timeRange;
 
     private ImageButton backBtn;
 
@@ -43,6 +44,7 @@ public class Comb_wrap extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wrapped_summary); //this is where it would connect to UI
+        timeRange = Wrapped.TimeRange.valueOf(getIntent().getStringExtra("time"));
 
         ImageButton exportBtn = findViewById(R.id.exportBtn);
         exportBtn.setOnClickListener(new View.OnClickListener() {
@@ -143,13 +145,13 @@ public class Comb_wrap extends AppCompatActivity {
         super.onStart();
 
         backBtn.setOnClickListener(view -> {
-            startActivity(new Intent(this, Wrapped2.class));
+            finish();
         });
         SpotifyAuthentication.refreshToken(new SpotifyAuthentication.AccessTokenCallback() {
             @Override
             public void onSuccess(String accessToken) {
                 Wrapped wrapped = new Wrapped(accessToken);
-                wrapped.getTopSongs(Wrapped.TimeRange.MONTH, new Wrapped.TopSongsCallback() {
+                wrapped.getTopSongs(timeRange, new Wrapped.TopSongsCallback() {
                     @Override
                     public void onSuccess(List<SongInfo> topSongs) {
                         runOnUiThread(() -> {
@@ -183,7 +185,7 @@ public class Comb_wrap extends AppCompatActivity {
             @Override
             public void onSuccess(String accessToken) {
                 Wrapped wrapped = new Wrapped(accessToken);
-                wrapped.getTopArtists(Wrapped.TimeRange.MONTH, new Wrapped.TopArtistsCallback() {
+                wrapped.getTopArtists(timeRange, new Wrapped.TopArtistsCallback() {
                     @Override
                     public void onSuccess(List<ArtistInfo> topArtists) {
                         runOnUiThread(() -> {
@@ -218,7 +220,7 @@ public class Comb_wrap extends AppCompatActivity {
             @Override
             public void onSuccess(String accessToken) {
                 Wrapped wrapped = new Wrapped(accessToken);
-                wrapped.getTopGenres(Wrapped.TimeRange.MONTH, new Wrapped.TopGenresCallback() {
+                wrapped.getTopGenres(timeRange, new Wrapped.TopGenresCallback() {
                     @Override
                     public void onSuccess(List<String> topGenres) {
                         // Update UI with top genre

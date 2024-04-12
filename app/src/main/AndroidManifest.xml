@@ -27,29 +27,18 @@
         <activity
             android:name=".Wrapped2"
             android:exported="true">
-            <intent-filter>
-                <data
-                    android:host="auth"
-                    android:scheme="cs2340project2" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Wrapped1"
             android:exported="true">
-            <intent-filter>
-                <data
-                    android:host="auth"
-                    android:scheme="cs2340project2" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Comb_wrap"
             android:exported="true">
-            <intent-filter>
-                <data
-                    android:host="auth"
-                    android:scheme="cs2340project2" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name=".TimeWrapped"
+            android:exported="true">
         </activity>
         <activity
             android:name=".Homescreen"

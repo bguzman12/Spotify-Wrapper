@@ -19,32 +19,25 @@
             android:text="Generate wrapped from..." />
 
         <Button
-            android:id="@+id/past_week_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Past Week" />
-
-        <Button
             android:id="@+id/past_month_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="Past Month" />
 
-        <LinearLayout
+        <Button
+            android:id="@+id/past_6_month_btn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Past 6 Months" />
 
-            <Button
-                android:id="@+id/past_year_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:text="Past Year" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/past_year_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Past Year" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
