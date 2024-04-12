@@ -54,6 +54,8 @@ public class Comb_wrap extends AppCompatActivity {
             @Override
             public void onSuccess(String accessToken) {
                 Wrapped wrapped = new Wrapped(accessToken);
+
+                // Fetch top songs
                 wrapped.getTopSongs(Wrapped.TimeRange.MONTH, new Wrapped.TopSongsCallback() {
                     @Override
                     public void onSuccess(List<SongInfo> topSongs) {
@@ -66,7 +68,6 @@ public class Comb_wrap extends AppCompatActivity {
                                 song5.setText(topSongs.get(4).getName());
                             } else {
                                 // Handle case where fewer than 5 songs are fetched
-                                // For example, show a message or handle it as needed
                             }
                         });
                     }
@@ -76,18 +77,8 @@ public class Comb_wrap extends AppCompatActivity {
                         // Handle failure
                     }
                 });
-            }
 
-            @Override
-            public void onFailure(String errorMessage) {
-
-            }
-        });
-
-        SpotifyAuthentication.refreshToken(new SpotifyAuthentication.AccessTokenCallback() {
-            @Override
-            public void onSuccess(String accessToken) {
-                Wrapped wrapped = new Wrapped(accessToken);
+                // Fetch top artists
                 wrapped.getTopArtists(Wrapped.TimeRange.MONTH, new Wrapped.TopArtistsCallback() {
                     @Override
                     public void onSuccess(List<ArtistInfo> topArtists) {
@@ -101,6 +92,7 @@ public class Comb_wrap extends AppCompatActivity {
                                 // Load images for artists
                                 loadImage(topArtists.get(0).getImageUrl(), imageView1);
                             } else {
+                                // Handle case where fewer than 5 artists are fetched
                                 Toast.makeText(Comb_wrap.this, "Must have listened to at least 5 artists", Toast.LENGTH_SHORT).show();
                             }
                         });
