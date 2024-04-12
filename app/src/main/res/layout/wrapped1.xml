@@ -73,18 +73,19 @@
 
     <ImageView
         android:id="@+id/imageView1"
-        android:layout_width="105dp"
-        android:layout_height="103dp"
-        android:layout_marginTop="148dp"
+        android:layout_width="134dp"
+        android:layout_height="121dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.247"
+        app:layout_constraintHorizontal_bias="0.229"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.211"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/artist3"
-        android:layout_width="52dp"
+        android:layout_width="100dp"
         android:layout_height="52dp"
         android:layout_marginStart="29dp"
         android:text="Artist 3"
@@ -98,22 +99,21 @@
 
     <TextView
         android:id="@+id/artist1"
-        android:layout_width="52dp"
+        android:layout_width="100dp"
         android:layout_height="52dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="168dp"
+        android:layout_marginEnd="100dp"
         android:text="Artist 1"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.083"
+        app:layout_constraintHorizontal_bias="0.965"
         app:layout_constraintStart_toEndOf="@+id/imageView1"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.255" />
+        app:layout_constraintVertical_bias="0.253" />
 
     <TextView
         android:id="@+id/artist2"
-        android:layout_width="52dp"
+        android:layout_width="100dp"
         android:layout_height="52dp"
         android:layout_marginStart="29dp"
         android:layout_marginEnd="176dp"
@@ -128,7 +128,7 @@
 
     <TextView
         android:id="@+id/artist4"
-        android:layout_width="52dp"
+        android:layout_width="100dp"
         android:layout_height="52dp"
         android:layout_marginStart="29dp"
         android:layout_marginEnd="176dp"
@@ -143,7 +143,7 @@
 
     <TextView
         android:id="@+id/artist5"
-        android:layout_width="52dp"
+        android:layout_width="100dp"
         android:layout_height="52dp"
         android:layout_marginStart="29dp"
         android:layout_marginEnd="176dp"

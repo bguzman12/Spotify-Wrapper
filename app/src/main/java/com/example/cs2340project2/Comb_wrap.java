@@ -20,13 +20,13 @@ import java.util.List;
 public class Comb_wrap extends AppCompatActivity {
 
     private TextView song1, song2, song3, song4, song5, artist1, artist2, artist3, artist4, artist5;
-    private ImageView imageView1, imageView2, imageView3, imageView4, imageView5;
+    private ImageView imageView1;
     private ActivityResultLauncher<Intent> spotifyAuthResLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_summary_wrapped); //this is where it would connect to UI
+        setContentView(R.layout.wrapped_summary); //this is where it would connect to UI
 
         // Initialize WrappedActivity instance
 
@@ -46,10 +46,6 @@ public class Comb_wrap extends AppCompatActivity {
 
         // ImageViews
         imageView1 = findViewById(R.id.imageView1);
-        imageView2 = findViewById(R.id.imageView2);
-        imageView3 = findViewById(R.id.imageView3);
-        imageView4 = findViewById(R.id.imageView4);
-        imageView5 = findViewById(R.id.imageView5);
 
         // Fetch top songs and artists
         spotifyAuthResLauncher = registerForActivityResult(
@@ -70,12 +66,6 @@ public class Comb_wrap extends AppCompatActivity {
                                         song3.setText(topSongs.get(2).getName());
                                         song4.setText(topSongs.get(3).getName());
                                         song5.setText(topSongs.get(4).getName());
-                                        // Load images for songs
-                                        loadImage(topSongs.get(0).getImageUrl(), imageView1);
-                                        loadImage(topSongs.get(1).getImageUrl(), imageView2);
-                                        loadImage(topSongs.get(2).getImageUrl(), imageView3);
-                                        loadImage(topSongs.get(3).getImageUrl(), imageView4);
-                                        loadImage(topSongs.get(4).getImageUrl(), imageView5);
                                     } else {
                                         // Handle case where fewer than 5 songs are fetched
                                     }
@@ -101,10 +91,6 @@ public class Comb_wrap extends AppCompatActivity {
                                         artist5.setText(topArtists.get(4).getArtist());
                                         // Load images for artists
                                         loadImage(topArtists.get(0).getImageUrl(), imageView1);
-                                        loadImage(topArtists.get(1).getImageUrl(), imageView2);
-                                        loadImage(topArtists.get(2).getImageUrl(), imageView3);
-                                        loadImage(topArtists.get(3).getImageUrl(), imageView4);
-                                        loadImage(topArtists.get(4).getImageUrl(), imageView5);
                                     } else {
                                         // Handle case where fewer than 5 artists are fetched
                                         Toast.makeText(Comb_wrap.this, "Must have listened to at least 5 artists", Toast.LENGTH_SHORT).show();
