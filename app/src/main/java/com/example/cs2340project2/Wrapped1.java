@@ -3,11 +3,13 @@ package com.example.cs2340project2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 
@@ -49,8 +51,7 @@ public class Wrapped1 extends AppCompatActivity {
                                         artist4.setText(topArtists.get(3).getArtist());
                                         artist5.setText(topArtists.get(4).getArtist());
                                     } else {
-                                        // Handle case where fewer than 5 songs are fetched
-                                        // For example, show a message or handle it as needed
+                                        Toast.makeText(Wrapped1.this, "Must have listened to at least 5 artists", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }

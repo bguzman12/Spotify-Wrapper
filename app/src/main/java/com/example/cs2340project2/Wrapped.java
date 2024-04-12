@@ -135,38 +135,44 @@ public class Wrapped {
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                Log.d("fetchUserInfo", "failed: " + e.getMessage());
+                Log.d("getTopArtists", "failed: " + e.getMessage());
                 callback.onFailure(e.getMessage());
             }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 try {
-                    final JSONObject jsonObject = new JSONObject(response.body().string());
+                    if (!response.isSuccessful()) {
+                        throw new IOException("Unexpected code " + response);
+                    }
+
+                    JSONObject jsonObject = new JSONObject(response.body().string());
                     JSONArray items = jsonObject.getJSONArray("items");
 
                     List<ArtistInfo> artistList = new LinkedList<>();
 
-                    // Extract artist info and add to the artistList
                     for (int i = 0; i < items.length(); i++) {
-                        JSONObject item = items.getJSONObject(i);
-                        String artistName = item.getString("name");
+                        JSONObject artistObject = items.getJSONObject(i);
+                        String artistName = artistObject.getString("name");
 
-                        // Optionally, you can extract other information about the artist here
-                        long durationMs = item.getLong("duration_ms");
-                        long listeningTimeInSeconds = durationMs / 1000;
-
-                        artistList.add(new ArtistInfo(artistName, listeningTimeInSeconds));
+                        // Initialize listening time to 0 since it's not provided by the API.
+                        artistList.add(new ArtistInfo(artistName));
                     }
-                    callback.onSuccess(artistList);
 
+                    callback.onSuccess(artistList);
                 } catch (JSONException e) {
-                    Log.d("fetchUserInfoJSON", "failed: " + e.getMessage());
+                    Log.d("getTopArtists", "failed to parse JSON: " + e.getMessage());
                     callback.onFailure(e.getMessage());
+                } finally {
+                    if (response.body() != null) {
+                        response.body().close(); // Close the response body to release system resources
+                    }
                 }
             }
         });
     }
+
+
 
     private void cancelCall() {
         if (mCall != null) {
