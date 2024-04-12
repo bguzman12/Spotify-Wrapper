@@ -35,9 +35,9 @@ import okhttp3.Response;
 public class SpotifyAuthentication {
     private static final String CLIENT_ID = "fd02c77ee13e4dd2a8a5b88ecd17f2cc";
     private static final String REDIRECT_URI = "cs2340project2://auth";
-    private static String[] scope = {"user-read-email"}; // TODO: change scope to required scope
     private static final OkHttpClient mOkHttpClient = new OkHttpClient();
     private static Call mCall;
+    private static String[] scope = {"user-read-email", "user-top-read", "user-read-recently-played"}; // TODO: change scope to required scope
 
     public interface AccessTokenCallback {
         void onSuccess(String accessToken);

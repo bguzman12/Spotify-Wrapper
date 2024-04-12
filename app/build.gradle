@@ -38,11 +38,16 @@ dependencies {
     implementation 'net.openid:appauth:0.11.1'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
 
+    implementation 'org.json:json:20210307'
+
     implementation platform('com.google.firebase:firebase-bom:32.8.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+    implementation 'com.google.firebase:firebase-database:20.3.1'  // TODO : check this!!!
 
+
+    implementation 'com.squareup.picasso:picasso:2.8'
 
     implementation 'com.google.android.material:material:1.11.0'
 

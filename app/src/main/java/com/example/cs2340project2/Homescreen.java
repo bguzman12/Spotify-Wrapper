@@ -1,13 +1,11 @@
 package com.example.cs2340project2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.example.cs2340project2.ui.editlogin.EditLoginActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Homescreen extends AppCompatActivity {
 
@@ -18,7 +16,9 @@ public class Homescreen extends AppCompatActivity {
     }
 
     public void newWrappedClicked(View view) {
-        //TODO: go to new wrapped ui (not currently created)
+        //TODO: change to go to wrapped1 first
+        startActivity(new Intent(this, Wrapped1.class));
+
     }
 
     public void publicWrapsClicked(View view) {
