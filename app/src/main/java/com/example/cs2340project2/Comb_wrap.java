@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class WrappedActivity extends AppCompatActivity {
+public class Combo_wrap extends AppCompatActivity {
 
     private TextView song1, song2, song3, song4, song5, artist1, artist2, artist3, artist4, artist5;
     private ImageView imageView1, imageView2, imageView3, imageView4, imageView5;
