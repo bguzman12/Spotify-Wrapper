@@ -2,6 +2,7 @@ package com.example.cs2340project2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,8 +13,10 @@ import java.util.List;
 
 public class Comb_wrap extends AppCompatActivity {
 
-    private TextView song1, song2, song3, song4, song5, artist1, artist2, artist3, artist4, artist5;
+    private TextView song1, song2, song3, song4, song5, artist1, artist2, artist3, artist4, artist5, topGenre;
     private ImageView imageView1;
+
+    private ImageButton backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +39,14 @@ public class Comb_wrap extends AppCompatActivity {
         artist4 = findViewById(R.id.artist4);
         artist5 = findViewById(R.id.artist5);
 
+        // Genre
+        topGenre = findViewById(R.id.top_genre);
+
         // ImageViews
         imageView1 = findViewById(R.id.imageView1);
+
+        // Button
+        backBtn = findViewById(R.id.wrapped2_back_btn2);
 
         // Fetch top songs and artists
 
@@ -47,6 +56,9 @@ public class Comb_wrap extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
+        backBtn.setOnClickListener(view -> {
+            startActivity(new Intent(this, Wrapped2.class));
+        });
         SpotifyAuthentication.refreshToken(new SpotifyAuthentication.AccessTokenCallback() {
             @Override
             public void onSuccess(String accessToken) {
@@ -115,7 +127,37 @@ public class Comb_wrap extends AppCompatActivity {
 
             }
         });
+        // Fetch top genre
+        SpotifyAuthentication.refreshToken(new SpotifyAuthentication.AccessTokenCallback() {
+            @Override
+            public void onSuccess(String accessToken) {
+                Wrapped wrapped = new Wrapped(accessToken);
+                wrapped.getTopGenres(Wrapped.TimeRange.MONTH, new Wrapped.TopGenresCallback() {
+                    @Override
+                    public void onSuccess(List<String> topGenres) {
+                        // Update UI with top genre
+                        runOnUiThread(() -> {
+                            if (topGenres.size() >= 1) {
+                                // Assuming you have a TextView named topGenreTextView
+                                topGenre.setText(topGenres.get(0).substring(2, topGenres.size()));
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        // Handle failure
+                    }
+                });
+
+            }
+            public void onFailure(String errorMessage) {
+                // Handle failure
+            }
+        });
     }
+
+
 
     // Helper method to load images into ImageViews
     private void loadImage(String imageUrl, ImageView imageView) {

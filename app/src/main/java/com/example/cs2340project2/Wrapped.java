@@ -1,7 +1,5 @@
 package com.example.cs2340project2;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
@@ -31,6 +29,11 @@ public class Wrapped {
 
     public interface TopArtistsCallback {
         void onSuccess(List<ArtistInfo> topArtists);
+        void onFailure(String errorMessage);
+    }
+
+    public interface TopGenresCallback {
+        void onSuccess(List<String> topGenres);
         void onFailure(String errorMessage);
     }
 
@@ -172,6 +175,67 @@ public class Wrapped {
                     }
 
                     callback.onSuccess(artistList);
+                } catch (JSONException e) {
+                    callback.onFailure(e.getMessage());
+                } finally {
+                    if (response.body() != null) {
+                        response.body().close();
+                    }
+                }
+            }
+        });
+    }
+
+    public void getTopGenres(TimeRange timeRange, TopGenresCallback callback) {
+        String time;
+
+        switch (timeRange) {
+            case MONTH:
+                time = "short_term";
+                break;
+            case SIX_MONTHS:
+                time = "medium_term";
+                break;
+            case YEAR:
+            default:
+                time = "long_term";
+                break;
+        }
+
+        final Request request = new Request.Builder()
+                .url(API_URL + "artists?limit=5&time_range=" + time)
+                .addHeader("Authorization", "Bearer " + accessToken)
+                .build();
+
+        cancelCall();
+
+        mCall = mOkHttpClient.newCall(request);
+
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                callback.onFailure(e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                try {
+                    if (!response.isSuccessful()) {
+                        throw new IOException("Unexpected code " + response);
+                    }
+
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    JSONArray items = jsonObject.getJSONArray("items");
+
+                    List<String> genreList = new LinkedList<>();
+
+                    for (int i = 0; i < items.length(); i++) {
+                        JSONObject artistObject = items.getJSONObject(i);
+                        String artistGenre = artistObject.getString("genres");
+                        genreList.add(artistGenre.toUpperCase());
+                    }
+
+                    callback.onSuccess(genreList);
                 } catch (JSONException e) {
                     callback.onFailure(e.getMessage());
                 } finally {

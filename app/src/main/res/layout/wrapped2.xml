@@ -36,6 +36,21 @@
         app:layout_constraintVertical_bias="0.945"
         app:srcCompat="@drawable/arrow_forward_icon" />
 
+    <ImageButton
+        android:id="@+id/wrapped2_back_btn"
+        android:layout_width="51dp"
+        android:layout_height="53dp"
+        android:background="@drawable/round_button"
+        android:contentDescription="Next"
+        android:onClick="prevWrapsClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.044"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.945"
+        app:srcCompat="@drawable/arrow_back_icon" />
+
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="103dp"

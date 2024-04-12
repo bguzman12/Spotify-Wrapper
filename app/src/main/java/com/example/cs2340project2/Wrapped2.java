@@ -16,7 +16,7 @@ public class Wrapped2 extends AppCompatActivity {
 
     private TextView song1, song2, song3, song4, song5;
     private ImageView imageView1, imageView2, imageView3, imageView4, imageView5;
-    private ImageButton wrapped2_next_btn;
+    private ImageButton wrapped2_next_btn, wrapped2_back_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,7 @@ public class Wrapped2 extends AppCompatActivity {
         imageView5 = findViewById(R.id.imageView5);
 
         wrapped2_next_btn = findViewById(R.id.wrapped2_next_btn);
+        wrapped2_back_btn = findViewById(R.id.wrapped2_back_btn);
 
 
 
@@ -51,6 +52,10 @@ public class Wrapped2 extends AppCompatActivity {
 
         wrapped2_next_btn.setOnClickListener(view -> {
             startActivity(new Intent(this, Comb_wrap.class));
+        });
+
+        wrapped2_back_btn.setOnClickListener(view -> {
+            startActivity(new Intent(this, Wrapped1.class));
         });
 
         SpotifyAuthentication.refreshToken(new SpotifyAuthentication.AccessTokenCallback() {
