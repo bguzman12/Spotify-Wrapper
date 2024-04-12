@@ -50,7 +50,7 @@ public class Wrapped2 extends AppCompatActivity {
         super.onStart();
 
         wrapped2_next_btn.setOnClickListener(view -> {
-            startActivity(new Intent(this, Wrapped2.class));
+            startActivity(new Intent(this, Comb_wrap.class));
         });
 
         SpotifyAuthentication.refreshToken(new SpotifyAuthentication.AccessTokenCallback() {
