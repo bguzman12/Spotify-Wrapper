@@ -7,6 +7,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import android.view.View;
@@ -118,6 +124,13 @@ public class Comb_wrap extends AppCompatActivity {
                 }
                 imageUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", imagePath);
             }
+
+            FirebaseStorage storage = FirebaseStorage.getInstance("gs://cs-2340-project-2-6ffe6.appspot.com");
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            StorageReference storageRef = storage.getReference();
+            StorageReference wrapRef = storageRef.child(currentUser.getUid() + "/" + fileName);
+            UploadTask uploadTask = wrapRef.putFile(imageUri);
 
             shareImage(imageUri);
             Toast.makeText(this, "Snapshot saved and ready for sharing.", Toast.LENGTH_LONG).show();
