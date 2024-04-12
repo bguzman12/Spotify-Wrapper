@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import com.squareup.picasso.Picasso;
 
@@ -16,7 +14,6 @@ public class Comb_wrap extends AppCompatActivity {
 
     private TextView song1, song2, song3, song4, song5, artist1, artist2, artist3, artist4, artist5;
     private ImageView imageView1;
-    private ActivityResultLauncher<Intent> spotifyAuthResLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +40,13 @@ public class Comb_wrap extends AppCompatActivity {
         imageView1 = findViewById(R.id.imageView1);
 
         // Fetch top songs and artists
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
         SpotifyAuthentication.refreshToken(new SpotifyAuthentication.AccessTokenCallback() {
             @Override
             public void onSuccess(String accessToken) {

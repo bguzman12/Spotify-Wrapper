@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import com.squareup.picasso.Picasso;
 import android.widget.ImageButton;
@@ -19,7 +17,6 @@ public class Wrapped2 extends AppCompatActivity {
     private TextView song1, song2, song3, song4, song5;
     private ImageView imageView1, imageView2, imageView3, imageView4, imageView5;
     private ImageButton wrapped2_next_btn;
-    private ActivityResultLauncher<Intent> spotifyAuthResLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +39,20 @@ public class Wrapped2 extends AppCompatActivity {
 
         wrapped2_next_btn = findViewById(R.id.wrapped2_next_btn);
 
-        wrapped2_next_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Wrapped2.this, Comb_wrap.class);
-                startActivity(intent);
-            }
-        });
+
 
         // Fetch top songs
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        wrapped2_next_btn.setOnClickListener(view -> {
+            startActivity(new Intent(this, Wrapped2.class));
+        });
+
         SpotifyAuthentication.refreshToken(new SpotifyAuthentication.AccessTokenCallback() {
             @Override
             public void onSuccess(String accessToken) {
