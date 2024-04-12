@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WrappedActivity"
+            android:name=".Comb_wrap"
             android:exported="true">
             <intent-filter>
                 <data
