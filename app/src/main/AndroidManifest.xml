@@ -27,31 +27,23 @@
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.MAIN" />
-                <data
-                    android:host="auth"
-                    android:scheme="cs2340project2" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.login.SignupActivity"
             android:exported="true">
             <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="com.example.cs2340project2.HANDLE_AUTHORIZATION_RESPONSE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
                 <data
-                    android:host="auth"
+                    android:host="/auth"
                     android:scheme="cs2340project2" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <data
-                    android:host="auth"
-                    android:scheme="cs2340project2" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <data

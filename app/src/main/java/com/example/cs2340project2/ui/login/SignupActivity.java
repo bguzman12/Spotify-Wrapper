@@ -43,6 +43,7 @@ public class SignupActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .add(R.id.signup_fragment_container, SignupEmailFragment.class, null, "signupEmail")
+                    .addToBackStack("signupEmail")
                     .commit();
         }
     }

@@ -25,56 +25,32 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.spotify.sdk.android.auth.AuthorizationClient;
-import com.spotify.sdk.android.auth.AuthorizationResponse;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
-    private Map<String, Object> userData;
     private MaterialToolbar toolbar;
     private TextInputLayout emailLayout;
     private TextInputEditText emailText;
     private TextInputLayout passwordLayout;
     private TextInputEditText passwordText;
-    private MaterialButton spotify;
     private MaterialButton login;
-    private ActivityResultLauncher<Intent> spotifyAuthResLauncher;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        userData = new HashMap<>();
 
         toolbar = findViewById(R.id.topAppBar_login);
         emailLayout = findViewById(R.id.email_layout);
         emailText = findViewById(R.id.email_input);
         passwordLayout = findViewById(R.id.password_layout);
         passwordText = findViewById(R.id.password_input);
-        spotify = findViewById(R.id.spotify_btn);
         login = findViewById(R.id.login_btn);
 
-        spotifyAuthResLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    final AuthorizationResponse response = AuthorizationClient.getResponse(result.getResultCode(), result.getData());
-                    if (response.getType() == AuthorizationResponse.Type.TOKEN) {
-                        userData.put("access_token", response.getAccessToken());
-                        Timestamp currTime = Timestamp.now();
-                        userData.put("expires", new Timestamp(currTime.getSeconds() + response.getExpiresIn(), currTime.getNanoseconds()));
-                        if (validate()) {
-                            enableButton();
-                        }
-                    } else {
-                        Snackbar.make(findViewById(R.id.login_container), "Connect your Spotify account", Snackbar.LENGTH_SHORT).show();
-                    }
-                });
     }
 
     @Override
@@ -137,17 +113,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        spotify.setOnClickListener(view -> {
-            spotifyAuthResLauncher.launch(new Intent(AuthorizationClient.createLoginActivityIntent(this, SpotifyAuthentication.getAuthenticationRequest(AuthorizationResponse.Type.TOKEN, false))));
-        });
-
         login.setOnClickListener(view -> {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             mAuth.signInWithEmailAndPassword(emailText.getText().toString(), passwordText.getText().toString())
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            db.collection("tokens").document(mAuth.getUid()).set(userData);
                             startActivity(new Intent(this, Homescreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                             LoginActivity.this.finish();
                         } else {
@@ -161,8 +132,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validate() {
         return Patterns.EMAIL_ADDRESS.matcher(emailText.getText().toString()).matches()
-                && passwordText.getText().length() != 0
-                && !userData.isEmpty();
+                && passwordText.getText().length() != 0;
     }
 
     private void enableButton() {

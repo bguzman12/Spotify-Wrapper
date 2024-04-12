@@ -76,7 +76,7 @@ public class SignupPasswordFragment extends Fragment {
             signupViewModel.setPassword(passwordText.getText().toString());
             getParentFragmentManager().beginTransaction()
                     .replace(R.id.signup_fragment_container, SignupSpotifyFragment.class, null, "signupSpotify")
-                    .addToBackStack("signupPassword")
+                    .addToBackStack("signupSpotify")
                     .commit();
         });
     }

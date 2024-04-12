@@ -12,9 +12,9 @@ android {
         minSdk 33
         targetSdk 34
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
 
-        manifestPlaceholders = [redirectSchemeName: "cs2340project2", redirectHostName: "auth"]
+        manifestPlaceholders = [appAuthRedirectScheme: "cs2340project2"]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -35,7 +35,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.spotify.android:auth:2.1.1'
+    implementation 'net.openid:appauth:0.11.1'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
 
     implementation platform('com.google.firebase:firebase-bom:32.8.0')
