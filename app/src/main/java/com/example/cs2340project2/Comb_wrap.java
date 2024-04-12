@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Comb_wrap extends AppCompatActivity {
 
-    private TextView song1, song2, song3, song4, song5, artist1, artist2, artist3, artist4, artist5, topGenre;
+    private TextView song1, song2, song3, song4, song5, artist1, artist2, artist3, artist4, artist5;
     private ImageView imageView1;
 
     @Override
@@ -35,9 +35,6 @@ public class Comb_wrap extends AppCompatActivity {
         artist3 = findViewById(R.id.artist3);
         artist4 = findViewById(R.id.artist4);
         artist5 = findViewById(R.id.artist5);
-
-        //Genre
-        topGenre = findViewById(R.id.top_genre);
 
         // ImageViews
         imageView1 = findViewById(R.id.imageView1);
