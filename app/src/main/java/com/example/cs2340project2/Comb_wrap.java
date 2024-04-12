@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class Combo_wrap extends AppCompatActivity {
+public class Comb_wrap extends AppCompatActivity {
 
     private TextView song1, song2, song3, song4, song5, artist1, artist2, artist3, artist4, artist5;
     private ImageView imageView1, imageView2, imageView3, imageView4, imageView5;
@@ -107,7 +107,7 @@ public class Combo_wrap extends AppCompatActivity {
                                         loadImage(topArtists.get(4).getImageUrl(), imageView5);
                                     } else {
                                         // Handle case where fewer than 5 artists are fetched
-                                        Toast.makeText(WrappedActivity.this, "Must have listened to at least 5 artists", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Comb_wrap.this, "Must have listened to at least 5 artists", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }
