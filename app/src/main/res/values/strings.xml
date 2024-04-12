@@ -30,4 +30,5 @@
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
+    <string name="pastWraps">"Past Wraps"</string>
 </resources>

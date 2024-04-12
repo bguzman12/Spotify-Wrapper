@@ -11,10 +11,8 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Summary_Wrapped extends AppCompatActivity {
-    Button shareButton;
+public class PastWrappedSummary extends AppCompatActivity {
     Button homeButton;
-    Button postButton;
     RelativeLayout relativeLayout;
     ImageView imageView;
 
@@ -24,9 +22,6 @@ public class Summary_Wrapped extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary_wrapped);
         // TODO : on create, the relative layout needs to be saved to user profile, but currently private
-
-        shareButton = findViewById(R.id.button_share);
-        postButton = findViewById(R.id.button_post);
         relativeLayout = findViewById(R.id.summary_img);
         imageView = findViewById(R.id.image_view);
 
@@ -41,22 +36,6 @@ public class Summary_Wrapped extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
-    }
-
-    public void shareButtonClicked(View view) {
-        // TODO : logic for this... however we want to implement it
-        // TODO : move this over to publicwraps.java
-        Bitmap bitmap = Bitmap.createBitmap(relativeLayout.getWidth(), relativeLayout.getHeight(), Bitmap.Config.ARGB_8888);
-
-        Canvas canvas = new Canvas(bitmap);
-        relativeLayout.draw(canvas);
-
-        imageView.setImageBitmap(bitmap);
-    }
-
-    public void postButtonClicked(View view) {
-        // TODO : make relative layout img public (or add to separate public wraps database?)
-        // TODO : needs to go to public wraps page
     }
 
 
