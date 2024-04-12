@@ -36,6 +36,7 @@ public class PastWraps extends AppCompatActivity implements PastWrapRecyclerView
 
         wrapItemList.add(new PastWrapItem("Test", "test"));
 
+        wrapItemList.add(new PastWrapItem("Test2", "test2"));
 
         wrapRecylcerView = findViewById(R.id.wrapRecyclerView);
         wrapRecylcerView.setLayoutManager(new LinearLayoutManager(this));
@@ -62,7 +63,7 @@ public class PastWraps extends AppCompatActivity implements PastWrapRecyclerView
     }
 
     private void changeActivity(int position) {
-        Intent intent = new Intent(this, Wrapped1.class);
+        Intent intent = new Intent(this, PastWrapped1.class);
         intent.putExtra("POSITION", position);
         startActivity(intent);
     }
