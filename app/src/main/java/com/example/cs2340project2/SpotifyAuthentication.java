@@ -63,7 +63,7 @@ public class SpotifyAuthentication {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    if (document.getTimestamp("expires").compareTo(Timestamp.now()) > 0) {
+                    if (document.getTimestamp("expires").compareTo(Timestamp.now()) <= 0) {
                         final RequestBody form = new FormBody.Builder()
                                 .add("grant_type", "refresh_token")
                                 .add("refresh_token", (String) document.get("refresh_token"))
