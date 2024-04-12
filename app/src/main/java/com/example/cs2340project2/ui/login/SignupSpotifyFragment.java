@@ -3,9 +3,7 @@ package com.example.cs2340project2.ui.login;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Patterns;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +20,18 @@ import com.example.cs2340project2.R;
 import com.example.cs2340project2.SpotifyAuthentication;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.spotify.sdk.android.auth.AuthorizationClient;
-import com.spotify.sdk.android.auth.AuthorizationResponse;
 
+import net.openid.appauth.AuthorizationException;
+import net.openid.appauth.AuthorizationResponse;
+import net.openid.appauth.AuthorizationService;
+import net.openid.appauth.ResponseTypeValues;
+import net.openid.appauth.TokenResponse;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public class SignupSpotifyFragment extends Fragment {
     private SignupViewModel signupViewModel;
     private MaterialButton spotify;
     private MaterialButton signup;
-    private ActivityResultLauncher<Intent> spotifyAuthResLauncher;
+    private ActivityResultLauncher<Intent> authResLauncher;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,17 +52,28 @@ public class SignupSpotifyFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         userData = new HashMap<>();
 
-        spotifyAuthResLauncher = registerForActivityResult(
+        authResLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    final AuthorizationResponse response = AuthorizationClient.getResponse(result.getResultCode(), result.getData());
-                    if (response.getType() == AuthorizationResponse.Type.TOKEN) {
-                        userData.put("access_token", response.getAccessToken());
-                        Timestamp currTime = Timestamp.now();
-                        userData.put("expires", new Timestamp(currTime.getSeconds() + response.getExpiresIn(), currTime.getNanoseconds()));
-                        enableButton();
-                    } else {
-                        Snackbar.make(getView(), "Connect your Spotify account", Snackbar.LENGTH_SHORT).show();
+                    if (result != null) {
+                        final AuthorizationResponse response = AuthorizationResponse.fromIntent(result.getData());
+                        if (response != null) {
+                            AuthorizationService authService = new AuthorizationService(getActivity());
+                            authService.performTokenRequest(response.createTokenExchangeRequest(),
+                                    new AuthorizationService.TokenResponseCallback() {
+                                @Override
+                                public void onTokenRequestCompleted(TokenResponse resp, AuthorizationException ex) {
+                                    if (resp != null && resp.accessTokenExpirationTime != null) {
+                                        userData.put("access_token", resp.accessToken);
+                                        userData.put("expires", new Timestamp(new Date(resp.accessTokenExpirationTime)));
+                                        userData.put("refresh_token", resp.refreshToken);
+                                        enableButton();
+                                    }
+                                }
+                            });
+                        } else {
+                            Snackbar.make(getView(), "Connect your Spotify account", Snackbar.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
@@ -80,7 +92,8 @@ public class SignupSpotifyFragment extends Fragment {
         super.onStart();
 
         spotify.setOnClickListener(view -> {
-            spotifyAuthResLauncher.launch(new Intent(AuthorizationClient.createLoginActivityIntent(getActivity(), SpotifyAuthentication.getAuthenticationRequest(AuthorizationResponse.Type.TOKEN, false))));
+            AuthorizationService authService = new AuthorizationService(getActivity());
+            authResLauncher.launch(new Intent(authService.getAuthorizationRequestIntent(SpotifyAuthentication.getAuthenticationRequest(ResponseTypeValues.CODE))));
         });
 
         signup.setOnClickListener(view -> {

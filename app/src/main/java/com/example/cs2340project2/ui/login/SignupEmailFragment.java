@@ -76,7 +76,7 @@ public class SignupEmailFragment extends Fragment {
             signupViewModel.setEmail(emailText.getText().toString());
             getParentFragmentManager().beginTransaction()
                     .replace(R.id.signup_fragment_container, SignupPasswordFragment.class, null, "signupPassword")
-                    .addToBackStack("signupEmail")
+                    .addToBackStack("signupPassword")
                     .commit();
         });
     }
