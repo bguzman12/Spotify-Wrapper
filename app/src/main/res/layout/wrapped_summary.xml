@@ -31,7 +31,7 @@
         app:layout_constraintVertical_bias="0.648" />
 
     <ImageButton
-        android:id="@+id/button_public_wraps2"
+        android:id="@+id/export_btn"
         android:layout_width="49dp"
         android:layout_height="48dp"
         android:background="@drawable/round_button"
