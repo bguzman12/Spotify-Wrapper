@@ -26,24 +26,23 @@ public class PastWraps extends AppCompatActivity implements PastWrapRecyclerView
 
     }
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        PastWrapViewModel homeViewModel =
-                new ViewModelProvider(this).get(PastWrapViewModel.class);
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.pastwraps);
 
 
-        View rootView = inflater.inflate(R.layout.pastwraps, container, false);
         wrapItemList = PastWrapList.getPastWrapItems();
 
+        wrapItemList.add(new PastWrapItem("Test", "test"));
 
-        wrapRecylcerView = rootView.findViewById(R.id.wrapRecyclerView);
+
+        wrapRecylcerView = findViewById(R.id.wrapRecyclerView);
         wrapRecylcerView.setLayoutManager(new LinearLayoutManager(this));
 
         pastWrapAdapter = new PastWrapAdapter(wrapItemList, this);
         wrapRecylcerView.setAdapter(pastWrapAdapter);
 
-
-        return rootView;
     }
 
 
