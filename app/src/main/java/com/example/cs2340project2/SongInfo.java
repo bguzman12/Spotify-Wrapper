@@ -4,10 +4,12 @@ public class SongInfo {
     private String name;
     private String artist;
     private long listeningTimeInSeconds;
+    private String imageUrl; // New field for the image URL
 
-    public SongInfo(String name, String artist, long listeningTimeInSeconds) {
+    public SongInfo(String name, String artist, String imageUrl, long listeningTimeInSeconds) {
         this.name = name;
         this.artist = artist;
+        this.imageUrl = imageUrl;
         this.listeningTimeInSeconds = listeningTimeInSeconds;
     }
 
@@ -15,11 +17,15 @@ public class SongInfo {
         return name;
     }
 
+    public String getArtist() {
+        return artist;
+    }
+
     public long getListeningTimeInSeconds() {
         return listeningTimeInSeconds;
     }
 
-    public String getArtist() {
-        return artist;
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

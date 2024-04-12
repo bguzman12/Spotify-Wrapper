@@ -72,7 +72,6 @@ public class Wrapped {
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                Log.d("fetchUserInfo", "failed: " + e.getMessage());
                 callback.onFailure(e.getMessage());
             }
 
@@ -93,14 +92,22 @@ public class Wrapped {
                         JSONObject artist = artists.getJSONObject(0);
                         String artistName = artist.getString("name");
 
+                        // Retrieve image URL for the first artist
+                        String itemImageUrl = null;
+                        JSONObject album = item.getJSONObject("album");
+                        JSONArray images = album.getJSONArray("images");
+                        if (images.length() > 0) {
+                            JSONObject imageObject = images.getJSONObject(0);
+                            itemImageUrl = imageObject.getString("url");
+                        }
+
                         long durationMs = item.getLong("duration_ms");
                         long listeningTimeInSeconds = durationMs / 1000;
-                        songList.add(new SongInfo(songName, artistName, listeningTimeInSeconds));
+                        songList.add(new SongInfo(songName, artistName, itemImageUrl, listeningTimeInSeconds));
                     }
                     callback.onSuccess(songList);
 
                 } catch (JSONException e) {
-                    Log.d("fetchUserInfoJSON", "failed: " + e.getMessage());
                     callback.onFailure(e.getMessage());
                 }
             }
@@ -135,7 +142,6 @@ public class Wrapped {
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                Log.d("getTopArtists", "failed: " + e.getMessage());
                 callback.onFailure(e.getMessage());
             }
 
@@ -155,24 +161,27 @@ public class Wrapped {
                         JSONObject artistObject = items.getJSONObject(i);
                         String artistName = artistObject.getString("name");
 
-                        // Initialize listening time to 0 since it's not provided by the API.
-                        artistList.add(new ArtistInfo(artistName));
+                        String artistImageUrl = null;
+                        JSONArray images = artistObject.optJSONArray("images");
+                        if (images != null && images.length() > 0) {
+                            JSONObject imageObject = images.getJSONObject(0);
+                            artistImageUrl = imageObject.getString("url");
+                        }
+
+                        artistList.add(new ArtistInfo(artistName, artistImageUrl));
                     }
 
                     callback.onSuccess(artistList);
                 } catch (JSONException e) {
-                    Log.d("getTopArtists", "failed to parse JSON: " + e.getMessage());
                     callback.onFailure(e.getMessage());
                 } finally {
                     if (response.body() != null) {
-                        response.body().close(); // Close the response body to release system resources
+                        response.body().close();
                     }
                 }
             }
         });
     }
-
-
 
     private void cancelCall() {
         if (mCall != null) {
