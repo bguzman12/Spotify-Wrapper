@@ -27,6 +27,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/artist1" />
 
+    <ImageButton
+        android:id="@+id/button_public_wraps2"
+        android:layout_width="49dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="48dp"
+        android:background="@drawable/round_button"
+        android:contentDescription="Next"
+        android:onClick="prevWrapsClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.955"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/stat_sys_upload_done" />
+
     <TextView
         android:id="@+id/artist5"
         android:layout_width="wrap_content"
