@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PastWraps extends Fragment implements PastWrapRecyclerViewInterface {
+public class PastWraps extends AppCompatActivity implements PastWrapRecyclerViewInterface {
 
     private List<PastWrapItem> wrapItemList;
     private RecyclerView wrapRecylcerView;
@@ -36,7 +37,7 @@ public class PastWraps extends Fragment implements PastWrapRecyclerViewInterface
 
 
         wrapRecylcerView = rootView.findViewById(R.id.wrapRecyclerView);
-        wrapRecylcerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        wrapRecylcerView.setLayoutManager(new LinearLayoutManager(this));
 
         pastWrapAdapter = new PastWrapAdapter(wrapItemList, this);
         wrapRecylcerView.setAdapter(pastWrapAdapter);
@@ -45,10 +46,6 @@ public class PastWraps extends Fragment implements PastWrapRecyclerViewInterface
         return rootView;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 
     public static class PastWrapList {
         private static ArrayList<PastWrapItem> pastWrapItems = new ArrayList<>();
@@ -66,7 +63,7 @@ public class PastWraps extends Fragment implements PastWrapRecyclerViewInterface
     }
 
     private void changeActivity(int position) {
-        Intent intent = new Intent(getActivity(), Wrapped1.class);
+        Intent intent = new Intent(this, Wrapped1.class);
         intent.putExtra("POSITION", position);
         startActivity(intent);
     }

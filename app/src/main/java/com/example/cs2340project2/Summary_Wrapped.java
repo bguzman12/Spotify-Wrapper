@@ -26,10 +26,10 @@ public class Summary_Wrapped extends AppCompatActivity {
         // TODO : on create, the relative layout needs to be saved to user profile, but currently private
 
         shareButton = findViewById(R.id.button_share);
-        homeButton = findViewById(R.id.button_back);
         postButton = findViewById(R.id.button_post);
         relativeLayout = findViewById(R.id.summary_img);
         imageView = findViewById(R.id.image_view);
+
 
     }
 
@@ -58,4 +58,6 @@ public class Summary_Wrapped extends AppCompatActivity {
         // TODO : make relative layout img public (or add to separate public wraps database?)
         // TODO : needs to go to public wraps page
     }
+
+
 }
