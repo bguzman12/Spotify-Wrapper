@@ -2,6 +2,7 @@ package com.example.cs2340project2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 import com.squareup.picasso.Picasso;
+import android.widget.ImageButton;
+
 
 import java.util.List;
 
@@ -19,6 +22,7 @@ public class Wrapped2 extends AppCompatActivity {
 
     private TextView song1, song2, song3, song4, song5;
     private ImageView imageView1, imageView2, imageView3, imageView4, imageView5;
+    private ImageButton wrapped2_next_btn;
     private ActivityResultLauncher<Intent> spotifyAuthResLauncher;
 
     @Override
@@ -39,6 +43,16 @@ public class Wrapped2 extends AppCompatActivity {
         imageView3 = findViewById(R.id.imageView3);
         imageView4 = findViewById(R.id.imageView4);
         imageView5 = findViewById(R.id.imageView5);
+
+        wrapped2_next_btn = findViewById(R.id.wrapped2_next_btn);
+
+        wrapped2_next_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Wrapped2.this, Comb_wrap.class);
+                startActivity(intent);
+            }
+        });
 
         // Fetch top songs
         spotifyAuthResLauncher = registerForActivityResult(

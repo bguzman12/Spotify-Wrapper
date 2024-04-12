@@ -22,7 +22,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageButton
-        android:id="@+id/button_public_wraps2"
+        android:id="@+id/wrapped2_next_btn"
         android:layout_width="51dp"
         android:layout_height="53dp"
         android:background="@drawable/round_button"
