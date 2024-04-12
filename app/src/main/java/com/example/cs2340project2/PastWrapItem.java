@@ -1,12 +1,25 @@
 package com.example.cs2340project2;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
+import com.google.firebase.storage.StorageReference;
+
 public class PastWrapItem {
+    private Bitmap summaryBitmap;
     private String date;
     private String time;
 
-    public PastWrapItem(String date, String time) {
-        this.date = date;
-        this.time = time;
+    public PastWrapItem(Bitmap summaryBitmap) {
+        this.summaryBitmap = summaryBitmap;
+    }
+
+    public Bitmap getSummaryBitmap() {
+        return summaryBitmap;
+    }
+
+    public void setSummaryBitmap(Bitmap summaryBitmap) {
+        this.summaryBitmap = summaryBitmap;
     }
 
     public String getDate() {

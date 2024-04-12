@@ -3,6 +3,7 @@ package com.example.cs2340project2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,8 +32,9 @@ public class PastWrapAdapter extends RecyclerView.Adapter<PastWrapAdapter.ClassV
     @Override
     public void onBindViewHolder(@NonNull ClassViewHolder holder, int position) {
         PastWrapItem pastWrapItem = wrapItemList.get(position);
-        holder.wrapDate.setText(pastWrapItem.getDate());
-        holder.wrapTime.setText(pastWrapItem.getTime());
+        holder.summary.setImageBitmap(pastWrapItem.getSummaryBitmap());
+//        holder.wrapDate.setText(pastWrapItem.getDate());
+//        holder.wrapTime.setText(pastWrapItem.getTime());
     }
 
     @Override
@@ -41,27 +43,28 @@ public class PastWrapAdapter extends RecyclerView.Adapter<PastWrapAdapter.ClassV
     }
 
     public static class ClassViewHolder extends RecyclerView.ViewHolder {
-        TextView wrapDate;
-        TextView wrapTime;
-
+//        TextView wrapDate;
+//        TextView wrapTime;
+        ImageView summary;
 
         public ClassViewHolder(@NonNull View itemView, PastWrapRecyclerViewInterface classRecyclerViewInterface) {
             super(itemView);
-            wrapDate = itemView.findViewById(R.id.wrapDate);
-            wrapTime = itemView.findViewById(R.id.wrapTime);
+            summary = itemView.findViewById(R.id.summary_img);
+//            wrapDate = itemView.findViewById(R.id.wrapDate);
+//            wrapTime = itemView.findViewById(R.id.wrapTime);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (classRecyclerViewInterface != null) {
-                        int position = getAdapterPosition();
-
-                        if (position != RecyclerView.NO_POSITION) {
-                            classRecyclerViewInterface.onItemClick(position);
-                        }
-                    }
-                }
-            });
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if (classRecyclerViewInterface != null) {
+//                        int position = getAdapterPosition();
+//
+//                        if (position != RecyclerView.NO_POSITION) {
+//                            classRecyclerViewInterface.onItemClick(position);
+//                        }
+//                    }
+//                }
+//            });
         }
     }
 
