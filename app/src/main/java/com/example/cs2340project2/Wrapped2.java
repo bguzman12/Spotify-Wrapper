@@ -7,11 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.spotify.sdk.android.auth.AuthorizationClient;
-import com.spotify.sdk.android.auth.AuthorizationResponse;
 import com.squareup.picasso.Picasso;
 import android.widget.ImageButton;
 
@@ -55,47 +51,49 @@ public class Wrapped2 extends AppCompatActivity {
         });
 
         // Fetch top songs
-        spotifyAuthResLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    final AuthorizationResponse response = AuthorizationClient.getResponse(result.getResultCode(), result.getData());
-                    if (response.getType() == AuthorizationResponse.Type.TOKEN) {
-                        Wrapped wrapped = new Wrapped(response.getAccessToken());
-                        wrapped.getTopSongs(Wrapped.TimeRange.MONTH, new Wrapped.TopSongsCallback() {
-                            @Override
-                            public void onSuccess(List<SongInfo> topSongs) {
-                                runOnUiThread(() -> {
-                                    if (topSongs.size() >= 5) {
-                                        song1.setText(topSongs.get(0).getName());
-                                        song2.setText(topSongs.get(1).getName());
-                                        song3.setText(topSongs.get(2).getName());
-                                        song4.setText(topSongs.get(3).getName());
-                                        song5.setText(topSongs.get(4).getName());
-                                        String imageUrlString1 = topSongs.get(0).getImageUrl();
-                                        String imageUrlString2 = topSongs.get(1).getImageUrl();
-                                        String imageUrlString3 = topSongs.get(2).getImageUrl();
-                                        String imageUrlString4 = topSongs.get(3).getImageUrl();
-                                        String imageUrlString5 = topSongs.get(4).getImageUrl();
-                                        Picasso.get().load(imageUrlString1).into(imageView1);
-                                        Picasso.get().load(imageUrlString2).into(imageView2);
-                                        Picasso.get().load(imageUrlString3).into(imageView3);
-                                        Picasso.get().load(imageUrlString4).into(imageView4);
-                                        Picasso.get().load(imageUrlString5).into(imageView5);
+        SpotifyAuthentication.refreshToken(new SpotifyAuthentication.AccessTokenCallback() {
+            @Override
+            public void onSuccess(String accessToken) {
+                Wrapped wrapped = new Wrapped(accessToken);
+                wrapped.getTopSongs(Wrapped.TimeRange.MONTH, new Wrapped.TopSongsCallback() {
+                    @Override
+                    public void onSuccess(List<SongInfo> topSongs) {
+                        runOnUiThread(() -> {
+                            if (topSongs.size() >= 5) {
+                                song1.setText(topSongs.get(0).getName());
+                                song2.setText(topSongs.get(1).getName());
+                                song3.setText(topSongs.get(2).getName());
+                                song4.setText(topSongs.get(3).getName());
+                                song5.setText(topSongs.get(4).getName());
+                                String imageUrlString1 = topSongs.get(0).getImageUrl();
+                                String imageUrlString2 = topSongs.get(1).getImageUrl();
+                                String imageUrlString3 = topSongs.get(2).getImageUrl();
+                                String imageUrlString4 = topSongs.get(3).getImageUrl();
+                                String imageUrlString5 = topSongs.get(4).getImageUrl();
+                                Picasso.get().load(imageUrlString1).into(imageView1);
+                                Picasso.get().load(imageUrlString2).into(imageView2);
+                                Picasso.get().load(imageUrlString3).into(imageView3);
+                                Picasso.get().load(imageUrlString4).into(imageView4);
+                                Picasso.get().load(imageUrlString5).into(imageView5);
 
-                                    } else {
-                                        // Handle case where fewer than 5 songs are fetched
-                                        // For example, show a message or handle it as needed
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void onFailure(String errorMessage) {
-                                // Handle failure
+                            } else {
+                                // Handle case where fewer than 5 songs are fetched
+                                // For example, show a message or handle it as needed
                             }
                         });
                     }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        // Handle failure
+                    }
                 });
-        spotifyAuthResLauncher.launch(new Intent(AuthorizationClient.createLoginActivityIntent(this, SpotifyAuthentication.getAuthenticationRequest(AuthorizationResponse.Type.TOKEN, false))));
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+        });
     }
 }

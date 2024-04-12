@@ -7,12 +7,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.snackbar.Snackbar;
-import com.spotify.sdk.android.auth.AuthorizationClient;
-import com.spotify.sdk.android.auth.AuthorizationResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -48,64 +43,66 @@ public class Comb_wrap extends AppCompatActivity {
         imageView1 = findViewById(R.id.imageView1);
 
         // Fetch top songs and artists
-        spotifyAuthResLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    final AuthorizationResponse response = AuthorizationClient.getResponse(result.getResultCode(), result.getData());
-                    if (response.getType() == AuthorizationResponse.Type.TOKEN) {
-                        Wrapped wrapped = new Wrapped(response.getAccessToken());
+        SpotifyAuthentication.refreshToken(new SpotifyAuthentication.AccessTokenCallback() {
+            @Override
+            public void onSuccess(String accessToken) {
+                Wrapped wrapped = new Wrapped(accessToken);
 
-                        // Fetch top songs
-                        wrapped.getTopSongs(Wrapped.TimeRange.MONTH, new Wrapped.TopSongsCallback() {
-                            @Override
-                            public void onSuccess(List<SongInfo> topSongs) {
-                                runOnUiThread(() -> {
-                                    if (topSongs.size() >= 5) {
-                                        song1.setText(topSongs.get(0).getName());
-                                        song2.setText(topSongs.get(1).getName());
-                                        song3.setText(topSongs.get(2).getName());
-                                        song4.setText(topSongs.get(3).getName());
-                                        song5.setText(topSongs.get(4).getName());
-                                    } else {
-                                        // Handle case where fewer than 5 songs are fetched
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void onFailure(String errorMessage) {
-                                // Handle failure
-                            }
-                        });
-
-                        // Fetch top artists
-                        wrapped.getTopArtists(Wrapped.TimeRange.MONTH, new Wrapped.TopArtistsCallback() {
-                            @Override
-                            public void onSuccess(List<ArtistInfo> topArtists) {
-                                runOnUiThread(() -> {
-                                    if (topArtists.size() >= 5) {
-                                        artist1.setText(topArtists.get(0).getArtist());
-                                        artist2.setText(topArtists.get(1).getArtist());
-                                        artist3.setText(topArtists.get(2).getArtist());
-                                        artist4.setText(topArtists.get(3).getArtist());
-                                        artist5.setText(topArtists.get(4).getArtist());
-                                        // Load images for artists
-                                        loadImage(topArtists.get(0).getImageUrl(), imageView1);
-                                    } else {
-                                        // Handle case where fewer than 5 artists are fetched
-                                        Toast.makeText(Comb_wrap.this, "Must have listened to at least 5 artists", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void onFailure(String errorMessage) {
-                                // Handle failure
+                // Fetch top songs
+                wrapped.getTopSongs(Wrapped.TimeRange.MONTH, new Wrapped.TopSongsCallback() {
+                    @Override
+                    public void onSuccess(List<SongInfo> topSongs) {
+                        runOnUiThread(() -> {
+                            if (topSongs.size() >= 5) {
+                                song1.setText(topSongs.get(0).getName());
+                                song2.setText(topSongs.get(1).getName());
+                                song3.setText(topSongs.get(2).getName());
+                                song4.setText(topSongs.get(3).getName());
+                                song5.setText(topSongs.get(4).getName());
+                            } else {
+                                // Handle case where fewer than 5 songs are fetched
                             }
                         });
                     }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        // Handle failure
+                    }
                 });
-        spotifyAuthResLauncher.launch(new Intent(AuthorizationClient.createLoginActivityIntent(this, SpotifyAuthentication.getAuthenticationRequest(AuthorizationResponse.Type.TOKEN, false))));
+
+                // Fetch top artists
+                wrapped.getTopArtists(Wrapped.TimeRange.MONTH, new Wrapped.TopArtistsCallback() {
+                    @Override
+                    public void onSuccess(List<ArtistInfo> topArtists) {
+                        runOnUiThread(() -> {
+                            if (topArtists.size() >= 5) {
+                                artist1.setText(topArtists.get(0).getArtist());
+                                artist2.setText(topArtists.get(1).getArtist());
+                                artist3.setText(topArtists.get(2).getArtist());
+                                artist4.setText(topArtists.get(3).getArtist());
+                                artist5.setText(topArtists.get(4).getArtist());
+                                // Load images for artists
+                                loadImage(topArtists.get(0).getImageUrl(), imageView1);
+                            } else {
+                                // Handle case where fewer than 5 artists are fetched
+                                Toast.makeText(Comb_wrap.this, "Must have listened to at least 5 artists", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        // Handle failure
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+        });
     }
 
     // Helper method to load images into ImageViews
