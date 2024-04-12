@@ -8,17 +8,47 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.squareup.picasso.Picasso;
 
+import android.view.View;
+import android.graphics.Bitmap;
+import java.io.File;
+import java.io.FileOutputStream;
+import android.graphics.Bitmap.CompressFormat;
+import android.widget.ImageButton;
+import android.graphics.Canvas;
+
+import android.os.Build;
+import android.provider.MediaStore;
+import android.os.Environment;
+import java.io.OutputStream;
+import android.net.Uri;
+import androidx.core.content.FileProvider;
+import android.content.ContentValues;
+
+
+
+
+
 import java.util.List;
 
 public class Comb_wrap extends AppCompatActivity {
 
     private TextView song1, song2, song3, song4, song5, artist1, artist2, artist3, artist4, artist5;
     private ImageView imageView1;
+    public ImageButton exportBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wrapped_summary); //this is where it would connect to UI
+
+        ImageButton exportBtn = findViewById(R.id.exportBtn);
+        exportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getScreen();
+            }
+        });
+
 
         // Initialize WrappedActivity instance
 
@@ -42,6 +72,62 @@ public class Comb_wrap extends AppCompatActivity {
         // Fetch top songs and artists
 
     }
+
+    private void getScreen() {
+        View content = findViewById(android.R.id.content).getRootView();
+        content.post(() -> {
+            // Create a bitmap with the same size as the view
+            Bitmap bitmap = Bitmap.createBitmap(content.getWidth(), content.getHeight(), Bitmap.Config.ARGB_8888);
+            // Create a canvas to draw the view's content into the bitmap
+            Canvas canvas = new Canvas(bitmap);
+            content.draw(canvas);
+
+            // Now you can use this bitmap to save or share
+            saveAndShareImage(bitmap);
+        });
+    }
+
+    private void saveAndShareImage(Bitmap bitmap) {
+        try {
+            String fileName = "layout_snapshot_" + System.currentTimeMillis() + ".png";
+            Uri imageUri;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+                values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+                values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+                imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+                try (OutputStream outputStream = getContentResolver().openOutputStream(imageUri)) {
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                }
+            } else {
+                File imagePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName);
+                try (FileOutputStream fos = new FileOutputStream(imagePath)) {
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                }
+                imageUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", imagePath);
+            }
+
+            shareImage(imageUri);
+            Toast.makeText(this, "Snapshot saved and ready for sharing.", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "Failed to save image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+    private void shareImage(Uri imageUri) {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+        shareIntent.setType("image/png");
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(Intent.createChooser(shareIntent, "Share Layout Snapshot"));
+    }
+
+
 
     @Override
     public void onStart() {
