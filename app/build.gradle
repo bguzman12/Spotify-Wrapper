@@ -46,8 +46,6 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage")
 
-    implementation 'com.spotify.android:app-remote:0.7.2'
-
 
 
 
