@@ -9,11 +9,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.squareup.picasso.Picasso;
 import android.widget.ImageButton;
 
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+
+
+
 
 import java.util.List;
 
 public class Wrapped2 extends AppCompatActivity {
-
+    private SpotifyAppRemote mSpotifyAppRemote;
     private TextView song1, song2, song3, song4, song5;
     private ImageView imageView1, imageView2, imageView3, imageView4, imageView5;
     private ImageButton wrapped2_next_btn, wrapped2_back_btn;
@@ -42,10 +47,7 @@ public class Wrapped2 extends AppCompatActivity {
         wrapped2_next_btn = findViewById(R.id.wrapped2_next_btn);
         wrapped2_back_btn = findViewById(R.id.wrapped2_back_btn);
 
-
-
         // Fetch top songs
-
     }
 
     @Override
@@ -69,6 +71,7 @@ public class Wrapped2 extends AppCompatActivity {
                     public void onSuccess(List<SongInfo> topSongs) {
                         runOnUiThread(() -> {
                             if (topSongs.size() >= 5) {
+                                // Display song names and images
                                 song1.setText(topSongs.get(0).getName());
                                 song2.setText(topSongs.get(1).getName());
                                 song3.setText(topSongs.get(2).getName());
@@ -85,6 +88,12 @@ public class Wrapped2 extends AppCompatActivity {
                                 Picasso.get().load(imageUrlString4).into(imageView4);
                                 Picasso.get().load(imageUrlString5).into(imageView5);
 
+                                // Add button click listeners for each song
+                                song1.setOnClickListener(v -> playSongClip(topSongs.get(0).getUri()));
+                                song2.setOnClickListener(v -> playSongClip(topSongs.get(1).getUri()));
+                                song3.setOnClickListener(v -> playSongClip(topSongs.get(2).getUri()));
+                                song4.setOnClickListener(v -> playSongClip(topSongs.get(3).getUri()));
+                                song5.setOnClickListener(v -> playSongClip(topSongs.get(4).getUri()));
                             } else {
                                 // Handle case where fewer than 5 songs are fetched
                                 // For example, show a message or handle it as needed
@@ -105,4 +114,10 @@ public class Wrapped2 extends AppCompatActivity {
             }
         });
     }
+
+    private void playSongClip(String songUri) {
+        // Play the song clip using the song URI
+        // This is where you would integrate the Spotify SDK or any other music player API
+    }
+
 }

@@ -95,6 +95,8 @@ public class Wrapped {
                     for (int i = 0; i < items.length(); i++) {
                         JSONObject item = items.getJSONObject(i);
                         String songName = item.getString("name");
+                        String songUri = item.getString("uri");
+
 
                         JSONArray artists = item.getJSONArray("artists");
                         JSONObject artist = artists.getJSONObject(0);
@@ -111,7 +113,7 @@ public class Wrapped {
 
                         long durationMs = item.getLong("duration_ms");
                         long listeningTimeInSeconds = durationMs / 1000;
-                        songList.add(new SongInfo(songName, artistName, itemImageUrl, listeningTimeInSeconds));
+                        songList.add(new SongInfo(songName, artistName, songUri, itemImageUrl, listeningTimeInSeconds));
                     }
                     callback.onSuccess(songList);
 
@@ -121,6 +123,7 @@ public class Wrapped {
             }
         });
     }
+
 
     public void getTopArtists(TimeRange timeRange, TopArtistsCallback callback) {
         String time;
