@@ -63,18 +63,13 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
-checkstyle {
-    toolVersion "9.3"
-    configFile file("$rootDir/config/checkstyle/checkstyle.xml")
-    ignoreFailures = false
-}
-
 task checkstyle(type: Checkstyle) {
     configFile file("$rootDir/config/checkstyle/checkstyle.xml")
     source 'src/main/java'
     include '**/*.java'
     exclude '**/gen/**'
 
+    // Set the classpath for Checkstyle
     classpath = files()
 }
 
