@@ -1,3 +1,9 @@
+buildscript {
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.puppycrawl.tools:checkstyle:9.3'
+    }
+}
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
@@ -61,6 +67,15 @@ checkstyle {
     toolVersion "9.3"
     configFile file("$rootDir/config/checkstyle/checkstyle.xml")
     ignoreFailures = false
+}
+
+task checkstyle(type: Checkstyle) {
+    configFile file("$rootDir/config/checkstyle/checkstyle.xml")
+    source 'src/main/java'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = files()
 }
 
 check.dependsOn 'checkstyleMain', 'checkstyleTest'
