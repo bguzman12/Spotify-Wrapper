@@ -1,13 +1,6 @@
-buildscript {
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath 'com.puppycrawl.tools:checkstyle:9.3'
-    }
-}
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
-    id 'checkstyle'
 }
 
 android {
@@ -22,6 +15,7 @@ android {
         versionName "1.1"
 
         manifestPlaceholders = [appAuthRedirectScheme: "cs2340project2"]
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -31,12 +25,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-
     buildFeatures {
         viewBinding true
     }
@@ -45,14 +37,19 @@ android {
 dependencies {
     implementation 'net.openid:appauth:0.11.1'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+
     implementation 'org.json:json:20210307'
+
     implementation platform('com.google.firebase:firebase-bom:32.8.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage")
+
     implementation 'com.squareup.picasso:picasso:2.8'
+
     implementation 'com.google.android.material:material:1.11.0'
+
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.annotation:annotation:1.7.1'
@@ -63,19 +60,19 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
-checkstyle {
-    toolVersion "9.3"
-    configFile file("$rootDir/config/checkstyle/checkstyle.xml")
-    ignoreFailures = false
+// Lint task configuration
+android {
+    lintOptions {
+        // Set your desired lint options here
+        abortOnError true // Abort the build if errors are found
+        warningsAsErrors true // Treat warnings as errors
+        // Add more lint options as needed
+    }
 }
 
-task checkstyle(type: Checkstyle) {
-    configFile file("$rootDir/config/checkstyle/checkstyle.xml")
-    source 'src/main/java'
-    include '**/*.java'
-    exclude '**/gen/**'
-
-    classpath = files()
+// Configure lint task to run on build
+tasks.whenTaskAdded { task ->
+    if (task.name.startsWith('compile')) {
+        task.dependsOn 'lint'
+    }
 }
-
-check.dependsOn 'checkstyleMain', 'checkstyleTest'
