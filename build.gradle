@@ -22,7 +22,12 @@ checkstyle {
     ignoreFailures = false
 }
 
-// Define the 'check' task and configure it to depend on 'checkstyleMain' and 'checkstyleTest'
+// Ensure that the 'check' task depends on the 'checkstyleTest' task only
 tasks.register('check') {
-    dependsOn 'checkstyleMain', 'checkstyleTest'
+    dependsOn 'checkstyleTest'
+}
+
+// Ensure that the 'check' task depends on the 'checkstyle' task
+tasks.named('check').configure {
+    dependsOn tasks.withType(Checkstyle)
 }
