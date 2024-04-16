@@ -74,7 +74,9 @@ task checkstyle(type: Checkstyle) {
     exclude '**/BuildConfig.java'
     configFile = rootProject.file("config/checkstyle/checkstyle.xml")
     ignoreFailures = false
+    classpath = configurations.checkstyleImplementation
 }
+
 check.dependsOn checkstyle
 
 tasks.withType(JavaCompile) {
