@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- Specify lint checks and their configurations -->
+    <issue id="ObsoleteLayoutParam">
+        <ignore path="res/layout/activation.xml"/>
+    </issue>
+    <issue id="UnusedResources">
+        <option name="unusedPadding" value="true"/>
+    </issue>
+    <!-- Add more lint checks and configurations as needed -->
+</lint>

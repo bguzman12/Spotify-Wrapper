@@ -30,8 +30,8 @@ jobs:
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
 
-      - name: Run Checkstyle
-        run: ./gradlew checkstyle
+      - name: Run lint checks
+        run: ./gradlew lint
 
       # Runs a single command using the runners shell
       - name: Build with Gradle
