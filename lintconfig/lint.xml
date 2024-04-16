@@ -7,5 +7,8 @@
     <issue id="UnusedResources">
         <option name="unusedPadding" value="true"/>
     </issue>
+    <issue id="all">
+        <ignore path="path/to/module/to/ignore" />
+    </issue>
     <!-- Add more lint checks and configurations as needed -->
 </lint>
