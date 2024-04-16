@@ -32,32 +32,6 @@ android {
     buildFeatures {
         viewBinding true
     }
-    lintOptions {
-        // Set to true to turn off analysis progress reporting by lint
-        quiet true
-        // If true, stop the gradle build if errors are found
-        abortOnError false
-        // If true, only report errors
-        ignoreWarnings true
-        // Set a baseline file to report only issues that are not already included
-        baseline file("lint-baseline.xml")
-        // Specify a lint.xml configuration file
-        lintConfig file("lint.xml")
-        // Set a baseline file to report only new issues that are not already included
-        baseline file("lint-baseline.xml")
-        // Set a baseline file to never report errors/warnings from these issues
-        disable 'TypographyFractions','TypographyQuotes'
-        // Set a baseline file to never report errors/warnings for this set of issues
-        checkOnly 'NewApi','InlinedApi'
-        // Set to true to check for lint errors/warnings in release builds
-        checkReleaseBuilds true
-        // Set to true to analyze test sources
-        checkTestSources true
-        // Set to true to check for issue ids (like UnusedIds)
-        checkAllWarnings true
-        // Set to true to ignore test sources
-        ignoreTestSources true
-    }
 }
 
 dependencies {
@@ -72,8 +46,6 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage")
 
-
-
     implementation 'com.squareup.picasso:picasso:2.8'
 
     implementation 'com.google.android.material:material:1.11.0'
@@ -86,4 +58,21 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+
+// Lint task configuration
+android {
+    lintOptions {
+        // Set your desired lint options here
+        abortOnError true // Abort the build if errors are found
+        warningsAsErrors true // Treat warnings as errors
+        // Add more lint options as needed
+    }
+}
+
+// Configure lint task to run on build
+tasks.whenTaskAdded { task ->
+    if (task.name.startsWith('compile')) {
+        task.dependsOn 'lint'
+    }
 }
