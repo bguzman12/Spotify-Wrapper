@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'checkstyle'
 }
 
 android {
@@ -15,7 +16,6 @@ android {
         versionName "1.1"
 
         manifestPlaceholders = [appAuthRedirectScheme: "cs2340project2"]
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -36,45 +36,31 @@ android {
     }
 }
 
-// Add Checkstyle configuration
-configurations {
-    checkstyleImplementation
-}
-
 dependencies {
-    // Your existing dependencies
-
-    // Add Checkstyle dependency
-    checkstyleImplementation "com.puppycrawl.tools:checkstyle:8.44"
+    implementation 'net.openid:appauth:0.11.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation 'org.json:json:20210307'
+    implementation platform('com.google.firebase:firebase-bom:32.8.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-storage")
+    implementation 'com.squareup.picasso:picasso:2.8'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.annotation:annotation:1.7.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
-// Define Checkstyle task
-task checkstyle(type: Checkstyle) {
-    source 'src'
-    include '**/*.java'
-    exclude '**/gen/**'
-    exclude '**/R.java'
-    exclude '**/BuildConfig.java'
-    configFile = rootProject.file("config/checkstyle/checkstyle.xml")
+checkstyle {
+    toolVersion "9.3"
+    configFile file("$rootDir/config/checkstyle/checkstyle.xml")
     ignoreFailures = false
-    classpath = configurations.checkstyleImplementation
 }
 
-// Hook Checkstyle task to check task
-check.dependsOn checkstyle
-
-// Configure JavaCompile options
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-    options.compilerArgs << "-Xlint:all"
-    options.compilerArgs << "-Xlint:-processing"
-    options.compilerArgs << "-Xlint:-path"
-    options.compilerArgs << "-Xlint:-serial"
-    options.compilerArgs << "-Xlint:-try"
-    options.compilerArgs << "-Xlint:-varargs"
-    options.compilerArgs << "-Xlint:-cast"
-    options.compilerArgs << "-Xlint:-rawtypes"
-    options.compilerArgs << "-Xlint:-fallthrough"
-    options.compilerArgs << "-Xlint:-empty"
-    options.compilerArgs << "-Xlint:-finally"
-}
+check.dependsOn 'checkstyleMain', 'checkstyleTest'
