@@ -102,3 +102,20 @@ tasks.whenTaskAdded { task ->
         task.dependsOn 'lint'
     }
 }
+afterEvaluate {
+    // Run lint on every build
+    tasks.getByPath(":app:lint").enabled = true
+
+    // Run lint independently from the build
+    tasks.getByPath(":app:lint").dependsOn.removeAll(
+            tasks.getByPath(":app:compileDebugJavaWithJavac"),
+            tasks.getByPath(":app:compileReleaseJavaWithJavac")
+    )
+
+    tasks.getByPath(":app:compileDebugJavaWithJavac").dependsOn.remove(
+            tasks.getByPath(":app:lint")
+    )
+    tasks.getByPath(":app:compileReleaseJavaWithJavac").dependsOn.remove(
+            tasks.getByPath(":app:lint")
+    )
+}
