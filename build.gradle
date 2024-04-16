@@ -1,10 +1,28 @@
 buildscript {
-    dependencies {
-        classpath 'com.google.gms:google-services:4.4.1'
-  
+    repositories {
+        google()
+        // Add any other repositories if needed
     }
-}// Top-level build file where you can add configuration options common to all sub-projects/modules.
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.google.gms:google-services:4.4.1'
+        classpath 'com.puppycrawl.tools:checkstyle:9.3'
+    }
+}
+
 plugins {
     id 'com.android.application' version '8.2.1' apply false
     id 'com.google.gms.google-services' version '4.4.1' apply false
+    id 'checkstyle'
+}
+
+checkstyle {
+    toolVersion "9.3"
+    configFile file("$rootDir/config/checkstyle/checkstyle.xml")
+    ignoreFailures = false
+}
+
+// Define the 'check' task and configure it to depend on 'checkstyleMain' and 'checkstyleTest'
+tasks.register('check') {
+    dependsOn 'checkstyleMain', 'checkstyleTest'
 }
