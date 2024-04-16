@@ -1,6 +1,15 @@
+// Top-level build file
+buildscript {
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.google.gms:google-services:4.3.15'
+    }
+}
+
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'checkstyle'
 }
 
 android {
@@ -39,7 +48,6 @@ configurations {
     checkstyleImplementation
 }
 
-
 dependencies {
     checkstyleImplementation "com.puppycrawl.tools:checkstyle:8.44"
     implementation 'net.openid:appauth:0.11.1'
@@ -66,14 +74,19 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
+
+// Configure Checkstyle
+checkstyle {
+    configDirectory = rootProject.file("config/checkstyle")
+}
+
 task checkstyle(type: Checkstyle) {
     source 'src'
     include '**/*.java'
     exclude '**/gen/**'
     exclude '**/R.java'
     exclude '**/BuildConfig.java'
-    configFile = rootProject.file("config/checkstyle/checkstyle.xml")
-    ignoreFailures = false
+    configFile = file("config/checkstyle/checkstyle.xml")
     classpath = configurations.checkstyleImplementation
 }
 
