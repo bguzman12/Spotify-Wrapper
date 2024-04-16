@@ -72,5 +72,4 @@ task checkstyle(type: Checkstyle) {
     // Set the classpath for Checkstyle
     classpath = files()
 }
-
 check.dependsOn 'checkstyleMain', 'checkstyleTest'
