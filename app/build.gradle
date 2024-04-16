@@ -7,9 +7,10 @@ checkstyle {
     toolVersion = "8.44"
     configFile = rootProject.file("config/checkstyle/checkstyle.xml")
     ignoreFailures = false
+
 }
 
-task checkstyle(type: Checkstyle) {
+tasks.register('checkstyle', Checkstyle) {
     source 'src'
     include '**/*.java'
     exclude '**/gen/**'
@@ -17,6 +18,7 @@ task checkstyle(type: Checkstyle) {
     exclude '**/BuildConfig.java'
 }
 tasks.withType(JavaCompile).configureEach {
+    classpath = configurations.checkstyle
     options.encoding = 'UTF-8'
     options.compilerArgs << "-Xlint:all"
     options.compilerArgs << "-Xlint:-processing"
