@@ -1,37 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
-    id 'checkstyle'
-}
-checkstyle {
-    toolVersion = "8.44"
-    configFile = rootProject.file("config/checkstyle/checkstyle.xml")
-    ignoreFailures = false
-
 }
 
-tasks.register('checkstyle', Checkstyle) {
-    source 'src'
-    include '**/*.java'
-    exclude '**/gen/**'
-    exclude '**/R.java'
-    exclude '**/BuildConfig.java'
-}
-tasks.withType(JavaCompile).configureEach {
-    classpath = files()
-    options.encoding = 'UTF-8'
-    options.compilerArgs << "-Xlint:all"
-    options.compilerArgs << "-Xlint:-processing"
-    options.compilerArgs << "-Xlint:-path"
-    options.compilerArgs << "-Xlint:-serial"
-    options.compilerArgs << "-Xlint:-try"
-    options.compilerArgs << "-Xlint:-varargs"
-    options.compilerArgs << "-Xlint:-cast"
-    options.compilerArgs << "-Xlint:-rawtypes"
-    options.compilerArgs << "-Xlint:-fallthrough"
-    options.compilerArgs << "-Xlint:-empty"
-    options.compilerArgs << "-Xlint:-finally"
-}
 android {
     namespace 'com.example.cs2340project2'
     compileSdk 34
@@ -63,8 +34,14 @@ android {
     }
 }
 
+// Checkstyle configuration
+configurations {
+    checkstyleImplementation
+}
+
+
 dependencies {
-    checkstyle("com.puppycrawl.tools:checkstyle:8.44")
+    checkstyleImplementation "com.puppycrawl.tools:checkstyle:8.44"
     implementation 'net.openid:appauth:0.11.1'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
 
@@ -75,8 +52,6 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage")
-
-
 
     implementation 'com.squareup.picasso:picasso:2.8'
 
@@ -90,4 +65,29 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+task checkstyle(type: Checkstyle) {
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
+    configFile = rootProject.file("config/checkstyle/checkstyle.xml")
+    ignoreFailures = false
+}
+check.dependsOn checkstyle
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:all"
+    options.compilerArgs << "-Xlint:-processing"
+    options.compilerArgs << "-Xlint:-path"
+    options.compilerArgs << "-Xlint:-serial"
+    options.compilerArgs << "-Xlint:-try"
+    options.compilerArgs << "-Xlint:-varargs"
+    options.compilerArgs << "-Xlint:-cast"
+    options.compilerArgs << "-Xlint:-rawtypes"
+    options.compilerArgs << "-Xlint:-fallthrough"
+    options.compilerArgs << "-Xlint:-empty"
+    options.compilerArgs << "-Xlint:-finally"
 }
