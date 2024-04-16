@@ -62,6 +62,7 @@ android {
 }
 
 dependencies {
+    checkstyle("com.puppycrawl.tools:checkstyle:8.44")
     implementation 'net.openid:appauth:0.11.1'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
 
