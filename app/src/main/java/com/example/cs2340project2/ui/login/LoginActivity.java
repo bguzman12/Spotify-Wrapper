@@ -1,32 +1,42 @@
 package com.example.cs2340project2.ui.login;
 
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Patterns;
+import android.view.inputmethod.InputMethodManager;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.cs2340project2.Homescreen;
-import com.example.cs2340project2.MainActivity;
 import com.example.cs2340project2.R;
-import com.example.cs2340project2.ui.editlogin.EditLoginActivity;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
+import com.example.cs2340project2.SpotifyAuthentication;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.spotify.sdk.android.auth.AuthorizationClient;
-import com.spotify.sdk.android.auth.AuthorizationRequest;
-import com.spotify.sdk.android.auth.AuthorizationResponse;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
-    public static final String CLIENT_ID = "fd02c77ee13e4dd2a8a5b88ecd17f2cc";
-    public static final String REDIRECT_URI = "cs2340project2://auth";
     private FirebaseAuth mAuth;
-    private TabLayout tabLayout;
-    private String mAccessToken;
-
-    ViewPager2 viewPager;
+    private MaterialToolbar toolbar;
+    private TextInputLayout emailLayout;
+    private TextInputEditText emailText;
+    private TextInputLayout passwordLayout;
+    private TextInputEditText passwordText;
+    private MaterialButton login;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,59 +44,105 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
 
-        tabLayout = findViewById(R.id.tab_layout);
-        viewPager = findViewById(R.id.view_pager);
+        toolbar = findViewById(R.id.topAppBar_login);
+        emailLayout = findViewById(R.id.email_layout);
+        emailText = findViewById(R.id.email_input);
+        passwordLayout = findViewById(R.id.password_layout);
+        passwordText = findViewById(R.id.password_input);
+        login = findViewById(R.id.login_btn);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Login"));
-        tabLayout.addTab(tabLayout.newTab().setText("Signup"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        final LoginAdapter adapter = new LoginAdapter(this);
-        viewPager.setAdapter(adapter);
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) ->
-                tab.setText(adapter.getPageTitle(position))
-        ).attach();
     }
+
     @Override
     public void onStart() {
         super.onStart();
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            startActivity(new Intent(this, Homescreen.class));
-        }
+        toolbar.setNavigationOnClickListener(view -> {
+            finish();
+        });
+
+        emailText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (validate()) {
+                    enableButton();
+                } else {
+                    disableButton();
+                    if (!Patterns.EMAIL_ADDRESS.matcher(emailText.getText().toString()).matches()) {
+                        emailLayout.setError("Email address is not a valid email address");
+                    } else {
+                        emailLayout.setError("");
+                    }
+                }
+            }
+        });
+
+        passwordText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (validate()) {
+                    enableButton();
+                } else {
+                    disableButton();
+                    if (passwordText.getText().length() == 0) {
+                        passwordLayout.setError("Password cannot be empty");
+                    } else {
+                        passwordLayout.setError("");
+                    }
+                }
+            }
+        });
+
+        login.setOnClickListener(view -> {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            mAuth.signInWithEmailAndPassword(emailText.getText().toString(), passwordText.getText().toString())
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            startActivity(new Intent(this, Homescreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                            LoginActivity.this.finish();
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                Snackbar.make(view, "Incorrect login credentials", Snackbar.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        });
     }
 
-    public String getmAccessToken() {
-        getToken();
-        return mAccessToken;
+    private boolean validate() {
+        return Patterns.EMAIL_ADDRESS.matcher(emailText.getText().toString()).matches()
+                && passwordText.getText().length() != 0;
     }
 
-    public void getToken() {
-        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
-        AuthorizationClient.openLoginActivity(LoginActivity.this, 0, request);
+    private void enableButton() {
+        login.setEnabled(true);
+        login.setBackgroundColor(Color.WHITE);
+        emailLayout.setError("");
+        passwordLayout.setError("");
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        final AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, data);
-
-        // Check which request code is present (if any)
-        if (requestCode == 0) {
-            mAccessToken = response.getAccessToken();
-        }
-    }
-
-    private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
-        return new AuthorizationRequest.Builder(CLIENT_ID, type, getRedirectUri().toString())
-                .setShowDialog(false)
-                .setScopes(new String[] { "user-read-email" }) // <--- Change the scope of your requested token here
-                .setCampaign("your-campaign-token")
-                .build();
-    }
-
-    private Uri getRedirectUri() {
-        return Uri.parse(REDIRECT_URI);
+    private void disableButton() {
+        login.setEnabled(false);
+        login.setBackgroundColor(Color.parseColor("#414141"));
     }
 }

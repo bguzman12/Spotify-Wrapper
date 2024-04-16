@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,27 +12,75 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CS2340Project2"
         tools:targetApi="31">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
         <activity
             android:name=".MyAccount"
             android:exported="false" />
         <activity
+            android:name=".Wrapped2"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".Wrapped1"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".Comb_wrap"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".TimeWrapped"
+            android:exported="true">
+        </activity>
+        <activity
             android:name=".Homescreen"
+            android:exported="false" />
+        <activity
+            android:name=".PastWraps"
+            android:exported="false" />
+        <activity
+            android:name=".PastWrapped1"
+            android:exported="false" />
+        <activity
+            android:name=".PastWrapped2"
+            android:exported="false" />
+        <activity
+            android:name=".PastWrappedSummary"
             android:exported="false" />
         <activity
             android:name=".Summary_Wrapped"
             android:exported="true" />
         <activity
-            android:name=".ui.login.LoginActivity"
-            android:exported="true"
-            android:label="@string/title_activity_login">
+            android:name=".ui.login.LaunchActivity"
+            android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
-
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.login.SignupActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="com.example.cs2340project2.HANDLE_AUTHORIZATION_RESPONSE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="/auth"
+                    android:scheme="cs2340project2" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <data
@@ -43,7 +91,20 @@
         <activity
             android:name=".ui.editlogin.EditLoginActivity"
             android:exported="true"
-            android:label="@string/title_activity_editlogin"></activity>
+            android:label="@string/title_activity_editlogin">
+        </activity>
+        <activity
+            android:name=".ui.editlogin.EditEmailActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".ui.editlogin.EditPasswordActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".ui.editlogin.DeleteAccountActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>
