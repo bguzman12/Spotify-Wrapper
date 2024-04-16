@@ -86,7 +86,7 @@ task checkstyle(type: Checkstyle) {
     exclude '**/gen/**'
     exclude '**/R.java'
     exclude '**/BuildConfig.java'
-    configFile = file("/Users/paristran/StudioProjects/CS2340Project2/app/config/checkstyle/checkstyle.xml")
+    configFile = rootProject.file("app/config/checkstyle/checkstyle.xml")
     classpath = configurations.checkstyleImplementation
 }
 
