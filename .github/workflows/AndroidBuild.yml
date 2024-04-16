@@ -30,12 +30,12 @@ jobs:
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
 
-      - name: Run lint checks
-        run: ./gradlew lint
-
       # Runs a single command using the runners shell
       - name: Build with Gradle
         run: ./gradlew build
+
+      - name: Run lint checks
+        run: ./gradlew lint
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.3
