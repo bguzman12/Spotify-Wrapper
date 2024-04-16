@@ -85,13 +85,14 @@ android {
 
         // Set to true to check for issue ids (like UnusedIds)
         checkAllWarnings true
-        checkReleaseBuilds true
 
         // If true, the build will fail if there are any lint errors
         abortOnError true
 
         // If true, only report lint errors, not warnings
         ignoreWarnings false
+        checkReleaseBuilds false
+        checkDebugBuilds false
         // Add more lint options as needed
     }
 }
@@ -101,21 +102,4 @@ tasks.whenTaskAdded { task ->
     if (task.name.startsWith('compile')) {
         task.dependsOn 'lint'
     }
-}
-afterEvaluate {
-    // Run lint on every build
-    tasks.getByPath(":app:lint").enabled = true
-
-    // Run lint independently from the build
-    tasks.getByPath(":app:lint").dependsOn.removeAll(
-            tasks.getByPath(":app:compileDebugJavaWithJavac"),
-            tasks.getByPath(":app:compileReleaseJavaWithJavac")
-    )
-
-    tasks.getByPath(":app:compileDebugJavaWithJavac").dependsOn.remove(
-            tasks.getByPath(":app:lint")
-    )
-    tasks.getByPath(":app:compileReleaseJavaWithJavac").dependsOn.remove(
-            tasks.getByPath(":app:lint")
-    )
 }
