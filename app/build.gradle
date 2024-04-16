@@ -71,7 +71,7 @@ android {
         // Set your desired lint options here
         abortOnError true // Abort the build if errors are found
         warningsAsErrors true // Treat warnings as errors
-        lintConfig rootProject.file('lint.xml')
+        lintConfig rootProject.file('lintconfig/lint.xml')
         baseline file("lint-baseline.xml")
 
         // Set any specific issues to disable
