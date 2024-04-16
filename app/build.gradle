@@ -1,15 +1,6 @@
-// Top-level build file
-buildscript {
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath 'com.google.gms:google-services:4.4.1'
-    }
-}
-
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
-    id 'checkstyle'
 }
 
 android {
@@ -34,64 +25,45 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
     buildFeatures {
         viewBinding true
     }
 }
 
-// Checkstyle configuration
+// Add Checkstyle configuration
 configurations {
     checkstyleImplementation
 }
 
 dependencies {
+    // Your existing dependencies
+
+    // Add Checkstyle dependency
     checkstyleImplementation "com.puppycrawl.tools:checkstyle:8.44"
-    implementation 'net.openid:appauth:0.11.1'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
-
-    implementation 'org.json:json:20210307'
-
-    implementation platform('com.google.firebase:firebase-bom:32.8.0')
-    implementation 'com.google.firebase:firebase-analytics'
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-firestore")
-    implementation("com.google.firebase:firebase-storage")
-
-    implementation 'com.squareup.picasso:picasso:2.8'
-
-    implementation 'com.google.android.material:material:1.11.0'
-
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.annotation:annotation:1.7.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
-// Configure Checkstyle
-checkstyle {
-    configDirectory = rootProject.file("config/checkstyle")
-}
-
+// Define Checkstyle task
 task checkstyle(type: Checkstyle) {
     source 'src'
     include '**/*.java'
     exclude '**/gen/**'
     exclude '**/R.java'
     exclude '**/BuildConfig.java'
-    configFile = rootProject.file("app/config/checkstyle/checkstyle.xml")
+    configFile = rootProject.file("config/checkstyle/checkstyle.xml")
+    ignoreFailures = false
     classpath = configurations.checkstyleImplementation
 }
 
+// Hook Checkstyle task to check task
 check.dependsOn checkstyle
 
+// Configure JavaCompile options
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
     options.compilerArgs << "-Xlint:all"
