@@ -46,7 +46,7 @@ android {
         abortOnError true // Abort the build if errors are found
         warningsAsErrors true // Treat warnings as errors
         lintConfig rootProject.file('lintconfig/lint.xml')
-        baseline file("lint-baseline.xml")
+
 
         // Set any specific issues to disable
         disable 'TypographyFractions', 'TypographyQuotes'
