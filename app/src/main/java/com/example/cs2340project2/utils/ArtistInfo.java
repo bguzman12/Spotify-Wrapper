@@ -1,6 +1,8 @@
-package com.example.cs2340project2;
+package com.example.cs2340project2.utils;
 
-public class ArtistInfo {
+import java.io.Serializable;
+
+public class ArtistInfo implements Serializable {
     private String artist;
     private String imageUrl; // New field for the image URL
 

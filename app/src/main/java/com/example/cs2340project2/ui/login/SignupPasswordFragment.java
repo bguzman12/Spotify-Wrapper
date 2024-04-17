@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cs2340project2.R;
+import com.example.cs2340project2.utils.SignupViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -32,9 +32,9 @@ public class SignupPasswordFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        passwordLayout = getView().findViewById(R.id.password_layout);
-        passwordText = getView().findViewById(R.id.password_input);
-        next = getView().findViewById(R.id.next_btn);
+        passwordLayout = requireView().findViewById(R.id.password_layout);
+        passwordText = requireView().findViewById(R.id.password_input);
+        next = requireView().findViewById(R.id.next_btn);
         signupViewModel = new ViewModelProvider(requireActivity()).get(SignupViewModel.class);
     }
 

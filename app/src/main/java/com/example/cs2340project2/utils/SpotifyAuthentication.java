@@ -1,4 +1,4 @@
-package com.example.cs2340project2;
+package com.example.cs2340project2.utils;
 
 import android.net.Uri;
 import android.util.Log;
@@ -57,13 +57,12 @@ public class SpotifyAuthentication {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        AtomicReference<String> accessToken = new AtomicReference<>();
         DocumentReference docRef = db.collection("tokens").document(currentUser.getUid());
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    if (document.getTimestamp("expires").compareTo(Timestamp.now()) <= 0) {
+                    if (Timestamp.now().getSeconds() - document.getTimestamp("expires").getSeconds() >= 60L) {
                         final RequestBody form = new FormBody.Builder()
                                 .add("grant_type", "refresh_token")
                                 .add("refresh_token", (String) document.get("refresh_token"))

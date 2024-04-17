@@ -31,4 +31,18 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
     <string name="pastWraps">"Past Wraps"</string>
+    <string name="mute">mute</string>
+    <string name="pause">pause</string>
+    <string name="close">close</string>
+    <string name="top">My Top </string>
+    <string name="wrapped_start_2">for the past</string>
+    <string name="wrapped_start_1">My Wrapped</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="share">share</string>
+    <string name="top_artists">Top Artists</string>
+    <string name="top_songs">Top Songs</string>
 </resources>

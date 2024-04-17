@@ -3,7 +3,6 @@ package com.example.cs2340project2.ui.login;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cs2340project2.Homescreen;
 import com.example.cs2340project2.R;
-import com.example.cs2340project2.SpotifyAuthentication;
+import com.example.cs2340project2.utils.SignupViewModel;
+import com.example.cs2340project2.utils.SpotifyAuthentication;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.Timestamp;
@@ -82,8 +82,8 @@ public class SignupSpotifyFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        spotify = getView().findViewById(R.id.spotify_btn);
-        signup = getView().findViewById(R.id.signup_btn);
+        spotify = requireView().findViewById(R.id.spotify_btn);
+        signup = requireView().findViewById(R.id.signup_btn);
         signupViewModel = new ViewModelProvider(requireActivity()).get(SignupViewModel.class);
     }
 
@@ -92,7 +92,7 @@ public class SignupSpotifyFragment extends Fragment {
         super.onStart();
 
         spotify.setOnClickListener(view -> {
-            AuthorizationService authService = new AuthorizationService(getActivity());
+            AuthorizationService authService = new AuthorizationService(requireActivity());
             authResLauncher.launch(new Intent(authService.getAuthorizationRequestIntent(SpotifyAuthentication.getAuthenticationRequest(ResponseTypeValues.CODE))));
         });
 
@@ -102,7 +102,7 @@ public class SignupSpotifyFragment extends Fragment {
                         if (task.isSuccessful()) {
                             db.collection("tokens").document(mAuth.getUid()).set(userData);
                             startActivity(new Intent(getContext(), Homescreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-                            getActivity().finish();
+                            requireActivity().finish();
                         } else {
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                 Snackbar.make(view, "User with the same email already exists", Snackbar.LENGTH_SHORT).show();

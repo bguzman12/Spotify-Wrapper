@@ -1,4 +1,4 @@
-package com.example.cs2340project2.ui.login;
+package com.example.cs2340project2.utils;
 
 import androidx.lifecycle.ViewModel;
 
