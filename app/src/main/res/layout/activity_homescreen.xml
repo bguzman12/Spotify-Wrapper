@@ -61,10 +61,10 @@
         android:layout_marginBottom="124dp"
         app:layout_constraintBottom_toTopOf="@+id/button_new_wrapped"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.396"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.754"
+        app:layout_constraintVertical_bias="0.75"
         app:srcCompat="@drawable/spotify_logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cs2340project2.R;
+import com.example.cs2340project2.utils.SignupViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -32,9 +33,9 @@ public class SignupEmailFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        emailLayout = getView().findViewById(R.id.email_layout);
-        emailText = getView().findViewById(R.id.email_input);
-        next = getView().findViewById(R.id.next_btn);
+        emailLayout = requireView().findViewById(R.id.email_layout);
+        emailText = requireView().findViewById(R.id.email_input);
+        next = requireView().findViewById(R.id.next_btn);
         signupViewModel = new ViewModelProvider(requireActivity()).get(SignupViewModel.class);
     }
 

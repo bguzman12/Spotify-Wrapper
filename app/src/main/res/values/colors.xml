@@ -15,7 +15,8 @@
     <color name="background">#121212</color>
     <color name="secondaryOnBackground">#414141</color>
     <color name="primaryOnBackground">#292929</color>
-    <color name="toolbar">#191919</color>
+    <color name="light_dark">#191919</color>
     <color name="subtitle">#b8b8b8</color>
     <color name="warning">#ffcc00</color>
+    <color name="wrapped_background">#16d1a6</color>
 </resources>

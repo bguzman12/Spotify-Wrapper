@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cs2340project2.ui.wraps.WrappedActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
@@ -81,7 +82,7 @@ public class PastWraps extends AppCompatActivity implements PastWrapRecyclerView
     }
 
     private void changeActivity(int position) {
-        Intent intent = new Intent(this, PastWrapped1.class);
+        Intent intent = new Intent(this, WrappedActivity.class);
         intent.putExtra("POSITION", position);
         startActivity(intent);
     }
