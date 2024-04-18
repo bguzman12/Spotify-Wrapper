@@ -1,26 +1,37 @@
 package com.example.cs2340project2;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cs2340project2.ui.wraps.WrappedActivity;
 import com.example.cs2340project2.utils.ArtistInfo;
 import com.example.cs2340project2.utils.SongInfo;
 import com.example.cs2340project2.utils.SpotifyAuthentication;
+import com.example.cs2340project2.utils.WrapData;
 import com.example.cs2340project2.utils.Wrapped;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
-import okhttp3.Request;
+import java.util.Map;
 
 // TODO: change UI
 
@@ -28,6 +39,9 @@ public class TimeWrapped extends AppCompatActivity {
     private Button pastMonth;
     private Button past6Months;
     private Button pastYear;
+    private FirebaseFirestore fstore;
+    private String userID;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,8 +92,47 @@ public class TimeWrapped extends AppCompatActivity {
                                     return;
                                 }
                                 intent.putExtra("topSongs", (Serializable) topSongs);
-                                intent.putExtra("generatedDate", new SimpleDateFormat("M/d/yy", Locale.getDefault()).format(new Date()));
-                                startActivity(intent);
+
+                                String date = new SimpleDateFormat("M/d/yy", Locale.getDefault()).format(new Date());
+                                intent.putExtra("generatedDate", date);
+
+                                fstore = FirebaseFirestore.getInstance();
+                                userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                                DocumentReference documentReference = fstore.collection("pastwraps").document(userID);
+
+                                WrapData wrap = new WrapData(timeRange, date , topArtists, topSongs);
+                                Map<String, Object> map = new HashMap<>();
+
+                                final int[] numWraps = new int[1];
+                                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot document = task.getResult();
+                                            if (document.exists()) {
+                                                numWraps[0] = document.getData().size();
+                                                map.putAll(document.getData());
+                                            } else {
+                                                numWraps[0] = 0;
+                                            }
+                                        } else {
+                                            Log.d(TAG, "get failed with ", task.getException());
+                                        }
+
+
+                                        map.put(Integer.toString(numWraps[0]), wrap);
+                                        documentReference.set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                Log.d(TAG, "onSuccess: Past Wrap Uploaded to Database");
+                                            }
+                                        });
+
+                                        startActivity(intent);
+                                    }
+                                });
+
                             }
 
                             @Override
