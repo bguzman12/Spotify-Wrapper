@@ -35,7 +35,7 @@ public class PastWrapAdapter extends RecyclerView.Adapter<PastWrapAdapter.ClassV
     @Override
     public void onBindViewHolder(@NonNull ClassViewHolder holder, int position) {
         PastWrapItem pastWrapItem = wrapItemList.get(position);
-        Picasso.get().load(wrapItemList.get(0).getImageURL()).into(holder.summary);
+        Picasso.get().load(pastWrapItem.getImageURL()).into(holder.summary);
         holder.wrapDate.setText(pastWrapItem.getDate());
 
         switch (pastWrapItem.getTime()) {
