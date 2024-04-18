@@ -19,7 +19,7 @@ public class PreloginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launch);
+        setContentView(R.layout.activity_prelogin);
         mAuth = FirebaseAuth.getInstance();
 
         signup = findViewById(R.id.signup_btn);
