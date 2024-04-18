@@ -65,7 +65,7 @@ public class PastWraps extends AppCompatActivity implements PastWrapRecyclerView
                         for (int i = 0; i < map.size(); i++) {
                             Map<String, Object> wrapDataMap = (Map<String, Object>) document.get(Integer.toString(i));
                             WrapData dummy = new WrapData(wrapDataMap);
-                            wrapItemList.add(new PastWrapItem(dummy.getTopArtists().get(0).getImageUrl(), dummy.getDate(), dummy.getTimeRange()));
+                            wrapItemList.add(new PastWrapItem(dummy.getTopArtists().get(i).getImageUrl(), dummy.getDate(), dummy.getTimeRange()));
                         }
                     }
                 } else {
