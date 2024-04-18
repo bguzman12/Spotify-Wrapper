@@ -128,7 +128,10 @@ public class WrappedActivity extends AppCompatActivity {
         });
 
         close.setOnClickListener(view -> {
-            mp.stop();
+            if (mp.isPlaying()) {
+                mp.stop();
+            }
+            mp.release();
             cd.cancel();
             finish();
         });
