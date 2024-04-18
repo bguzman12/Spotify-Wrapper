@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class PastWrapAdapter extends RecyclerView.Adapter<PastWrapAdapter.ClassViewHolder> {
@@ -16,9 +18,10 @@ public class PastWrapAdapter extends RecyclerView.Adapter<PastWrapAdapter.ClassV
 
     private List<PastWrapItem> wrapItemList;
 
+
     public PastWrapAdapter(List<PastWrapItem> wrapItemList, PastWrapRecyclerViewInterface pastWrapRecyclerViewInterface) {
-        this.wrapItemList = wrapItemList;
         this.pastWrapRecyclerViewInterface = pastWrapRecyclerViewInterface;
+        this.wrapItemList = wrapItemList;
     }
 
     @NonNull
@@ -32,9 +35,20 @@ public class PastWrapAdapter extends RecyclerView.Adapter<PastWrapAdapter.ClassV
     @Override
     public void onBindViewHolder(@NonNull ClassViewHolder holder, int position) {
         PastWrapItem pastWrapItem = wrapItemList.get(position);
-        holder.summary.setImageBitmap(pastWrapItem.getSummaryBitmap());
-//        holder.wrapDate.setText(pastWrapItem.getDate());
-//        holder.wrapTime.setText(pastWrapItem.getTime());
+        Picasso.get().load(wrapItemList.get(0).getImageURL()).into(holder.summary);
+        holder.wrapDate.setText(pastWrapItem.getDate());
+
+        switch (pastWrapItem.getTime()) {
+            case "short_term":
+                holder.wrapTime.setText("Past Month");
+                break;
+            case "medium_term":
+                holder.wrapTime.setText("Past 6 Months");
+                break;
+            default:
+                holder.wrapTime.setText("Past Year");
+        }
+
     }
 
     @Override
@@ -43,28 +57,28 @@ public class PastWrapAdapter extends RecyclerView.Adapter<PastWrapAdapter.ClassV
     }
 
     public static class ClassViewHolder extends RecyclerView.ViewHolder {
-//        TextView wrapDate;
-//        TextView wrapTime;
+        TextView wrapDate;
+        TextView wrapTime;
         ImageView summary;
 
-        public ClassViewHolder(@NonNull View itemView, PastWrapRecyclerViewInterface classRecyclerViewInterface) {
+        public ClassViewHolder(@NonNull View itemView, PastWrapRecyclerViewInterface pastWrapRecyclerViewInterface) {
             super(itemView);
             summary = itemView.findViewById(R.id.summary_img);
-//            wrapDate = itemView.findViewById(R.id.wrapDate);
-//            wrapTime = itemView.findViewById(R.id.wrapTime);
+            wrapDate = itemView.findViewById(R.id.wrapDate);
+            wrapTime = itemView.findViewById(R.id.wrapTime);
 
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    if (classRecyclerViewInterface != null) {
-//                        int position = getAdapterPosition();
-//
-//                        if (position != RecyclerView.NO_POSITION) {
-//                            classRecyclerViewInterface.onItemClick(position);
-//                        }
-//                    }
-//                }
-//            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (pastWrapRecyclerViewInterface != null) {
+                        int position = getAdapterPosition();
+
+                        if (position != RecyclerView.NO_POSITION) {
+                            pastWrapRecyclerViewInterface.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 

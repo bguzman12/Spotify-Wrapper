@@ -1,8 +1,11 @@
 package com.example.cs2340project2;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,64 +18,75 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs2340project2.ui.wraps.WrappedActivity;
+import com.example.cs2340project2.utils.WrapData;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PastWraps extends AppCompatActivity implements PastWrapRecyclerViewInterface {
 
     private List<PastWrapItem> wrapItemList;
     private RecyclerView wrapRecylcerView;
     private PastWrapAdapter pastWrapAdapter;
+    private FirebaseFirestore fstore;
+    private String userID;
 
     public void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.pastwraps);
+        fstore = FirebaseFirestore.getInstance();
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        wrapItemList = new ArrayList<>();
 
-        wrapItemList = PastWrapList.getPastWrapItems();
-
-        wrapRecylcerView = findViewById(R.id.wrapRecyclerView);
-        wrapRecylcerView.setLayoutManager(new LinearLayoutManager(this));
-
-        pastWrapAdapter = new PastWrapAdapter(wrapItemList, this);
-        wrapRecylcerView.setAdapter(pastWrapAdapter);
-
-    }
-
-
-    public static class PastWrapList {
-        private static ArrayList<PastWrapItem> pastWrapItems = new ArrayList<>();
-
-        public static ArrayList<PastWrapItem> getPastWrapItems() {
-            FirebaseStorage storage = FirebaseStorage.getInstance("gs://cs-2340-project-2-6ffe6.appspot.com");
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            FirebaseUser currentUser = mAuth.getCurrentUser();
-            StorageReference storageRef = storage.getReference();
-            StorageReference listRef = storageRef.child(currentUser.getUid());
-            listRef.listAll()
-                    .addOnSuccessListener(listResult -> {
-                        for (StorageReference imageRef : listResult.getItems()) {
-                            try {
-                                File localFile = File.createTempFile(imageRef.getName() + "_past", "png");
-                                imageRef.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
-                                    pastWrapItems.add(new PastWrapItem(BitmapFactory.decodeFile(localFile.getAbsolutePath())));
-                                });
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
+        DocumentReference documentReference = fstore.collection("pastwraps").document(userID);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> map = document.getData();
+                        for (int i = 0; i < map.size(); i++) {
+                            Map<String, Object> wrapDataMap = (Map<String, Object>) document.get(Integer.toString(i));
+                            WrapData dummy = new WrapData(wrapDataMap);
+                            wrapItemList.add(new PastWrapItem(dummy.getTopArtists().get(0).getImageUrl(), dummy.getDate(), dummy.getTimeRange()));
                         }
-                    });
-            return pastWrapItems;
-        }
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+
+                setContentView(R.layout.pastwraps);
+
+                wrapRecylcerView = findViewById(R.id.wrapRecyclerView);
+                wrapRecylcerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                pastWrapAdapter = new PastWrapAdapter(wrapItemList, PastWraps.this);
+                wrapRecylcerView.setAdapter(pastWrapAdapter);
+
+            }
+        });
+
+
+        super.onCreate(savedInstanceState);
     }
+
 
     @Override
     public void onItemClick(int position) {
@@ -82,8 +96,30 @@ public class PastWraps extends AppCompatActivity implements PastWrapRecyclerView
     }
 
     private void changeActivity(int position) {
-        Intent intent = new Intent(this, WrappedActivity.class);
-        intent.putExtra("POSITION", position);
-        startActivity(intent);
+        DocumentReference documentReference = fstore.collection("pastwraps").document(userID);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> map = document.getData();
+                        Map<String, Object> wrapDataMap = (Map<String, Object>) document.get(Integer.toString(position));
+                        WrapData dummy = new WrapData(wrapDataMap);
+
+                        Intent intent = new Intent(PastWraps.this, WrappedActivity.class);
+
+                        intent.putExtra("timeRange", dummy.getTimeRange());
+                        intent.putExtra("topArtists", (Serializable) dummy.getTopArtists());
+                        intent.putExtra("topSongs", (Serializable) dummy.getTopSongs());
+                        intent.putExtra("generatedDate", dummy.getDate());
+
+                        startActivity(intent);
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
     }
 }

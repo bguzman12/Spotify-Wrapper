@@ -6,20 +6,14 @@ import android.net.Uri;
 import com.google.firebase.storage.StorageReference;
 
 public class PastWrapItem {
-    private Bitmap summaryBitmap;
+    private String imageURL;
     private String date;
     private String time;
 
-    public PastWrapItem(Bitmap summaryBitmap) {
-        this.summaryBitmap = summaryBitmap;
-    }
-
-    public Bitmap getSummaryBitmap() {
-        return summaryBitmap;
-    }
-
-    public void setSummaryBitmap(Bitmap summaryBitmap) {
-        this.summaryBitmap = summaryBitmap;
+    public PastWrapItem(String imageURL, String date, String time) {
+        this.imageURL = imageURL;
+        this.date = date;
+        this.time = time;
     }
 
     public String getDate() {
@@ -38,4 +32,11 @@ public class PastWrapItem {
         this.time = time;
     }
 
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.cs2340project2.utils;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class SongInfo implements Serializable {
     private String name;
@@ -13,6 +14,21 @@ public class SongInfo implements Serializable {
         this.artist = artist;
         this.imageUrl = imageUrl;
         this.clip = clip;
+    }
+
+    public SongInfo(Map<String, Object> dataMap) {
+        if (dataMap.containsKey("name")) {
+            this.name = (String) dataMap.get("name");
+        }
+        if (dataMap.containsKey("artist")) {
+            this.artist = (String) dataMap.get("artist");
+        }
+        if (dataMap.containsKey("imageUrl")) {
+            this.imageUrl = (String) dataMap.get("imageUrl");
+        }
+        if (dataMap.containsKey("clip")) {
+            this.clip = (String) dataMap.get("clip");
+        }
     }
 
     public String getName() {
