@@ -11,7 +11,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LaunchActivity extends AppCompatActivity {
+public class PreloginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private MaterialButton signup;
     private MaterialButton login;
@@ -19,19 +19,15 @@ public class LaunchActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launch);
+        setContentView(R.layout.activity_prelogin);
         mAuth = FirebaseAuth.getInstance();
 
         signup = findViewById(R.id.signup_btn);
         login = findViewById(R.id.login_btn);
 
-        signup.setOnClickListener(view -> {
-            startActivity(new Intent(this, SignupActivity.class));
-        });
+        signup.setOnClickListener(view -> startActivity(new Intent(this, SignupActivity.class)));
 
-        login.setOnClickListener(view -> {
-            startActivity(new Intent(this, LoginActivity.class));
-        });
+        login.setOnClickListener(view -> startActivity(new Intent(this, LoginActivity.class)));
     }
 
     @Override
@@ -41,7 +37,7 @@ public class LaunchActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             startActivity(new Intent(this, Homescreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-            LaunchActivity.this.finish();
+            PreloginActivity.this.finish();
         }
     }
 }

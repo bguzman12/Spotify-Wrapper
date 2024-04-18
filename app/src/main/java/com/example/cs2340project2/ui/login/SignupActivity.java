@@ -30,11 +30,6 @@ public class SignupActivity extends AppCompatActivity {
                     .addToBackStack("signupEmail")
                     .commit();
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
 
         toolbar.setNavigationOnClickListener(view -> {
             if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
@@ -45,5 +40,4 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
     }
-
 }

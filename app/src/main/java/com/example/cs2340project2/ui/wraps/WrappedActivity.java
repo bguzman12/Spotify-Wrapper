@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -12,17 +11,14 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cs2340project2.R;
-import com.example.cs2340project2.ui.login.SignupEmailFragment;
 import com.example.cs2340project2.utils.ArtistInfo;
 import com.example.cs2340project2.utils.SongInfo;
 import com.example.cs2340project2.utils.WrapViewModel;
@@ -32,10 +28,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 public class WrappedActivity extends AppCompatActivity {
     private FloatingActionButton pause;
@@ -91,16 +85,62 @@ public class WrappedActivity extends AppCompatActivity {
                 } else {
                     getSupportFragmentManager().popBackStack();
                 }
-                share.hide();
-                progress.show();
-                pause.show();
-                mute.show();
+                runOnUiThread(() -> {
+                    share.hide();
+                    progress.show();
+                    pause.show();
+                    mute.show();
+                });
                 cd.cancel();
                 resetProgress();
                 cd = nextFragTimer(milliTimer);
                 if (!paused) {
                     cd.start();
                 }
+            }
+        });
+
+        pause.setOnClickListener(view -> {
+            if (!paused) {
+                mp.pause();
+                cd.cancel();
+                runOnUiThread(() -> pause.setImageResource(R.drawable.play_icon));
+            } else {
+                mp.start();
+                cd = nextFragTimer(currMilli);
+                cd.start();
+                runOnUiThread(() -> pause.setImageResource(R.drawable.pause_icon));
+            }
+            paused = !paused;
+            wrapViewModel.setPaused(paused);
+        });
+
+        mute.setOnClickListener(view -> {
+            if (!muted) {
+                mp.setVolume(0,0);
+                runOnUiThread(() -> mute.setImageResource(R.drawable.volume_off_icon));
+
+            } else {
+                mp.setVolume(1, 1);
+                runOnUiThread(() -> mute.setImageResource(R.drawable.volume_max_icon));
+            }
+            muted = !muted;
+        });
+
+        close.setOnClickListener(view -> {
+            if (mp.isPlaying()) {
+                mp.stop();
+            }
+            mp.release();
+            cd.cancel();
+            finish();
+        });
+
+        share.setOnClickListener(view -> {
+            Bitmap savedBitmap = getScreen();
+            Uri filepath = saveImage(savedBitmap);
+            if (filepath != null) {
+                shareImage(filepath);
             }
         });
 
@@ -113,47 +153,6 @@ public class WrappedActivity extends AppCompatActivity {
 
         resetProgress();
         cd.start();
-
-        pause.setOnClickListener(view -> {
-            if (!paused) {
-                mp.pause();
-                cd.cancel();
-                pause.setImageResource(R.drawable.play_icon);
-            } else {
-                mp.start();
-                cd = nextFragTimer(currMilli);
-                cd.start();
-                pause.setImageResource(R.drawable.pause_icon);
-            }
-            paused = !paused;
-            wrapViewModel.setPaused(paused);
-        });
-
-        mute.setOnClickListener(view -> {
-            if (!muted) {
-                mp.setVolume(0,0);
-                mute.setImageResource(R.drawable.volume_off_icon);
-
-            } else {
-                mp.setVolume(1, 1);
-                mute.setImageResource(R.drawable.volume_max_icon);
-            }
-            muted = !muted;
-        });
-
-        close.setOnClickListener(view -> {
-            mp.stop();
-            cd.cancel();
-            finish();
-        });
-
-        share.setOnClickListener(view -> {
-            Bitmap savedBitmap = getScreen();
-            Uri filepath = saveImage(savedBitmap);
-            if (filepath != null) {
-                shareImage(filepath);
-            }
-        });
     }
 
     private Bitmap getScreen() {
@@ -204,8 +203,10 @@ public class WrappedActivity extends AppCompatActivity {
     }
 
     private void resetProgress() {
-        progress.setProgressCompat(0, false);
-        progress.setMax((int) (milliTimer));
+        runOnUiThread(() -> {
+            progress.setProgressCompat(0, false);
+            progress.setMax((int) (milliTimer));
+        });
         currMilli = 5000L;
     }
 
@@ -213,7 +214,8 @@ public class WrappedActivity extends AppCompatActivity {
         return new CountDownTimer(milliseconds, 10) {
             @Override
             public void onTick(long millisUntilFinished) {
-                progress.setProgressCompat((int) (progress.getMax() - millisUntilFinished), true);
+                int currProgress = (int) (progress.getMax() - millisUntilFinished);
+                runOnUiThread(() -> progress.setProgressCompat(currProgress, true));
                 currMilli = millisUntilFinished;
             }
 
@@ -255,11 +257,13 @@ public class WrappedActivity extends AppCompatActivity {
                         .commit();
                 break;
             case "topArtists":
-                mute.hide();
-                pause.hide();
-                progress.hide();
-                share.show();
-                mp.reset();
+                runOnUiThread(() -> {
+                    mute.hide();
+                    pause.hide();
+                    progress.hide();
+                    share.show();
+                    mp.reset();
+                });
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.wrapped_fragment_container, WrappedSummaryFragment.class, null, "summary")
                         .addToBackStack("summary")

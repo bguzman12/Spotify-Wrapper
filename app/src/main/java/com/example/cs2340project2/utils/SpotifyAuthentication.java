@@ -1,7 +1,6 @@
 package com.example.cs2340project2.utils;
 
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -19,10 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -37,7 +32,7 @@ public class SpotifyAuthentication {
     private static final String REDIRECT_URI = "cs2340project2://auth";
     private static final OkHttpClient mOkHttpClient = new OkHttpClient();
     private static Call mCall;
-    private static String[] scope = {"user-read-email", "user-top-read", "user-read-recently-played"}; // TODO: change scope to required scope
+    private static final String[] scope = {"user-read-email", "user-top-read", "user-read-recently-played"}; // TODO: change scope to required scope
 
     public interface AccessTokenCallback {
         void onSuccess(String accessToken);
@@ -62,7 +57,7 @@ public class SpotifyAuthentication {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    if (Timestamp.now().getSeconds() - document.getTimestamp("expires").getSeconds() >= 60L) {
+                    if (Timestamp.now().getSeconds() - document.getTimestamp("expires").getSeconds() >= -60L) {
                         final RequestBody form = new FormBody.Builder()
                                 .add("grant_type", "refresh_token")
                                 .add("refresh_token", (String) document.get("refresh_token"))
@@ -92,7 +87,7 @@ public class SpotifyAuthentication {
                                     Timestamp currTime = Timestamp.now();
                                     docRef.update("expires", new Timestamp(currTime.getSeconds() + jsonObject.getInt("expires_in"), currTime.getNanoseconds()));
                                     docRef.update("refresh_token", jsonObject.get("refresh_token"));
-                                    callback.onSuccess(jsonObject.getString("refresh_token"));
+                                    callback.onSuccess(jsonObject.getString("access_token"));
                                 } catch (JSONException e) {
                                     callback.onFailure(e.getMessage());
                                 }

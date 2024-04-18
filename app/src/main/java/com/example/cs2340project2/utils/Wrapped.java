@@ -2,16 +2,12 @@ package com.example.cs2340project2.utils;
 
 import androidx.annotation.NonNull;
 
-import com.example.cs2340project2.utils.ArtistInfo;
-import com.example.cs2340project2.utils.SongInfo;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -21,7 +17,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class Wrapped {
-    private String accessToken;
+    private final String accessToken;
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
     private Call mCall;
     private static final String API_URL = "https://api.spotify.com/v1/me/top/";
