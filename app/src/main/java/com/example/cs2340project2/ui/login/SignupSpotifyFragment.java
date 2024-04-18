@@ -25,11 +25,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationResponse;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.ResponseTypeValues;
-import net.openid.appauth.TokenResponse;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -58,21 +56,19 @@ public class SignupSpotifyFragment extends Fragment {
                     if (result != null) {
                         final AuthorizationResponse response = AuthorizationResponse.fromIntent(result.getData());
                         if (response != null) {
-                            AuthorizationService authService = new AuthorizationService(getActivity());
+                            AuthorizationService authService = new AuthorizationService(requireActivity());
                             authService.performTokenRequest(response.createTokenExchangeRequest(),
-                                    new AuthorizationService.TokenResponseCallback() {
-                                @Override
-                                public void onTokenRequestCompleted(TokenResponse resp, AuthorizationException ex) {
-                                    if (resp != null && resp.accessTokenExpirationTime != null) {
-                                        userData.put("access_token", resp.accessToken);
-                                        userData.put("expires", new Timestamp(new Date(resp.accessTokenExpirationTime)));
-                                        userData.put("refresh_token", resp.refreshToken);
-                                        enableButton();
-                                    }
-                                }
-                            });
+                                    (resp, ex) -> {
+                                        if (resp != null && resp.accessTokenExpirationTime != null) {
+                                            userData.put("access_token", resp.accessToken);
+                                            userData.put("expires", new Timestamp(new Date(resp.accessTokenExpirationTime)));
+                                            userData.put("refresh_token", resp.refreshToken);
+                                            enableButton();
+                                            Snackbar.make(requireView(), "Spotify account connected", Snackbar.LENGTH_SHORT).show();
+                                        }
+                                    });
                         } else {
-                            Snackbar.make(getView(), "Connect your Spotify account", Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(requireView(), "Connect your Spotify account", Snackbar.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -85,19 +81,14 @@ public class SignupSpotifyFragment extends Fragment {
         spotify = requireView().findViewById(R.id.spotify_btn);
         signup = requireView().findViewById(R.id.signup_btn);
         signupViewModel = new ViewModelProvider(requireActivity()).get(SignupViewModel.class);
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+        AuthorizationService authService = new AuthorizationService(requireActivity());
+        authResLauncher.launch(new Intent(authService.getAuthorizationRequestIntent(SpotifyAuthentication.getAuthenticationRequest(ResponseTypeValues.CODE))));
 
-        spotify.setOnClickListener(view -> {
-            AuthorizationService authService = new AuthorizationService(requireActivity());
-            authResLauncher.launch(new Intent(authService.getAuthorizationRequestIntent(SpotifyAuthentication.getAuthenticationRequest(ResponseTypeValues.CODE))));
-        });
+        spotify.setOnClickListener(v -> authResLauncher.launch(new Intent(authService.getAuthorizationRequestIntent(SpotifyAuthentication.getAuthenticationRequest(ResponseTypeValues.CODE)))));
 
-        signup.setOnClickListener(view -> {
-            mAuth.createUserWithEmailAndPassword(signupViewModel.getEmail(), signupViewModel.getPassword())
+        signup.setOnClickListener(v ->
+                mAuth.createUserWithEmailAndPassword(signupViewModel.getEmail(), signupViewModel.getPassword())
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             db.collection("tokens").document(mAuth.getUid()).set(userData);
@@ -105,17 +96,18 @@ public class SignupSpotifyFragment extends Fragment {
                             requireActivity().finish();
                         } else {
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                Snackbar.make(view, "User with the same email already exists", Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(v, "User with the same email already exists", Snackbar.LENGTH_SHORT).show();
                             } else {
-                                Snackbar.make(view, "Failed to create account", Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(v, "Failed to create account", Snackbar.LENGTH_SHORT).show();
                             }
                         }
-                    });
-        });
+                    }));
     }
 
     private void enableButton() {
-        signup.setEnabled(true);
-        signup.setBackgroundColor(Color.WHITE);
+        requireActivity().runOnUiThread(() -> {
+            signup.setEnabled(true);
+            signup.setBackgroundColor(Color.WHITE);
+        });
     }
 }

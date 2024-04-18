@@ -36,15 +36,6 @@ public class SignupPasswordFragment extends Fragment {
         passwordText = requireView().findViewById(R.id.password_input);
         next = requireView().findViewById(R.id.next_btn);
         signupViewModel = new ViewModelProvider(requireActivity()).get(SignupViewModel.class);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (validate()) {
-            enableButton();
-        }
 
         passwordText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -64,16 +55,16 @@ public class SignupPasswordFragment extends Fragment {
                 } else {
                     disableButton();
                     if (passwordText.getText().length() < 6) {
-                        passwordLayout.setError("Password must be at least 6 characters");
+                        requireActivity().runOnUiThread(() -> passwordLayout.setError("Password must be at least 6 characters"));
                     } else {
-                        passwordLayout.setError("");
+                        requireActivity().runOnUiThread(() -> passwordLayout.setError(""));
                     }
                 }
             }
         });
 
-        next.setOnClickListener(view -> {
-            signupViewModel.setPassword(passwordText.getText().toString());
+        next.setOnClickListener(v -> {
+            requireActivity().runOnUiThread(() -> signupViewModel.setPassword(passwordText.getText().toString()));
             getParentFragmentManager().beginTransaction()
                     .replace(R.id.signup_fragment_container, SignupSpotifyFragment.class, null, "signupSpotify")
                     .addToBackStack("signupSpotify")
@@ -81,18 +72,31 @@ public class SignupPasswordFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (validate()) {
+            enableButton();
+        }
+    }
+
     private boolean validate() {
         return passwordText.getText().length() >= 6;
     }
 
     private void enableButton() {
-        next.setEnabled(true);
-        next.setBackgroundColor(Color.WHITE);
-        passwordLayout.setError("");
+        requireActivity().runOnUiThread(() -> {
+            next.setEnabled(true);
+            next.setBackgroundColor(Color.WHITE);
+            passwordLayout.setError("");
+        });
     }
 
     private void disableButton() {
-        next.setEnabled(false);
-        next.setBackgroundColor(Color.parseColor("#414141"));
+        requireActivity().runOnUiThread(() -> {
+            next.setEnabled(false);
+            next.setBackgroundColor(Color.parseColor("#414141"));
+        });
     }
 }

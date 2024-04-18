@@ -43,15 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordText = findViewById(R.id.password_input);
         login = findViewById(R.id.login_btn);
 
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        toolbar.setNavigationOnClickListener(view -> {
-            finish();
-        });
+        toolbar.setNavigationOnClickListener(view -> finish());
 
         emailText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -71,9 +63,9 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     disableButton();
                     if (!Patterns.EMAIL_ADDRESS.matcher(emailText.getText().toString()).matches()) {
-                        emailLayout.setError("Email address is not a valid email address");
+                        runOnUiThread(() -> emailLayout.setError("Email address is not a valid email address"));
                     } else {
-                        emailLayout.setError("");
+                        runOnUiThread(() -> emailLayout.setError(""));
                     }
                 }
             }
