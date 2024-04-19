@@ -34,11 +34,12 @@
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="257dp"
-        android:layout_height="78dp"
+        android:layout_width="465dp"
+        android:layout_height="175dp"
+        android:src="@drawable/new_spotify_logo"
         app:layout_constraintBottom_toTopOf="@+id/button_new_wrapped"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.28" />
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
