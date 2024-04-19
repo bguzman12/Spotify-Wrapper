@@ -5,39 +5,70 @@
     android:id="@+id/time_wrapped_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#121212"
     tools:context=".TimeWrapped">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <TextView
+        android:id="@+id/time_wrapped_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Time Period"
+        android:textSize="36sp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="0dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
 
-        <TextView
-            android:id="@+id/time_wrapped_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Generate wrapped from..." />
+    <LinearLayout
+        android:id="@+id/buttons_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/time_wrapped_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <Button
             android:id="@+id/past_month_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Past Month" />
+            android:text="Last Month"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
 
         <Button
             android:id="@+id/past_6_month_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Past 6 Months" />
+            android:text="Last 6 Months"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
 
         <Button
             android:id="@+id/past_year_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Past Year" />
+            android:text="Last Year"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:textSize="18sp"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
