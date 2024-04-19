@@ -1,4 +1,4 @@
-package com.example.cs2340project2;
+package com.example.cs2340project2.ui.pastwraps;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cs2340project2.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -16,8 +17,7 @@ import java.util.List;
 public class PastWrapAdapter extends RecyclerView.Adapter<PastWrapAdapter.ClassViewHolder> {
     private final PastWrapRecyclerViewInterface pastWrapRecyclerViewInterface;
 
-    private List<PastWrapItem> wrapItemList;
-
+    private final List<PastWrapItem> wrapItemList;
 
     public PastWrapAdapter(List<PastWrapItem> wrapItemList, PastWrapRecyclerViewInterface pastWrapRecyclerViewInterface) {
         this.pastWrapRecyclerViewInterface = pastWrapRecyclerViewInterface;
@@ -27,7 +27,7 @@ public class PastWrapAdapter extends RecyclerView.Adapter<PastWrapAdapter.ClassV
     @NonNull
     @Override
     public ClassViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.pastwrap_item,
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_pastwrap,
                 parent, false);
         return new ClassViewHolder(itemView, pastWrapRecyclerViewInterface);
     }
@@ -67,15 +67,12 @@ public class PastWrapAdapter extends RecyclerView.Adapter<PastWrapAdapter.ClassV
             wrapDate = itemView.findViewById(R.id.wrapDate);
             wrapTime = itemView.findViewById(R.id.wrapTime);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (pastWrapRecyclerViewInterface != null) {
-                        int position = getAdapterPosition();
+            itemView.setOnClickListener(view -> {
+                if (pastWrapRecyclerViewInterface != null) {
+                    int position = getAdapterPosition();
 
-                        if (position != RecyclerView.NO_POSITION) {
-                            pastWrapRecyclerViewInterface.onItemClick(position);
-                        }
+                    if (position != RecyclerView.NO_POSITION) {
+                        pastWrapRecyclerViewInterface.onItemClick(position);
                     }
                 }
             });

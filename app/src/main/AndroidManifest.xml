@@ -39,7 +39,7 @@
             android:name=".Homescreen"
             android:exported="false" />
         <activity
-            android:name=".PastWraps"
+            android:name=".ui.pastwraps.PastWraps"
             android:exported="false" />
         <activity
             android:name=".ui.login.PreloginActivity"

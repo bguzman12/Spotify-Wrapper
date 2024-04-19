@@ -1,9 +1,4 @@
-package com.example.cs2340project2;
-
-import android.graphics.Bitmap;
-import android.net.Uri;
-
-import com.google.firebase.storage.StorageReference;
+package com.example.cs2340project2.ui.pastwraps;
 
 public class PastWrapItem {
     private String imageURL;

@@ -45,4 +45,5 @@
     <string name="share">share</string>
     <string name="top_artists">Top Artists</string>
     <string name="top_songs">Top Songs</string>
+    <string name="past_wraps">Past Wraps</string>
 </resources>
