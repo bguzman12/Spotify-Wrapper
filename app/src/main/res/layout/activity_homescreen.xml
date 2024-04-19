@@ -8,62 +8,60 @@
     android:theme="@style/Base.Theme.CS2340Project2"
     tools:context=".Homescreen">
 
-    <!--TODO make this look pretty-->
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <Button
         android:id="@+id/button_new_wrapped"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="220dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
         android:backgroundTint="@color/green"
         android:onClick="newWrappedClicked"
         android:text="Create New Wrapped"
         android:textColor="@color/spotify_black"
-        app:layout_constraintBottom_toTopOf="@+id/button_account"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
 
     <Button
         android:id="@+id/button_past_wraps"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/green"
         android:onClick="pastWrapsClicked"
         android:text="Past Wraps"
         android:textColor="@color/spotify_black"
-        app:layout_constraintBottom_toTopOf="@+id/button_account"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_new_wrapped"
-        app:layout_constraintVertical_bias="0.9" />
+        app:layout_constraintTop_toBottomOf="@+id/button_new_wrapped" />
 
-    <Button
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_account"
+        style="?attr/floatingActionButtonSmallStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="164dp"
+        android:layout_margin="16dp"
         android:backgroundTint="@color/green"
+        android:contentDescription="account"
         android:onClick="viewAccountClicked"
-        android:text="View Account"
-        android:textColor="@color/spotify_black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="305dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="124dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_new_wrapped"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75" />
+        app:srcCompat="@drawable/account_icon"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
