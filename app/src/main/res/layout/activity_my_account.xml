@@ -12,26 +12,24 @@
         android:id="@+id/button_new_wrapped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         android:layout_marginBottom="148dp"
         android:onClick="viewPostsClicked"
         android:text="See Posts"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/button_account"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="196dp"
+        android:layout_marginBottom="260dp"
         android:onClick="editLoginClicked"
-        android:textColor="@color/black"
         android:text="Edit Account Info"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
@@ -44,4 +42,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="51dp"
+        android:layout_height="52dp"
+        android:layout_marginBottom="52dp"
+        android:background="@drawable/round"
+        android:backgroundTint="@color/green"
+        android:foregroundTint="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttons_container"
+        app:layout_constraintVertical_bias="0.791"
+        app:srcCompat="?android:attr/listChoiceIndicatorSingle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

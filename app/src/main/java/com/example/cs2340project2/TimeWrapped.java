@@ -2,7 +2,9 @@ package com.example.cs2340project2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,12 +34,14 @@ public class TimeWrapped extends AppCompatActivity {
     private Button pastMonth;
     private Button past6Months;
     private Button pastYear;
+    private ImageButton homeBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.time_wrapped);
 
+        homeBtn = findViewById(R.id.imageButton3);
         pastMonth = findViewById(R.id.past_month_btn);
         past6Months = findViewById(R.id.past_6_month_btn);
         pastYear = findViewById(R.id.past_year_btn);
@@ -48,6 +52,13 @@ public class TimeWrapped extends AppCompatActivity {
 
         pastYear.setOnClickListener(view -> launchWrapped("long_term"));
 
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TimeWrapped.this, Homescreen.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
