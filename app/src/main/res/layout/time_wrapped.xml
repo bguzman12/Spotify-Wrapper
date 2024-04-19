@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Choose Time Period"
+        android:fontFamily="serif"
         android:textSize="36sp"
         android:textColor="#FFFFFF"
         app:layout_constraintTop_toTopOf="parent"
@@ -27,47 +28,52 @@
 
     <LinearLayout
         android:id="@+id/buttons_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_width="344dp"
+        android:layout_height="247dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@id/time_wrapped_title"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/time_wrapped_title"
+        app:layout_constraintVertical_bias="0.467">
 
         <Button
             android:id="@+id/past_month_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Last Month"
+            android:layout_marginBottom="8dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp"/>
+            android:text="Last Month"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/past_6_month_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Last 6 Months"
+            android:layout_marginBottom="8dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp"/>
+            android:text="Last 6 Months"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/past_year_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Last Year"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            android:textSize="18sp"/>
+            android:text="Last Year"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
