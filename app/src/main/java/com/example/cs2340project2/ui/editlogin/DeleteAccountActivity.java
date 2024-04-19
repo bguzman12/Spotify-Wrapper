@@ -125,12 +125,14 @@ public class DeleteAccountActivity extends AppCompatActivity {
                                     .setIcon(R.drawable.warning_icon)
                                     .setMessage("Deleting your account will erase all your Spotify Wraps.")
                                     .setPositiveButton("Yes", (dialog2, which) -> {
-                                        db.collection("tokens").document(currentUser.getUid()).delete();
-                                        db.collection("pastwraps").document(currentUser.getUid()).delete();
-                                        currentUser.delete();
-                                        mAuth.signOut();
-                                        startActivity(new Intent(this, PreloginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-                                        DeleteAccountActivity.this.finish();
+                                        db.collection("tokens").document(currentUser.getUid()).delete()
+                                                .addOnSuccessListener(t -> db.collection("pastwraps").document(currentUser.getUid()).delete()
+                                                        .addOnSuccessListener(t2 -> currentUser.delete()
+                                                                .addOnSuccessListener(t3 -> {
+                                                                    mAuth.signOut();
+                                                                    startActivity(new Intent(this, PreloginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                                                                    DeleteAccountActivity.this.finish();
+                                                                })));
                                     })
                                     .setNegativeButton("No", (dialog2, which) -> finish())
                                     .create();
