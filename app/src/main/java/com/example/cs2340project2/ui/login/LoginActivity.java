@@ -89,9 +89,9 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     disableButton();
                     if (passwordText.getText().length() == 0) {
-                        passwordLayout.setError("Password cannot be empty");
+                        runOnUiThread(() -> passwordLayout.setError("Password cannot be empty"));
                     } else {
-                        passwordLayout.setError("");
+                        runOnUiThread(() -> passwordLayout.setError(""));
                     }
                 }
             }
@@ -120,13 +120,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void enableButton() {
-        login.setEnabled(true);
-        login.setBackgroundColor(Color.WHITE);
-        emailLayout.setError("");
-        passwordLayout.setError("");
+        runOnUiThread(() -> {
+            login.setEnabled(true);
+            login.setBackgroundColor(Color.WHITE);
+            emailLayout.setError("");
+            passwordLayout.setError("");
+        });
     }
     private void disableButton() {
-        login.setEnabled(false);
-        login.setBackgroundColor(Color.parseColor("#414141"));
+        runOnUiThread(() -> {
+            login.setEnabled(false);
+            login.setBackgroundColor(Color.parseColor("#414141"));
+        });
     }
 }

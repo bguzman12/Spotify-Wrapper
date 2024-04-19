@@ -70,9 +70,9 @@ public class EditPasswordActivity extends AppCompatActivity {
                 } else {
                     disableButton();
                     if (oldPasswordText.getText().length() == 0) {
-                        oldPasswordLayout.setError("Password cannot be empty");
+                        runOnUiThread(() -> oldPasswordLayout.setError("Password cannot be empty"));
                     } else {
-                        oldPasswordLayout.setError("");
+                        runOnUiThread(() -> oldPasswordLayout.setError(""));
                     }
                 }
             }
@@ -95,9 +95,9 @@ public class EditPasswordActivity extends AppCompatActivity {
                 } else {
                     disableButton();
                     if (newPasswordText.getText().length() < 6) {
-                        newPasswordLayout.setError("Password must be at least 6 characters");
+                        runOnUiThread(() -> newPasswordLayout.setError("Password must be at least 6 characters"));
                     } else {
-                        newPasswordLayout.setError("");
+                        runOnUiThread(() -> newPasswordLayout.setError(""));
                     }
                 }
             }
@@ -120,9 +120,9 @@ public class EditPasswordActivity extends AppCompatActivity {
                 } else {
                     disableButton();
                     if (!newPasswordText.getText().toString().equals(confirmPasswordText.getText().toString())) {
-                        confirmPasswordLayout.setError("Passwords do not match");
+                        runOnUiThread(() -> confirmPasswordLayout.setError("Passwords do not match"));
                     } else {
-                        confirmPasswordLayout.setError("");
+                        runOnUiThread(() -> confirmPasswordLayout.setError(""));
                     }
                 }
             }
@@ -137,9 +137,11 @@ public class EditPasswordActivity extends AppCompatActivity {
                                     .addOnCompleteListener(task2 -> finish());
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                oldPasswordLayout.setError("Incorrect password");
-                                saveEdits.setEnabled(false);
-                                saveEdits.setTextColor(Color.parseColor("#b8b8b8"));
+                                runOnUiThread(() -> {
+                                    oldPasswordLayout.setError("Incorrect password");
+                                    saveEdits.setEnabled(false);
+                                    saveEdits.setTextColor(Color.parseColor("#b8b8b8"));
+                                });
                             }
                         }
                     });
@@ -161,15 +163,19 @@ public class EditPasswordActivity extends AppCompatActivity {
     }
 
     private void enableButton() {
-        saveEdits.setEnabled(true);
-        saveEdits.setTextColor(Color.WHITE);
-        oldPasswordLayout.setError("");
-        newPasswordLayout.setError("");
-        confirmPasswordLayout.setError("");
+        runOnUiThread(() -> {
+            saveEdits.setEnabled(true);
+            saveEdits.setTextColor(Color.WHITE);
+            oldPasswordLayout.setError("");
+            newPasswordLayout.setError("");
+            confirmPasswordLayout.setError("");
+        });
     }
 
     private void disableButton() {
-        saveEdits.setEnabled(false);
-        saveEdits.setTextColor(Color.parseColor("#b8b8b8"));
+        runOnUiThread(() -> {
+            saveEdits.setEnabled(false);
+            saveEdits.setTextColor(Color.parseColor("#b8b8b8"));
+        });
     }
 }

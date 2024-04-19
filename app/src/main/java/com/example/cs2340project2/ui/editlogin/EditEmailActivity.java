@@ -73,9 +73,9 @@ public class EditEmailActivity extends AppCompatActivity {
                 } else {
                     disableButton();
                     if (!Patterns.EMAIL_ADDRESS.matcher(newEmailText.getText().toString()).matches()) {
-                        newEmailLayout.setError("Email address is not a valid email address");
+                        runOnUiThread(() -> newEmailLayout.setError("Email address is not a valid email address"));
                     } else {
-                        newEmailLayout.setError("");
+                        runOnUiThread(() -> newEmailLayout.setError(""));
                     }
                 }
             }
@@ -98,9 +98,9 @@ public class EditEmailActivity extends AppCompatActivity {
                 } else {
                     disableButton();
                     if (passwordText.getText().length() == 0) {
-                        passwordLayout.setError("Password cannot be empty");
+                        runOnUiThread(() -> passwordLayout.setError("Password cannot be empty"));
                     } else {
-                        passwordLayout.setError("");
+                        runOnUiThread(() -> passwordLayout.setError(""));
                     }
                 }
             }
@@ -147,14 +147,18 @@ public class EditEmailActivity extends AppCompatActivity {
     }
 
     private void enableButton() {
-        saveEdits.setEnabled(true);
-        saveEdits.setTextColor(Color.WHITE);
-        newEmailLayout.setError("");
-        passwordLayout.setError("");
+        runOnUiThread(() -> {
+            saveEdits.setEnabled(true);
+            saveEdits.setTextColor(Color.WHITE);
+            newEmailLayout.setError("");
+            passwordLayout.setError("");
+        });
     }
 
     private void disableButton() {
-        saveEdits.setEnabled(false);
-        saveEdits.setTextColor(Color.parseColor("#b8b8b8"));
+        runOnUiThread(() -> {
+            saveEdits.setEnabled(false);
+            saveEdits.setTextColor(Color.parseColor("#b8b8b8"));
+        });
     }
 }
