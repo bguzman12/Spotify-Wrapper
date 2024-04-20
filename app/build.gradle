@@ -40,6 +40,9 @@ android {
     buildFeatures {
         viewBinding true
     }
+    dataBinding {
+        enabled = true
+    }
 
     lintOptions {
         // Set your desired lint options here
