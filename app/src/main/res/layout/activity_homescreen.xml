@@ -40,6 +40,7 @@
             android:layout_marginBottom="16dp"
             app:backgroundTint="@color/green"
             android:tint="@color/green"
+            android:onClick="mainFabBtnClicked"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/plus_icon"
