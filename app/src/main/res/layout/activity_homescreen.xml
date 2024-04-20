@@ -159,7 +159,7 @@
         android:layout_margin="16dp"
         android:backgroundTint="@color/green"
         android:contentDescription="account"
-        android:onClick="viewAccountClicked"
+        android:onClick="editLoginClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/account_icon" />

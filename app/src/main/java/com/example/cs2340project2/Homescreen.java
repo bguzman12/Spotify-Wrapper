@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cs2340project2.databinding.ActivityHomescreenBinding;
+import com.example.cs2340project2.ui.editlogin.EditLoginActivity;
 import com.example.cs2340project2.ui.pastwraps.PastWraps;
 
 public class Homescreen extends AppCompatActivity {
@@ -52,6 +53,9 @@ public class Homescreen extends AppCompatActivity {
         startActivity(new Intent(this, MyAccount.class));
     }
 
+    public void editLoginClicked(View view) {
+        startActivity(new Intent(this, EditLoginActivity.class));
+    }
     public void mainFabBtnClicked(View view) {
         if (isExpanded) {
             shrinkFab();
