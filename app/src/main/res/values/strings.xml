@@ -47,4 +47,17 @@
     <string name="top_songs">Top Songs</string>
     <string name="past_wraps">Past Wraps</string>
     <string name="public_wraps">Public Wraps</string>
+    <string name="create_wrapped">Create Wrapped</string>
+    <string name="time_period">Time Period</string>
+    <string name="last_month">Last Month</string>
+    <string name="last_6_months">Last 6 Months</string>
+    <string name="last_year">Last Year</string>
+    <string name="public_access">Public Access</string>
+    <string name="public_wrap">Make your wrapped public</string>
+    <string name="next">Next</string>
+    <string-array name="time_periods">
+        <item>@string/last_month</item>
+        <item>@string/last_6_months</item>
+        <item>@string/last_year</item>
+    </string-array>
 </resources>
