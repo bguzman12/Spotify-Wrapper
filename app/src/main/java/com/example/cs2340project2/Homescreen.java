@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cs2340project2.databinding.ActivityHomescreenBinding;
 import com.example.cs2340project2.ui.editlogin.EditLoginActivity;
-import com.example.cs2340project2.ui.pastwraps.PastWraps;
-import com.example.cs2340project2.ui.publicwraps.PublicWraps;
+import com.example.cs2340project2.ui.pastwraps.PastWrapsActivity;
+import com.example.cs2340project2.ui.publicwraps.PublicWrapsActivity;
 
 public class Homescreen extends AppCompatActivity {
 
@@ -45,7 +45,7 @@ public class Homescreen extends AppCompatActivity {
     }
 
     public void pastWrapsClicked(View view) {
-        startActivity(new Intent(this, PastWraps.class));
+        startActivity(new Intent(this, PastWrapsActivity.class));
     }
 
     public void viewAccountClicked(View view) {
@@ -106,6 +106,6 @@ public class Homescreen extends AppCompatActivity {
     }
 
     public void publicWrapsClicked(View view) {
-        startActivity(new Intent(this, PublicWraps.class));
+        startActivity(new Intent(this, PublicWrapsActivity.class));
     }
 }
