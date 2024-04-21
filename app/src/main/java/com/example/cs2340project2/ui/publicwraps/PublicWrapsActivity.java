@@ -157,8 +157,7 @@ public class PublicWrapsActivity extends AppCompatActivity implements PublicWrap
                                 }
                             }
 
-                            newMap.put(Integer.toString(dummy.getPosition()), dummy);
-                            newDocumentReference.set(newMap);
+                            newDocumentReference.update(Integer.toString(dummy.getPosition()), dummy);
 
                             Snackbar.make(coordinatorLayout, "Wrap is no longer public", Snackbar.LENGTH_LONG).show();
 
