@@ -26,10 +26,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class TimeWrapped extends AppCompatActivity {
 
@@ -108,25 +106,21 @@ public class TimeWrapped extends AppCompatActivity {
 
                                 WrapData wrap = new WrapData(timeRange, date , topArtists, topSongs, userID, post, 0);
 
-                                Map<String, Object> map = new HashMap<>();
-
                                 documentReference.get().addOnCompleteListener(task -> {
                                     int numWraps = 0;
                                     if (task.isSuccessful()) {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
                                             numWraps = document.getData().size();
-                                            map.putAll(document.getData());
                                         }
                                     }
 
                                     wrap.setPosition(numWraps);
-                                    map.put(Integer.toString(numWraps), wrap);
-                                    documentReference.set(map);
+                                    documentReference.update(Integer.toString(numWraps), wrap);
 
                                     if (post) {
                                         DocumentReference newDocumentReference = db.collection("pastwraps").document("public");
-                                        Map<String, Object> pubMap = new HashMap<>();
+
                                         newDocumentReference.get().addOnCompleteListener(pubTask -> {
                                             int pubWraps = 0;
                                             if (pubTask.isSuccessful()) {
@@ -136,8 +130,7 @@ public class TimeWrapped extends AppCompatActivity {
                                                 }
                                             }
 
-                                            pubMap.put(Integer.toString(pubWraps), wrap);
-                                            newDocumentReference.set(pubMap);
+                                            newDocumentReference.update(Integer.toString(pubWraps), wrap);
                                         });
                                     }
 

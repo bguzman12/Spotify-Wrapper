@@ -127,28 +127,27 @@ public class DeleteAccountActivity extends AppCompatActivity {
                                     .setIcon(R.drawable.warning_icon)
                                     .setMessage("Deleting your account will erase all your Spotify Wraps.")
                                     .setPositiveButton("Yes", (dialog2, which) -> {
+                                        toolbar.setNavigationOnClickListener(null);
                                         db.collection("tokens").document(currentUser.getUid()).delete()
                                                 .addOnSuccessListener(t -> db.collection("pastwraps").document(currentUser.getUid()).delete()
                                                         .addOnSuccessListener(t2 -> db.collection("pastwraps").document("public").get()
                                                                 .addOnSuccessListener(t3 -> {
                                                                     Map<String, Object> map = t3.getData();
                                                                     Map<String, Object> newMap = new HashMap<>();
-                                                                    for (int i = 0; i < map.size(); i++) {
+                                                                    int mapSize = map.size();
+                                                                    for (int i = 0; i < mapSize; i++) {
                                                                         Map<String, Object> currMap = (Map<String, Object>) map.get(Integer.toString(i));
                                                                         if (currMap != null && currMap.get("author").equals(currentUser.getUid())) {
                                                                             map.remove(Integer.toString(i));
                                                                         }
                                                                     }
-                                                                    for (int i = 0, j = 0; i < map.size(); i++) {
-                                                                        Map<String, Object> currMap = (Map<String, Object>) map.get(Integer.toString(i));
-                                                                        if (currMap != null) {
-                                                                            newMap.put(Integer.toString(j++), currMap);
-                                                                        }
+                                                                    int j = 0;
+                                                                    for (String key : map.keySet()) {
+                                                                        newMap.put(Integer.toString(j++), (Map<String, Object>) map.get(key));
                                                                     }
                                                                     db.collection("pastwraps").document("public").set(newMap)
                                                                                     .addOnSuccessListener(t4 -> currentUser.delete()
                                                                                             .addOnSuccessListener(t5 -> {
-                                                                                                toolbar.setNavigationOnClickListener(null);
                                                                                                 mAuth.signOut();
                                                                                                 startActivity(new Intent(this, PreloginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                                                                                                 DeleteAccountActivity.this.finish();
