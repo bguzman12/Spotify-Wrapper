@@ -31,32 +31,4 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
     <string name="pastWraps">"Past Wraps"</string>
-    <string name="mute">mute</string>
-    <string name="pause">pause</string>
-    <string name="close">close</string>
-    <string name="top">My Top </string>
-    <string name="wrapped_start_2">for the past</string>
-    <string name="wrapped_start_1">My Wrapped</string>
-    <string name="one">1</string>
-    <string name="two">2</string>
-    <string name="three">3</string>
-    <string name="four">4</string>
-    <string name="five">5</string>
-    <string name="share">share</string>
-    <string name="top_artists">Top Artists</string>
-    <string name="top_songs">Top Songs</string>
-    <string name="past_wraps">Past Wraps</string>
-    <string name="create_wrapped">Create Wrapped</string>
-    <string name="time_period">Time Period</string>
-    <string name="last_month">Last Month</string>
-    <string name="last_6_months">Last 6 Months</string>
-    <string name="last_year">Last Year</string>
-    <string name="public_access">Public Access</string>
-    <string name="public_wrap">Make your wrapped public</string>
-    <string name="next">Next</string>
-    <string-array name="time_periods">
-        <item>@string/last_month</item>
-        <item>@string/last_6_months</item>
-        <item>@string/last_year</item>
-    </string-array>
 </resources>

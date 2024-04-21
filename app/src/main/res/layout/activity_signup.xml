@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            android:background="@color/light_dark"
+            android:background="@color/toolbar"
             app:navigationIcon="@drawable/arrow_back_icon"
             app:navigationIconTint="@color/white"
             app:title="@string/create_account_text"

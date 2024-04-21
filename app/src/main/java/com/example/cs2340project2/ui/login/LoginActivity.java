@@ -9,17 +9,25 @@ import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cs2340project2.Homescreen;
 import com.example.cs2340project2.R;
+import com.example.cs2340project2.SpotifyAuthentication;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -43,7 +51,15 @@ public class LoginActivity extends AppCompatActivity {
         passwordText = findViewById(R.id.password_input);
         login = findViewById(R.id.login_btn);
 
-        toolbar.setNavigationOnClickListener(view -> finish());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        toolbar.setNavigationOnClickListener(view -> {
+            finish();
+        });
 
         emailText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -63,9 +79,9 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     disableButton();
                     if (!Patterns.EMAIL_ADDRESS.matcher(emailText.getText().toString()).matches()) {
-                        runOnUiThread(() -> emailLayout.setError("Email address is not a valid email address"));
+                        emailLayout.setError("Email address is not a valid email address");
                     } else {
-                        runOnUiThread(() -> emailLayout.setError(""));
+                        emailLayout.setError("");
                     }
                 }
             }
@@ -89,9 +105,9 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     disableButton();
                     if (passwordText.getText().length() == 0) {
-                        runOnUiThread(() -> passwordLayout.setError("Password cannot be empty"));
+                        passwordLayout.setError("Password cannot be empty");
                     } else {
-                        runOnUiThread(() -> passwordLayout.setError(""));
+                        passwordLayout.setError("");
                     }
                 }
             }
@@ -120,17 +136,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void enableButton() {
-        runOnUiThread(() -> {
-            login.setEnabled(true);
-            login.setBackgroundColor(Color.WHITE);
-            emailLayout.setError("");
-            passwordLayout.setError("");
-        });
+        login.setEnabled(true);
+        login.setBackgroundColor(Color.WHITE);
+        emailLayout.setError("");
+        passwordLayout.setError("");
     }
     private void disableButton() {
-        runOnUiThread(() -> {
-            login.setEnabled(false);
-            login.setBackgroundColor(Color.parseColor("#414141"));
-        });
+        login.setEnabled(false);
+        login.setBackgroundColor(Color.parseColor("#414141"));
     }
 }

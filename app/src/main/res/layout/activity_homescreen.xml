@@ -8,160 +8,63 @@
     android:theme="@style/Base.Theme.CS2340Project2"
     tools:context=".Homescreen">
 
+    <!--TODO make this look pretty-->
+
+    <Button
+        android:id="@+id/button_new_wrapped"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="220dp"
+        android:backgroundTint="@color/green"
+        android:onClick="newWrappedClicked"
+        android:text="Create New Wrapped"
+        android:textColor="@color/spotify_black"
+        app:layout_constraintBottom_toTopOf="@+id/button_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button_past_wraps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="72dp"
+        android:backgroundTint="@color/green"
+        android:onClick="pastWrapsClicked"
+        android:text="Past Wraps"
+        android:textColor="@color/spotify_black"
+        app:layout_constraintBottom_toTopOf="@+id/button_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_new_wrapped"
+        app:layout_constraintVertical_bias="0.9" />
+
+    <Button
+        android:id="@+id/button_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="164dp"
+        android:backgroundTint="@color/green"
+        android:onClick="viewAccountClicked"
+        android:text="View Account"
+        android:textColor="@color/spotify_black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="440dp"
-        android:layout_height="343dp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/new_spotify_logo"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="305dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="124dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_new_wrapped"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.347"
+        app:layout_constraintHorizontal_bias="0.396"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.099" />
-
-    <View
-        android:id="@+id/transparentBg"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/dark_gray"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fabConstraint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/mainFabBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="25dp"
-            app:backgroundTint="@color/green"
-            android:tint="@color/green"
-            android:onClick="mainFabBtnClicked"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/plus_icon"
-            app:tint="@color/white" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/button_past_wraps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:backgroundTint="@color/green"
-            android:tint="@color/green"
-            android:visibility="invisible"
-            android:onClick="pastWrapsClicked"
-            app:layout_constraintBottom_toTopOf="@id/mainFabBtn"
-            app:layout_constraintEnd_toEndOf="@id/mainFabBtn"
-            app:srcCompat="@drawable/past_wraps_icon"
-            app:tint="@color/white" />
-
-        <TextView
-            android:id="@+id/pastwrapsTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/text_rectangle"
-            android:elevation="8dp"
-            android:paddingHorizontal="32dp"
-            android:paddingVertical="8dp"
-            android:text="Past Wraps"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/button_past_wraps"
-            app:layout_constraintEnd_toStartOf="@+id/button_past_wraps"
-            app:layout_constraintTop_toTopOf="@+id/button_past_wraps" />
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/button_public_wraps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:backgroundTint="@color/green"
-            app:backgroundTint="@color/green"
-            android:tint="@color/green"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/button_past_wraps"
-            app:layout_constraintEnd_toEndOf="@+id/button_past_wraps"
-            app:srcCompat="@drawable/spotify_icon"
-            app:tint="@color/white" />
-
-        <TextView
-            android:id="@+id/publicwrapsTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/text_rectangle"
-            android:elevation="8dp"
-            android:paddingHorizontal="32dp"
-            android:paddingVertical="8dp"
-            android:text="Public Wraps"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/button_public_wraps"
-            app:layout_constraintEnd_toStartOf="@id/button_public_wraps"
-            app:layout_constraintTop_toTopOf="@id/button_public_wraps" />
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/button_new_wrapped"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            app:backgroundTint="@color/green"
-            android:tint="@color/green"
-            android:visibility="invisible"
-            android:onClick="newWrappedClicked"
-            app:layout_constraintBottom_toTopOf="@id/button_public_wraps"
-            app:layout_constraintEnd_toEndOf="@id/button_public_wraps"
-            app:srcCompat="@drawable/plus_icon"
-            app:tint="@color/white" />
-
-        <TextView
-            android:id="@+id/createwrapsTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/text_rectangle"
-            android:elevation="8dp"
-            android:paddingHorizontal="32dp"
-            android:paddingVertical="8dp"
-            android:text="Create Wrapped"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/button_new_wrapped"
-            app:layout_constraintEnd_toStartOf="@id/button_new_wrapped"
-            app:layout_constraintTop_toTopOf="@id/button_new_wrapped" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_account"
-        style="?attr/floatingActionButtonSmallStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="25dp"
-        android:backgroundTint="@color/green"
-        android:contentDescription="account"
-        android:onClick="editLoginClicked"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/account_icon" />
+        app:layout_constraintVertical_bias="0.754"
+        app:srcCompat="@drawable/spotify_logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cs2340project2.R;
-import com.example.cs2340project2.utils.SignupViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -33,10 +32,19 @@ public class SignupEmailFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        emailLayout = requireView().findViewById(R.id.email_layout);
-        emailText = requireView().findViewById(R.id.email_input);
-        next = requireView().findViewById(R.id.next_btn);
+        emailLayout = getView().findViewById(R.id.email_layout);
+        emailText = getView().findViewById(R.id.email_input);
+        next = getView().findViewById(R.id.next_btn);
         signupViewModel = new ViewModelProvider(requireActivity()).get(SignupViewModel.class);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (validate()) {
+            enableButton();
+        }
 
         emailText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -56,16 +64,16 @@ public class SignupEmailFragment extends Fragment {
                 } else {
                     disableButton();
                     if (!Patterns.EMAIL_ADDRESS.matcher(emailText.getText().toString()).matches()) {
-                        requireActivity().runOnUiThread(() -> emailLayout.setError("Email address is not a valid email address"));
+                        emailLayout.setError("Email address is not a valid email address");
                     } else {
-                        requireActivity().runOnUiThread(() -> emailLayout.setError(""));
+                        emailLayout.setError("");
                     }
                 }
             }
         });
 
-        next.setOnClickListener(v -> {
-            requireActivity().runOnUiThread(() -> signupViewModel.setEmail(emailText.getText().toString()));
+        next.setOnClickListener(view -> {
+            signupViewModel.setEmail(emailText.getText().toString());
             getParentFragmentManager().beginTransaction()
                     .replace(R.id.signup_fragment_container, SignupPasswordFragment.class, null, "signupPassword")
                     .addToBackStack("signupPassword")
@@ -73,31 +81,18 @@ public class SignupEmailFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (validate()) {
-            enableButton();
-        }
-    }
-
     private boolean validate() {
         return Patterns.EMAIL_ADDRESS.matcher(emailText.getText().toString()).matches();
     }
 
     private void enableButton() {
-        requireActivity().runOnUiThread(() -> {
-            next.setEnabled(true);
-            next.setBackgroundColor(Color.WHITE);
-            emailLayout.setError("");
-        });
+        next.setEnabled(true);
+        next.setBackgroundColor(Color.WHITE);
+        emailLayout.setError("");
     }
 
     private void disableButton() {
-        requireActivity().runOnUiThread(() -> {
-            next.setEnabled(false);
-            next.setBackgroundColor(Color.parseColor("#414141"));
-        });
+        next.setEnabled(false);
+        next.setBackgroundColor(Color.parseColor("#414141"));
     }
 }
