@@ -2,7 +2,6 @@ package com.example.cs2340project2.ui.pastwraps;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -144,7 +143,7 @@ public class PastWraps extends AppCompatActivity implements PastWrapRecyclerView
                         Map<String, Object> pubMap = new HashMap<>();
                         final int[] numWraps = new int[1];
                         newDocumentReference.get().addOnCompleteListener(pubTask -> {
-                            if (task.isSuccessful()) {
+                            if (pubTask.isSuccessful()) {
                                 DocumentSnapshot newDocument = pubTask.getResult();
                                 if (newDocument.exists()) {
                                     numWraps[0] = newDocument.getData().size();

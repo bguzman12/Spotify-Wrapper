@@ -72,7 +72,6 @@ public class TimeWrapped extends AppCompatActivity {
                 Wrapped wrapped = new Wrapped(accessToken);
                 Intent intent = new Intent(getBaseContext(), WrappedActivity.class);
                 intent.putExtra("timeRange", timeRange);
-                intent.putExtra("public", isPublic);
                 wrapped.getTopArtists(timeRange, new Wrapped.TopArtistsCallback() {
                     @Override
                     public void onSuccess(List<ArtistInfo> topArtists) {
@@ -91,6 +90,7 @@ public class TimeWrapped extends AppCompatActivity {
                                 intent.putExtra("topSongs", (Serializable) topSongs);
 
                                 String date = new SimpleDateFormat("M/d/yy", Locale.getDefault()).format(new Date());
+                                boolean post = publicSwitch.isChecked();
                                 intent.putExtra("generatedDate", date);
 
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -98,29 +98,44 @@ public class TimeWrapped extends AppCompatActivity {
 
                                 DocumentReference documentReference = db.collection("pastwraps").document(userID);
 
-                                WrapData wrap = new WrapData(timeRange, date , topArtists, topSongs, userID, false, 0);
+                                WrapData wrap = new WrapData(timeRange, date , topArtists, topSongs, userID, post, 0);
 
                                 Map<String, Object> map = new HashMap<>();
 
-                                final int[] numWraps = new int[1];
                                 documentReference.get().addOnCompleteListener(task -> {
+                                    int numWraps = 0;
                                     if (task.isSuccessful()) {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
-                                            numWraps[0] = document.getData().size();
+                                            numWraps = document.getData().size();
                                             map.putAll(document.getData());
-                                        } else {
-                                            numWraps[0] = 0;
                                         }
                                     }
 
-                                    map.put(Integer.toString(numWraps[0]), wrap);
+                                    wrap.setPosition(numWraps);
+                                    map.put(Integer.toString(numWraps), wrap);
                                     documentReference.set(map);
+
+                                    if (post) {
+                                        DocumentReference newDocumentReference = db.collection("pastwraps").document("public");
+                                        Map<String, Object> pubMap = new HashMap<>();
+                                        newDocumentReference.get().addOnCompleteListener(pubTask -> {
+                                            int pubWraps = 0;
+                                            if (pubTask.isSuccessful()) {
+                                                DocumentSnapshot newDocument = pubTask.getResult();
+                                                if (newDocument.exists()) {
+                                                    pubWraps = newDocument.getData().size();
+                                                }
+                                            }
+
+                                            pubMap.put(Integer.toString(pubWraps), wrap);
+                                            newDocumentReference.set(pubMap);
+                                        });
+                                    }
 
                                     TimeWrapped.this.finish();
                                     startActivity(intent);
                                 });
-
                             }
 
                             @Override
