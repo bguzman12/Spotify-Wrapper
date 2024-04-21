@@ -94,7 +94,7 @@ public class TimeWrapped extends AppCompatActivity {
 
                                 DocumentReference documentReference = db.collection("pastwraps").document(userID);
 
-                                WrapData wrap = new WrapData(timeRange, date , topArtists, topSongs);
+                                WrapData wrap = new WrapData(timeRange, date , topArtists, topSongs, userID, false, 0);
                                 Map<String, Object> map = new HashMap<>();
 
                                 final int[] numWraps = new int[1];
