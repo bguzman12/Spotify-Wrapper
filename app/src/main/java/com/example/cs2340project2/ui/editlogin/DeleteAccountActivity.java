@@ -28,7 +28,9 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class DeleteAccountActivity extends AppCompatActivity {
@@ -127,13 +129,36 @@ public class DeleteAccountActivity extends AppCompatActivity {
                                     .setPositiveButton("Yes", (dialog2, which) -> {
                                         db.collection("tokens").document(currentUser.getUid()).delete()
                                                 .addOnSuccessListener(t -> db.collection("pastwraps").document(currentUser.getUid()).delete()
-                                                        .addOnSuccessListener(t2 -> currentUser.delete()
+                                                        .addOnSuccessListener(t2 -> db.collection("pastwraps").document("public").get()
                                                                 .addOnSuccessListener(t3 -> {
-                                                                    toolbar.setNavigationOnClickListener(null);
-                                                                    mAuth.signOut();
-                                                                    startActivity(new Intent(this, PreloginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-                                                                    DeleteAccountActivity.this.finish();
-                                                                })));
+                                                                    Map<String, Object> map = t3.getData();
+                                                                    Map<String, Object> newMap = new HashMap<>();
+                                                                    for (int i = 0; i < map.size(); i++) {
+                                                                        Map<String, Object> currMap = (Map<String, Object>) map.get(Integer.toString(i));
+                                                                        if (currMap != null && currMap.get("author").equals(currentUser.getUid())) {
+                                                                            map.remove(Integer.toString(i));
+                                                                        }
+                                                                    }
+                                                                    for (int i = 0, j = 0; i < map.size(); i++) {
+                                                                        Map<String, Object> currMap = (Map<String, Object>) map.get(Integer.toString(i));
+                                                                        if (currMap != null) {
+                                                                            newMap.put(Integer.toString(j++), currMap);
+                                                                        }
+                                                                    }
+                                                                    db.collection("pastwraps").document("public").set(newMap)
+                                                                                    .addOnSuccessListener(t4 -> currentUser.delete()
+                                                                                            .addOnSuccessListener(t5 -> {
+                                                                                                toolbar.setNavigationOnClickListener(null);
+                                                                                                mAuth.signOut();
+                                                                                                startActivity(new Intent(this, PreloginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                                                                                                DeleteAccountActivity.this.finish();
+                                                                                            })
+                                                                                    );
+
+                                                                })
+                                                        )
+                                                );
+
                                     })
                                     .setNegativeButton("No", (dialog2, which) -> finish())
                                     .create();
