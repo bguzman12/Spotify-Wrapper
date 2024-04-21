@@ -40,17 +40,11 @@ public class Homescreen extends AppCompatActivity {
     }
 
     public void newWrappedClicked(View view) {
-        //TODO: change to go to wrapped1 first
         startActivity(new Intent(this, TimeWrapped.class));
     }
 
     public void pastWrapsClicked(View view) {
-        //TODO: go to public wraps ui (not currently created)
         startActivity(new Intent(this, PastWraps.class));
-    }
-
-    public void viewAccountClicked(View view) {
-        startActivity(new Intent(this, MyAccount.class));
     }
 
     public void editLoginClicked(View view) {
@@ -90,15 +84,6 @@ public class Homescreen extends AppCompatActivity {
         binding.publicwrapsTv.startAnimation(fromBottomFabAnim);
         binding.createwrapsTv.startAnimation(fromBottomFabAnim);
         isExpanded = true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (isExpanded) {
-            shrinkFab();
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override

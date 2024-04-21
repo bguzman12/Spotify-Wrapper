@@ -2,11 +2,10 @@ package com.example.cs2340project2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.AutoCompleteTextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.cs2340project2.ui.wraps.WrappedActivity;
 import com.example.cs2340project2.utils.ArtistInfo;
@@ -14,6 +13,9 @@ import com.example.cs2340project2.utils.SongInfo;
 import com.example.cs2340project2.utils.SpotifyAuthentication;
 import com.example.cs2340project2.utils.WrapData;
 import com.example.cs2340project2.utils.Wrapped;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -28,47 +30,49 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-// TODO: change UI
-
 public class TimeWrapped extends AppCompatActivity {
-    private Button pastMonth;
-    private Button past6Months;
-    private Button pastYear;
-    private ImageButton homeBtn;
+
+    private MaterialToolbar toolbar;
+    private AutoCompleteTextView time;
+    private MaterialSwitch publicSwitch;
+    private ConstraintLayout publicAccess;
+    private FloatingActionButton next;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.time_wrapped);
+        setContentView(R.layout.activity_timewrapped);
 
-        homeBtn = findViewById(R.id.imageButton3);
-        pastMonth = findViewById(R.id.past_month_btn);
-        past6Months = findViewById(R.id.past_6_month_btn);
-        pastYear = findViewById(R.id.past_year_btn);
+        toolbar = findViewById(R.id.topAppBar_timeWrapped);
+        time = findViewById(R.id.time);
+        publicSwitch = findViewById(R.id.public_switch);
+        publicAccess = findViewById(R.id.public_access_container);
+        next = findViewById(R.id.next_fab);
 
-        pastMonth.setOnClickListener(view -> launchWrapped("short_term"));
+        toolbar.setNavigationOnClickListener(listener -> finish());
 
-        past6Months.setOnClickListener(view -> launchWrapped("medium_term"));
+        publicAccess.setOnClickListener(listener -> publicSwitch.setChecked(!publicSwitch.isChecked()));
 
-        pastYear.setOnClickListener(view -> launchWrapped("long_term"));
-
-        homeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TimeWrapped.this, Homescreen.class);
-                startActivity(intent);
-            }
+        next.setOnClickListener(view -> {
+            next.setEnabled(false);
+            String timeRange = switch (time.getText().toString()) {
+                default -> "short_term";
+                case "Last 6 Months" -> "medium_term";
+                case "Last Year" -> "long_term";
+            };
+            launchWrapped(timeRange, publicSwitch.isChecked());
         });
 
     }
 
-    private void launchWrapped(String timeRange) {
+    private void launchWrapped(String timeRange, boolean isPublic) {
         SpotifyAuthentication.refreshToken(new SpotifyAuthentication.AccessTokenCallback() {
             @Override
             public void onSuccess(String accessToken) {
                 Wrapped wrapped = new Wrapped(accessToken);
                 Intent intent = new Intent(getBaseContext(), WrappedActivity.class);
                 intent.putExtra("timeRange", timeRange);
+                intent.putExtra("public", isPublic);
                 wrapped.getTopArtists(timeRange, new Wrapped.TopArtistsCallback() {
                     @Override
                     public void onSuccess(List<ArtistInfo> topArtists) {
@@ -94,7 +98,7 @@ public class TimeWrapped extends AppCompatActivity {
 
                                 DocumentReference documentReference = db.collection("pastwraps").document(userID);
 
-                                WrapData wrap = new WrapData(timeRange, date , topArtists, topSongs);
+                                WrapData wrap = new WrapData(timeRange, date , topArtists, topSongs, isPublic);
                                 Map<String, Object> map = new HashMap<>();
 
                                 final int[] numWraps = new int[1];
@@ -112,6 +116,7 @@ public class TimeWrapped extends AppCompatActivity {
                                     map.put(Integer.toString(numWraps[0]), wrap);
                                     documentReference.set(map);
 
+                                    TimeWrapped.this.finish();
                                     startActivity(intent);
                                 });
 

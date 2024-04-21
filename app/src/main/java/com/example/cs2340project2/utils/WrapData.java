@@ -1,7 +1,6 @@
 package com.example.cs2340project2.utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,13 +9,23 @@ public class WrapData {
     private String date;
     private List<ArtistInfo> topArtists;
     private List<SongInfo> topSongs;
+    private boolean isPublic;
 
 
-    public WrapData(String timeRange, String date, List<ArtistInfo> topArtists, List<SongInfo> topSongs) {
+    public WrapData(String timeRange, String date, List<ArtistInfo> topArtists, List<SongInfo> topSongs, boolean isPublic) {
         this.timeRange = timeRange;
         this.date = date;
         this.topArtists = topArtists;
         this.topSongs = topSongs;
+        this.isPublic = isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
     }
 
     public WrapData() {
@@ -46,6 +55,9 @@ public class WrapData {
                 topSongsList.add(songInfo);
             }
             this.topSongs = topSongsList;
+        }
+        if (dataMap.containsKey("public")) {
+            this.isPublic = (boolean) dataMap.get("public");
         }
     }
 
