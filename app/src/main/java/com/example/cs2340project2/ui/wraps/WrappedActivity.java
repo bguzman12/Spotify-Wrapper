@@ -137,11 +137,7 @@ public class WrappedActivity extends AppCompatActivity {
         });
 
         share.setOnClickListener(view -> {
-            Bitmap savedBitmap = getScreen();
-            Uri filepath = saveImage(savedBitmap);
-            if (filepath != null) {
-                shareImage(filepath);
-            }
+            shareImage();
         });
 
         cd = nextFragTimer(milliTimer);
@@ -155,17 +151,17 @@ public class WrappedActivity extends AppCompatActivity {
         cd.start();
     }
 
-    private Bitmap getScreen() {
-        View screenView = findViewById(R.id.wrapped_summary_container);
+    private Bitmap getScreen(int index) {
+        View screenView = findViewById(R.id.wrapped_fragment_container);
         Bitmap bitmap = Bitmap.createBitmap(screenView.getWidth(), screenView.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         screenView.draw(canvas);
         return bitmap;
     }
 
-    private Uri saveImage(Bitmap bitmap) {
+    private Uri saveImage(Bitmap bitmap, int index) {
         try {
-            String filename = "wrapped_" + System.currentTimeMillis() + ".png";
+            String filename = "wrapped_" + index + "_" + System.currentTimeMillis() + ".png";
             Uri imageURI;
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -193,13 +189,26 @@ public class WrappedActivity extends AppCompatActivity {
         }
     }
 
-    private void shareImage(Uri imagepath) {
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, imagepath);
-        shareIntent.setType("image/png");
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivity(Intent.createChooser(shareIntent, "Share Wrap"));
+    private void shareImage() {
+        ArrayList<Bitmap> bitmaps = new ArrayList<>();
+        ArrayList<Uri> imageUris = new ArrayList<>();
+
+        // Loop through each fragment and capture the screen
+        for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+            Bitmap bitmap = getScreen(i);
+            bitmaps.add(bitmap);
+        }
+
+        // Save each captured image and get the image URI
+        for (int i = 0; i < bitmaps.size(); i++) {
+            Uri filepath = saveImage(bitmaps.get(i), i);
+            if (filepath != null) {
+                imageUris.add(filepath);
+            }
+        }
+
+        // Share the images
+        shareImages(imageUris);
     }
 
     private void resetProgress() {
@@ -208,6 +217,15 @@ public class WrappedActivity extends AppCompatActivity {
             progress.setMax((int) (milliTimer));
         });
         currMilli = 5000L;
+    }
+
+    private void shareImages(ArrayList<Uri> imageUris) {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+        shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+        shareIntent.setType("image/png");
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(Intent.createChooser(shareIntent, "Share Wrap"));
     }
 
     private CountDownTimer nextFragTimer(long milliseconds) {
