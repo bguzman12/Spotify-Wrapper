@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
@@ -95,6 +96,12 @@ public class TimeWrapped extends AppCompatActivity {
 
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                                db.collection("tokens").document(userID).update("posts", FieldValue.increment(1));
+
+                                if (post) {
+                                    db.collection("tokens").document(userID).update("public_posts", FieldValue.increment(1));
+                                }
 
                                 DocumentReference documentReference = db.collection("pastwraps").document(userID);
 

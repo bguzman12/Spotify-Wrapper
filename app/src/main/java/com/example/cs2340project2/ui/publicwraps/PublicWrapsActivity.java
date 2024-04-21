@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
@@ -128,10 +129,12 @@ public class PublicWrapsActivity extends AppCompatActivity implements PublicWrap
                         WrapData dummy = new WrapData(wrapDataMap);
 
                         if (!dummy.getAuthor().equals(userID)) {
-                            Snackbar.make(coordinatorLayout, "You can't delete other user's wraps!", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(coordinatorLayout, "Can't delete other user's wraps", Snackbar.LENGTH_LONG).show();
                             publicWrapAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
                             return;
                         }
+
+                        db.collection("tokens").document(userID).update("public_posts", FieldValue.increment(-1));
 
                         dummy.setPosted(false);
                         Map<String, Object> map = new HashMap<>();
@@ -156,7 +159,7 @@ public class PublicWrapsActivity extends AppCompatActivity implements PublicWrap
                             newMap.put(Integer.toString(dummy.getPosition()), dummy);
                             newDocumentReference.set(newMap);
 
-                            Snackbar.make(coordinatorLayout, "Public Wrap Deleted", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(coordinatorLayout, "Wrap is no longer public", Snackbar.LENGTH_LONG).show();
 
                             wrapItemList.remove(viewHolder.getAdapterPosition());
                             publicWrapAdapter.notifyItemRemoved(j);

@@ -63,6 +63,8 @@ public class SignupSpotifyFragment extends Fragment {
                                             userData.put("access_token", resp.accessToken);
                                             userData.put("expires", new Timestamp(new Date(resp.accessTokenExpirationTime)));
                                             userData.put("refresh_token", resp.refreshToken);
+                                            userData.put("posts", 0);
+                                            userData.put("public_posts", 0);
                                             enableButton();
                                             Snackbar.make(requireView(), "Spotify account connected", Snackbar.LENGTH_SHORT).show();
                                         }

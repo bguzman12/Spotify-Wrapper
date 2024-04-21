@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,10 +16,19 @@ import com.example.cs2340project2.databinding.ActivityHomescreenBinding;
 import com.example.cs2340project2.ui.editlogin.EditLoginActivity;
 import com.example.cs2340project2.ui.pastwraps.PastWrapsActivity;
 import com.example.cs2340project2.ui.publicwraps.PublicWrapsActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Map;
 
 public class Homescreen extends AppCompatActivity {
 
     private ActivityHomescreenBinding binding;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    private TextView postCount;
+    private TextView publicPostCount;
     private boolean isExpanded = false;
 
     private Animation fromBottomFabAnim, toBottomFabAnim, rotateClockWiseFabAnim, rotateAntiClockWiseFabAnim,
@@ -31,6 +41,9 @@ public class Homescreen extends AppCompatActivity {
         binding = ActivityHomescreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        postCount = findViewById(R.id.postCount);
+        publicPostCount = findViewById(R.id.publicPostCount);
+
         // Initialize animations
         fromBottomFabAnim = AnimationUtils.loadAnimation(this, R.anim.from_bottom_fab);
         toBottomFabAnim = AnimationUtils.loadAnimation(this, R.anim.to_bottom_fab);
@@ -38,6 +51,25 @@ public class Homescreen extends AppCompatActivity {
         rotateAntiClockWiseFabAnim = AnimationUtils.loadAnimation(this, R.anim.rotate_anti_clock_wise);
         fromBottomBgAnim = AnimationUtils.loadAnimation(this, R.anim.from_bottom_animation);
         toBottomBgAnim = AnimationUtils.loadAnimation(this, R.anim.to_bottom_animation);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+        DocumentReference docRef = db.collection("tokens").document(mAuth.getCurrentUser().getUid());
+        docRef.get()
+                .addOnSuccessListener(task -> {
+                    Map<String, Object> map = task.getData();
+                    runOnUiThread(() -> {
+                        postCount.setText(String.format("Posts: %d", map.get("posts")));
+                        publicPostCount.setText(String.format("Public Posts: %d", map.get("public_posts")));
+                    });
+                });
+
     }
 
     public void newWrappedClicked(View view) {

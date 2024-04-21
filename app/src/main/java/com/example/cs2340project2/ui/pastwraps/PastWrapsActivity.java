@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
@@ -126,10 +127,12 @@ public class PastWrapsActivity extends AppCompatActivity implements PastWrapRecy
                         WrapData dummy = new WrapData(wrapDataMap);
 
                         if (dummy.getPosted()) {
-                            Snackbar.make(coordinatorLayout, "This wrap is already public!", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(coordinatorLayout, "Wrap is already public", Snackbar.LENGTH_LONG).show();
                             pastWrapAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
                             return;
                         }
+
+                        db.collection("tokens").document(userID).update("public_posts", FieldValue.increment(1));
 
                         dummy.setPosted(true);
                         Map<String, Object> map = new HashMap<>(document.getData());
@@ -152,7 +155,7 @@ public class PastWrapsActivity extends AppCompatActivity implements PastWrapRecy
                             dummy.setPosition(viewHolder.getAdapterPosition());
                             pubMap.put(Integer.toString(numWraps), dummy);
                             newDocumentReference.set(pubMap);
-                            Snackbar.make(coordinatorLayout, "Wrap Posted", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(coordinatorLayout, "Wrap is now public", Snackbar.LENGTH_LONG).show();
                             pastWrapAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
                         });
                     }
