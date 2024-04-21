@@ -65,7 +65,7 @@ public class Homescreen extends AppCompatActivity {
                 .addOnSuccessListener(task -> {
                     Map<String, Object> map = task.getData();
                     runOnUiThread(() -> {
-                        postCount.setText(String.format("Posts: %d", map.get("posts")));
+                        postCount.setText(String.format("Wraps Created: %d", map.get("posts")));
                         publicPostCount.setText(String.format("Public Posts: %d", map.get("public_posts")));
                     });
                 });
