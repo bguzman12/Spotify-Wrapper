@@ -1,8 +1,7 @@
-package com.example.cs2340project2.ui.pastwraps;
+package com.example.cs2340project2.ui.publicwraps;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,25 +26,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PastWraps extends AppCompatActivity implements PastWrapRecyclerViewInterface {
+public class PublicWraps extends AppCompatActivity implements PublicWrapRecyclerViewInterface {
 
-    private List<PastWrapItem> wrapItemList;
+    private List<PublicWrapItem> wrapItemList;
     private RecyclerView wrapRecyclerView;
     private MaterialToolbar toolbar;
     private FirebaseFirestore db;
     private String userID;
-    private PastWrapAdapter pastWrapAdapter;
+    private PublicWrapAdapter publicWrapAdapter;
     private DocumentReference ref;
     private CoordinatorLayout coordinatorLayout;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pastwraps);
+        setContentView(R.layout.activity_publicwraps);
 
-        toolbar = findViewById(R.id.topAppBar_pastWraps);
+        toolbar = findViewById(R.id.topAppBar_publicWraps);
 
         toolbar.setNavigationOnClickListener(view -> finish());
-
     }
 
     public void onStart() {
@@ -55,7 +53,7 @@ public class PastWraps extends AppCompatActivity implements PastWrapRecyclerView
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         wrapItemList = new ArrayList<>();
-        ref = db.collection("pastwraps").document(userID);
+        ref = db.collection("pastwraps").document("public");
         ref.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
@@ -64,7 +62,7 @@ public class PastWraps extends AppCompatActivity implements PastWrapRecyclerView
                     for (int i = 0; i < map.size(); i++) {
                         Map<String, Object> wrapDataMap = (Map<String, Object>) document.get(String.format("%d", i));
                         WrapData dummy = new WrapData(wrapDataMap);
-                        wrapItemList.add(new PastWrapItem(dummy.getTopArtists().get(0).getImageUrl(), dummy.getDate(), dummy.getTimeRange()));
+                        wrapItemList.add(new PublicWrapItem(dummy.getTopArtists().get(0).getImageUrl(), dummy.getDate(), dummy.getTimeRange(), dummy.getAuthor()));
                     }
                 }
             }
@@ -72,11 +70,10 @@ public class PastWraps extends AppCompatActivity implements PastWrapRecyclerView
             wrapRecyclerView = findViewById(R.id.wrapRecyclerView);
             wrapRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-            pastWrapAdapter = new PastWrapAdapter(wrapItemList, PastWraps.this);
-            wrapRecyclerView.setAdapter(pastWrapAdapter);
+            publicWrapAdapter = new PublicWrapAdapter(wrapItemList, PublicWraps.this);
+            wrapRecyclerView.setAdapter(publicWrapAdapter);
 
-            coordinatorLayout = findViewById(R.id.pastWraps_container);
-
+            coordinatorLayout = findViewById(R.id.publicWraps_container);
             ItemTouchHelper helper = new ItemTouchHelper(callback);
             helper.attachToRecyclerView(wrapRecyclerView);
         });
@@ -89,7 +86,7 @@ public class PastWraps extends AppCompatActivity implements PastWrapRecyclerView
     }
 
     private void changeActivity(int position) {
-        DocumentReference documentReference = db.collection("pastwraps").document(userID);
+        DocumentReference documentReference = db.collection("pastwraps").document("public");
         documentReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
@@ -97,7 +94,7 @@ public class PastWraps extends AppCompatActivity implements PastWrapRecyclerView
                     Map<String, Object> wrapDataMap = (Map<String, Object>) document.get(Integer.toString(position));
                     WrapData dummy = new WrapData(wrapDataMap);
 
-                    Intent intent = new Intent(PastWraps.this, WrappedActivity.class);
+                    Intent intent = new Intent(PublicWraps.this, WrappedActivity.class);
 
                     intent.putExtra("timeRange", dummy.getTimeRange());
                     intent.putExtra("topArtists", (Serializable) dummy.getTopArtists());
@@ -110,6 +107,7 @@ public class PastWraps extends AppCompatActivity implements PastWrapRecyclerView
         });
     }
 
+
     ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -118,48 +116,64 @@ public class PastWraps extends AppCompatActivity implements PastWrapRecyclerView
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            DocumentReference documentReference = db.collection("pastwraps").document(userID);
+            DocumentReference documentReference = db.collection("pastwraps").document("public");
             documentReference.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Map<String, Object> wrapDataMap = (Map<String, Object>) document.get(Integer.toString(viewHolder.getAdapterPosition()));
+                    DocumentSnapshot pubDocument = task.getResult();
+                    if (pubDocument.exists()) {
+                        Map<String, Object> wrapDataMap = (Map<String, Object>) pubDocument.get(Integer.toString(viewHolder.getAdapterPosition()));
+                        if (wrapDataMap == null) {
+                            return;
+                        }
                         WrapData dummy = new WrapData(wrapDataMap);
 
-                        if (dummy.getPosted()) {
-                            Snackbar snackbar = Snackbar.make(coordinatorLayout, "This wrap is already public!", Snackbar.LENGTH_LONG);
+
+
+                        if (!dummy.getAuthor().equals(userID)) {
+                            Snackbar snackbar = Snackbar.make(coordinatorLayout, "You can't delete other user's wraps!", Snackbar.LENGTH_LONG);
                             snackbar.show();
-                            pastWrapAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
+                            publicWrapAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
                             return;
                         }
 
 
-                        dummy.setPosted(true);
+                        dummy.setPosted(false);
                         Map<String, Object> map = new HashMap<>();
-                        map.putAll(document.getData());
-                        map.put(Integer.toString(viewHolder.getAdapterPosition()), dummy);
+                        map.putAll(pubDocument.getData());
+
+                        int j = viewHolder.getAdapterPosition();
+                        for (int i = j; i < map.size() - 1; i++) {
+                            map.put(Integer.toString(i), map.get(Integer.toString(j + 1)));
+                            j++;
+                        }
+                        map.remove(Integer.toString(j));
+
                         documentReference.set(map);
 
-                        DocumentReference newDocumentReference = db.collection("pastwraps").document("public");
-                        Map<String, Object> pubMap = new HashMap<>();
+                        DocumentReference newDocumentReference = db.collection("pastwraps").document(userID);
+                        Map<String, Object> newMap = new HashMap<>();
                         final int[] numWraps = new int[1];
-                        newDocumentReference.get().addOnCompleteListener(pubTask -> {
+                        newDocumentReference.get().addOnCompleteListener(newTask -> {
                             if (task.isSuccessful()) {
-                                DocumentSnapshot newDocument = pubTask.getResult();
+                                DocumentSnapshot newDocument = newTask.getResult();
                                 if (newDocument.exists()) {
                                     numWraps[0] = newDocument.getData().size();
-                                    pubMap.putAll(newDocument.getData());
+                                    newMap.putAll(newDocument.getData());
                                 } else {
                                     numWraps[0] = 0;
                                 }
                             }
+                            int position = dummy.getPosition();
+                            newMap.put(Integer.toString(position), dummy);
+                            newDocumentReference.set(newMap);
 
-                            dummy.setPosition(viewHolder.getAdapterPosition());
-                            pubMap.put(Integer.toString(numWraps[0]), dummy);
-                            newDocumentReference.set(pubMap);
-                            Snackbar snackbar = Snackbar.make(coordinatorLayout, "Wrap Posted", Snackbar.LENGTH_LONG);
+
+
+                            Snackbar snackbar = Snackbar.make(coordinatorLayout, "Public Wrap Deleted", Snackbar.LENGTH_LONG);
                             snackbar.show();
-                            pastWrapAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
+
+                            wrapItemList.remove(viewHolder.getAdapterPosition());
+                            publicWrapAdapter.notifyDataSetChanged();
                         });
                     }
                 }

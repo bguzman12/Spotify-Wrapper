@@ -42,6 +42,9 @@
             android:name=".ui.pastwraps.PastWraps"
             android:exported="false" />
         <activity
+            android:name=".ui.publicwraps.PublicWraps"
+            android:exported="false" />
+        <activity
             android:name=".ui.login.PreloginActivity"
             android:exported="true">
             <intent-filter>

@@ -46,6 +46,7 @@
     <string name="top_artists">Top Artists</string>
     <string name="top_songs">Top Songs</string>
     <string name="past_wraps">Past Wraps</string>
+    <string name="public_wraps">Public Wraps</string>
     <string name="create_wrapped">Create Wrapped</string>
     <string name="time_period">Time Period</string>
     <string name="last_month">Last Month</string>

@@ -96,6 +96,7 @@
             app:backgroundTint="@color/green"
             android:tint="@color/green"
             android:visibility="invisible"
+            android:onClick="publicWrapsClicked"
             app:layout_constraintBottom_toTopOf="@+id/button_past_wraps"
             app:layout_constraintEnd_toEndOf="@+id/button_past_wraps"
             app:srcCompat="@drawable/spotify_icon"
