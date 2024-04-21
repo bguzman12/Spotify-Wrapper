@@ -192,7 +192,9 @@ public class WrappedActivity extends AppCompatActivity {
 
     private void shareImage() {
         ArrayList<Uri> imageUris = new ArrayList<>();
-        bitmaps.add(getScreen(bitmaps.size()));
+        if (bitmaps.size() == 5) {
+            bitmaps.add(getScreen(bitmaps.size()));
+        }
 
         // Save each captured image and get the image URI
         for (int i = 0; i < bitmaps.size(); i++) {
