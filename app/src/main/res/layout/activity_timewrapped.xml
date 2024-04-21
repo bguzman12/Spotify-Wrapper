@@ -97,6 +97,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/public_access"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textStyle="bold"
                         android:textColor="@color/white" />
 
                     <TextView
