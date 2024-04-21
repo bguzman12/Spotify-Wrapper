@@ -37,7 +37,6 @@ public class SignupSpotifyFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private Map<String, Object> userData;
-    private Map<String, Object> exists;
     private SignupViewModel signupViewModel;
     private MaterialButton spotify;
     private MaterialButton signup;
@@ -50,8 +49,6 @@ public class SignupSpotifyFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         userData = new HashMap<>();
-        exists = new HashMap<>();
-        exists.put("exists", true);
 
         authResLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -97,7 +94,7 @@ public class SignupSpotifyFragment extends Fragment {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             db.collection("tokens").document(mAuth.getUid()).set(userData);
-                            db.collection("pastwraps").document(mAuth.getUid()).set(exists);
+                            db.collection("pastwraps").document(mAuth.getUid()).set(new HashMap<>());
                             startActivity(new Intent(getContext(), Homescreen.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                             requireActivity().finish();
                         } else {
