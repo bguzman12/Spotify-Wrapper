@@ -23,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -137,7 +136,6 @@ public class PublicWrapsActivity extends AppCompatActivity implements PublicWrap
                         db.collection("tokens").document(userID).update("public_posts", FieldValue.increment(-1));
 
                         dummy.setPosted(false);
-                        Map<String, Object> map = new HashMap<>();
 
                         int j = viewHolder.getAdapterPosition();
                         Map<String, Object> pubMap = (Map<String, Object>) pubDocument.getData();
@@ -149,14 +147,6 @@ public class PublicWrapsActivity extends AppCompatActivity implements PublicWrap
 
                         DocumentReference newDocumentReference = db.collection("pastwraps").document(userID);
                         newDocumentReference.get().addOnCompleteListener(newTask -> {
-                            Map<String, Object> newMap = new HashMap<>();
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot newDocument = newTask.getResult();
-                                if (newDocument.exists()) {
-                                    newMap.putAll(newDocument.getData());
-                                }
-                            }
-
                             newDocumentReference.update(Integer.toString(dummy.getPosition()), dummy);
 
                             Snackbar.make(coordinatorLayout, "Wrap is no longer public", Snackbar.LENGTH_LONG).show();
