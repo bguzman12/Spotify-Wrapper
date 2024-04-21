@@ -135,15 +135,11 @@ public class DeleteAccountActivity extends AppCompatActivity {
                                                                     Map<String, Object> map = t3.getData();
                                                                     Map<String, Object> newMap = new HashMap<>();
                                                                     int mapSize = map.size();
-                                                                    for (int i = 0; i < mapSize; i++) {
+                                                                    for (int i = 0, j = 0; i < mapSize; i++) {
                                                                         Map<String, Object> currMap = (Map<String, Object>) map.get(Integer.toString(i));
-                                                                        if (currMap != null && currMap.get("author").equals(currentUser.getUid())) {
-                                                                            map.remove(Integer.toString(i));
+                                                                        if (currMap != null && !currMap.get("author").equals(currentUser.getUid())) {
+                                                                            newMap.put(Integer.toString(j++), currMap);
                                                                         }
-                                                                    }
-                                                                    int j = 0;
-                                                                    for (String key : map.keySet()) {
-                                                                        newMap.put(Integer.toString(j++), (Map<String, Object>) map.get(key));
                                                                     }
                                                                     db.collection("pastwraps").document("public").set(newMap)
                                                                                     .addOnSuccessListener(t4 -> currentUser.delete()
