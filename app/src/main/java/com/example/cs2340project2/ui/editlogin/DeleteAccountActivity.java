@@ -129,6 +129,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
                                                 .addOnSuccessListener(t -> db.collection("pastwraps").document(currentUser.getUid()).delete()
                                                         .addOnSuccessListener(t2 -> currentUser.delete()
                                                                 .addOnSuccessListener(t3 -> {
+                                                                    toolbar.setNavigationOnClickListener(null);
                                                                     mAuth.signOut();
                                                                     startActivity(new Intent(this, PreloginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                                                                     DeleteAccountActivity.this.finish();
