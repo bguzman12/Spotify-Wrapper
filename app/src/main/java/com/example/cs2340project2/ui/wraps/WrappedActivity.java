@@ -44,6 +44,7 @@ public class WrappedActivity extends AppCompatActivity {
     private final long milliTimer = 5000L;
     private long currMilli = 5000L;
     private WrapViewModel wrapViewModel;
+    private ArrayList<Bitmap> bitmaps = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -190,14 +191,8 @@ public class WrappedActivity extends AppCompatActivity {
     }
 
     private void shareImage() {
-        ArrayList<Bitmap> bitmaps = new ArrayList<>();
         ArrayList<Uri> imageUris = new ArrayList<>();
-
-        // Loop through each fragment and capture the screen
-        for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
-            Bitmap bitmap = getScreen(i);
-            bitmaps.add(bitmap);
-        }
+        bitmaps.add(getScreen(bitmaps.size()));
 
         // Save each captured image and get the image URI
         for (int i = 0; i < bitmaps.size(); i++) {
@@ -255,24 +250,29 @@ public class WrappedActivity extends AppCompatActivity {
                         .replace(R.id.wrapped_fragment_container, WrappedTopSingleFragment.class, null, "topSong")
                         .addToBackStack("topSong")
                         .commit();
+                bitmaps = new ArrayList<>();
+                bitmaps.add(getScreen(0));
                 break;
             case "topSong":
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.wrapped_fragment_container, WrappedTopSingleFragment.class, null, "topArtist")
                         .addToBackStack("topArtist")
                         .commit();
+                bitmaps.add(getScreen(0));
                 break;
             case "topArtist":
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.wrapped_fragment_container, WrappedTopListFragment.class, null, "topSongs")
                         .addToBackStack("topSongs")
                         .commit();
+                bitmaps.add(getScreen(0));
                 break;
             case "topSongs":
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.wrapped_fragment_container, WrappedTopListFragment.class, null, "topArtists")
                         .addToBackStack("topArtists")
                         .commit();
+                bitmaps.add(getScreen(0));
                 break;
             case "topArtists":
                 runOnUiThread(() -> {
@@ -281,6 +281,7 @@ public class WrappedActivity extends AppCompatActivity {
                     progress.hide();
                     share.show();
                     mp.reset();
+                    bitmaps.add(getScreen(0));
                 });
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.wrapped_fragment_container, WrappedSummaryFragment.class, null, "summary")
