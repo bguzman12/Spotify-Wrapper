@@ -56,6 +56,7 @@ public class TimeWrapped extends AppCompatActivity {
 
         next.setOnClickListener(view -> {
             next.setEnabled(false);
+            toolbar.setNavigationOnClickListener(null);
             String timeRange = switch (time.getText().toString()) {
                 default -> "short_term";
                 case "Last 6 Months" -> "medium_term";
