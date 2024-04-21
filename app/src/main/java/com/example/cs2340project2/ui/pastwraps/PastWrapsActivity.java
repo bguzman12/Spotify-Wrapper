@@ -23,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -135,26 +134,21 @@ public class PastWrapsActivity extends AppCompatActivity implements PastWrapRecy
                         db.collection("tokens").document(userID).update("public_posts", FieldValue.increment(1));
 
                         dummy.setPosted(true);
-                        Map<String, Object> map = new HashMap<>(document.getData());
-                        map.put(Integer.toString(viewHolder.getAdapterPosition()), dummy);
-                        documentReference.set(map);
+                        documentReference.update(String.valueOf(viewHolder.getAdapterPosition()), dummy);
 
                         DocumentReference newDocumentReference = db.collection("pastwraps").document("public");
 
                         newDocumentReference.get().addOnCompleteListener(pubTask -> {
-                            Map<String, Object> pubMap = new HashMap<>();
                             int numWraps = 0;
                             if (pubTask.isSuccessful()) {
                                 DocumentSnapshot newDocument = pubTask.getResult();
                                 if (newDocument.exists()) {
                                     numWraps = newDocument.getData().size();
-                                    pubMap.putAll(newDocument.getData());
                                 }
                             }
 
                             dummy.setPosition(viewHolder.getAdapterPosition());
-                            pubMap.put(Integer.toString(numWraps), dummy);
-                            newDocumentReference.set(pubMap);
+                            newDocumentReference.update(Integer.toString(numWraps), dummy);
                             Snackbar.make(coordinatorLayout, "Wrap is now public", Snackbar.LENGTH_LONG).show();
                             pastWrapAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
                         });

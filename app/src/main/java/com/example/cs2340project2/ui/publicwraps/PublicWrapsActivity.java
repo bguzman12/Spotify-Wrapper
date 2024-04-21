@@ -140,11 +140,12 @@ public class PublicWrapsActivity extends AppCompatActivity implements PublicWrap
                         Map<String, Object> map = new HashMap<>();
 
                         int j = viewHolder.getAdapterPosition();
-                        for (int i = j; i < pubDocument.getData().size() - 1; i++) {
-                            map.put(Integer.toString(i), pubDocument.getData().get(Integer.toString(i + 1)));
+                        Map<String, Object> pubMap = (Map<String, Object>) pubDocument.getData();
+                        for (int i = j; i < pubMap.size() - 1; i++) {
+                            documentReference.update(Integer.toString(i), pubMap.get(Integer.toString(i + 1)));
                         }
 
-                        documentReference.set(map);
+                        documentReference.update(Integer.toString(pubMap.size() - 1), FieldValue.delete());
 
                         DocumentReference newDocumentReference = db.collection("pastwraps").document(userID);
                         newDocumentReference.get().addOnCompleteListener(newTask -> {
