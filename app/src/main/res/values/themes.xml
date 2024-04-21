@@ -5,6 +5,16 @@
         <item name="colorSecondary">@color/spotify_black</item>
         <item name="colorAccent">@color/green</item>
         <item name="android:textColor">@color/white</item>
+        <item name="floatingActionButtonSmallStyle">@style/Widget.App.FloatingActionButton</item>
+    </style>
+
+    <style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="materialThemeOverlay">@style/FloatingActionButton</item>
+    </style>
+
+    <style name="FloatingActionButton" parent="">
+        <item name="colorContainer">@color/black</item>
+        <item name="colorOnContainer">@color/white</item>
     </style>
 
     <style name="ConstraintRipple">

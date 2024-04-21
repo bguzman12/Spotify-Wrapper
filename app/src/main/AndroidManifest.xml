@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CS2340Project2"
-        tools:targetApi="31">
+        android:enableOnBackInvokedCallback="true"
+        >
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -25,52 +28,21 @@
             android:name=".MyAccount"
             android:exported="false" />
         <activity
-            android:name=".Wrapped2"
+            android:name=".TimeWrapped"
             android:exported="true">
-            <intent-filter>
-                <data
-                    android:host="auth"
-                    android:scheme="cs2340project2" />
-            </intent-filter>
         </activity>
         <activity
-            android:name=".Wrapped1"
+            android:name=".ui.wraps.WrappedActivity"
             android:exported="true">
-            <intent-filter>
-                <data
-                    android:host="auth"
-                    android:scheme="cs2340project2" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Comb_wrap"
-            android:exported="true">
-            <intent-filter>
-                <data
-                    android:host="auth"
-                    android:scheme="cs2340project2" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Homescreen"
             android:exported="false" />
         <activity
-            android:name=".PastWraps"
+            android:name=".ui.pastwraps.PastWraps"
             android:exported="false" />
         <activity
-            android:name=".PastWrapped1"
-            android:exported="false" />
-        <activity
-            android:name=".PastWrapped2"
-            android:exported="false" />
-        <activity
-            android:name=".PastWrappedSummary"
-            android:exported="false" />
-        <activity
-            android:name=".Summary_Wrapped"
-            android:exported="true" />
-        <activity
-            android:name=".ui.login.LaunchActivity"
+            android:name=".ui.login.PreloginActivity"
             android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />

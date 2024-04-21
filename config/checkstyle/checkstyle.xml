@@ -1,0 +1,27 @@
+<!DOCTYPE module PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+    "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+    <!-- Specify the Checkstyle rulesets to include -->
+    <module name="TreeWalker">
+        <!-- Define Checkstyle rules -->
+        <!-- Example: Prohibit the use of tabs -->
+        <module name="FileTabCharacter"/>
+
+        <!-- Example: Require Javadoc comments for all classes and methods -->
+        <module name="JavadocType"/>
+        <module name="JavadocMethod"/>
+
+        <!-- Example: Enforce naming conventions -->
+        <module name="NameConvention">
+            <!-- Specify naming conventions -->
+            <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+            <property name="illegalFormat" value="^.*[0-9]$"/>
+            <property name="allowOneCharMethods" value="true"/>
+            <property name="allowOneCharStaticConstants" value="true"/>
+        </module>
+
+        <!-- Add more Checkstyle rules as needed -->
+    </module>
+</module>

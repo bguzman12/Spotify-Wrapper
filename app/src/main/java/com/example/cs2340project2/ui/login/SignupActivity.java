@@ -1,30 +1,14 @@
 package com.example.cs2340project2.ui.login;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Patterns;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cs2340project2.R;
 
-import com.example.cs2340project2.ui.login.LoginActivity;
-import com.example.cs2340project2.ui.login.SignupEmailFragment;
+import com.example.cs2340project2.utils.SignupViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class SignupActivity extends AppCompatActivity {
     private MaterialToolbar toolbar;
@@ -46,19 +30,14 @@ public class SignupActivity extends AppCompatActivity {
                     .addToBackStack("signupEmail")
                     .commit();
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
 
         toolbar.setNavigationOnClickListener(view -> {
-            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                getSupportFragmentManager().popBackStack();
                 finish();
             } else {
                 getSupportFragmentManager().popBackStack();
             }
         });
     }
-
 }

@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            android:background="@color/toolbar"
+            android:background="@color/light_dark"
             app:navigationIcon="@drawable/arrow_back_icon"
             app:navigationIconTint="@color/white"
             app:title="@string/title_activity_editlogin"
@@ -51,6 +51,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/email_text"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textStyle="bold"
                         android:textColor="@color/white" />
 
                     <TextView
@@ -58,6 +60,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/email_placeholder"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="@color/subtitle" />
                 </LinearLayout>
 
@@ -90,12 +93,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/password_text"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textStyle="bold"
                         android:textColor="@color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/password_subtitle"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="@color/subtitle" />
                 </LinearLayout>
 
@@ -129,12 +135,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/delete_account_text"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textStyle="bold"
                         android:textColor="@color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/delete_subtitle"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="@color/subtitle" />
                 </LinearLayout>
 

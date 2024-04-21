@@ -14,8 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cs2340project2.R;
-import com.example.cs2340project2.ui.login.LaunchActivity;
-import com.example.cs2340project2.ui.login.LoginActivity;
+import com.example.cs2340project2.ui.login.PreloginActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -32,6 +31,7 @@ public class EditEmailActivity extends AppCompatActivity {
     private TextInputEditText newEmailText;
     private TextInputLayout passwordLayout;
     private TextInputEditText passwordText;
+    private FirebaseUser currentUser;
     private String originalEmail;
 
     @Override
@@ -46,20 +46,15 @@ public class EditEmailActivity extends AppCompatActivity {
         newEmailText = findViewById(R.id.new_email_input);
         passwordLayout = findViewById(R.id.password_layout);
         passwordText = findViewById(R.id.password_input);
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+        toolbar.setNavigationOnClickListener(view -> finish());
 
-        toolbar.setNavigationOnClickListener(view -> {
-            finish();
-        });
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
         originalEmail = currentUser.getEmail();
-        newEmailLayout.setPlaceholderText(originalEmail);
-        newEmailText.setText(originalEmail);
+        runOnUiThread(() -> {
+            newEmailLayout.setPlaceholderText(originalEmail);
+            newEmailText.setText(originalEmail);
+        });
         newEmailText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -78,9 +73,9 @@ public class EditEmailActivity extends AppCompatActivity {
                 } else {
                     disableButton();
                     if (!Patterns.EMAIL_ADDRESS.matcher(newEmailText.getText().toString()).matches()) {
-                        newEmailLayout.setError("Email address is not a valid email address");
+                        runOnUiThread(() -> newEmailLayout.setError("Email address is not a valid email address"));
                     } else {
-                        newEmailLayout.setError("");
+                        runOnUiThread(() -> newEmailLayout.setError(""));
                     }
                 }
             }
@@ -103,9 +98,9 @@ public class EditEmailActivity extends AppCompatActivity {
                 } else {
                     disableButton();
                     if (passwordText.getText().length() == 0) {
-                        passwordLayout.setError("Password cannot be empty");
+                        runOnUiThread(() -> passwordLayout.setError("Password cannot be empty"));
                     } else {
-                        passwordLayout.setError("");
+                        runOnUiThread(() -> passwordLayout.setError(""));
                     }
                 }
             }
@@ -120,7 +115,7 @@ public class EditEmailActivity extends AppCompatActivity {
                                     .addOnCompleteListener(task2 -> {
                                         Toast.makeText(this, "Verify email address to complete changes.", Toast.LENGTH_LONG).show();
                                         mAuth.signOut();
-                                        startActivity(new Intent(this, LaunchActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                                        startActivity(new Intent(this, PreloginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                                         EditEmailActivity.this.finish();
                                     });
                         } else {
@@ -133,6 +128,18 @@ public class EditEmailActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        currentUser = mAuth.getCurrentUser();
+        originalEmail = currentUser.getEmail();
+        runOnUiThread(() -> {
+            newEmailLayout.setPlaceholderText(originalEmail);
+            newEmailText.setText(originalEmail);
+        });
+    }
+
     private boolean validate() {
         return !newEmailText.getText().toString().trim().equals(originalEmail)
                 && Patterns.EMAIL_ADDRESS.matcher(newEmailText.getText().toString()).matches()
@@ -140,14 +147,18 @@ public class EditEmailActivity extends AppCompatActivity {
     }
 
     private void enableButton() {
-        saveEdits.setEnabled(true);
-        saveEdits.setTextColor(Color.WHITE);
-        newEmailLayout.setError("");
-        passwordLayout.setError("");
+        runOnUiThread(() -> {
+            saveEdits.setEnabled(true);
+            saveEdits.setTextColor(Color.WHITE);
+            newEmailLayout.setError("");
+            passwordLayout.setError("");
+        });
     }
 
     private void disableButton() {
-        saveEdits.setEnabled(false);
-        saveEdits.setTextColor(Color.parseColor("#b8b8b8"));
+        runOnUiThread(() -> {
+            saveEdits.setEnabled(false);
+            saveEdits.setTextColor(Color.parseColor("#b8b8b8"));
+        });
     }
 }

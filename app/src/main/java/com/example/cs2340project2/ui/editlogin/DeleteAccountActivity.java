@@ -16,8 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cs2340project2.R;
-import com.example.cs2340project2.ui.login.LaunchActivity;
-import com.example.cs2340project2.ui.login.LoginActivity;
+import com.example.cs2340project2.ui.login.PreloginActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -42,7 +41,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
     private TextInputLayout passwordLayout;
     private TextInputEditText passwordText;
     private String originalEmail;
-    private TextWatcher validator;
+    private FirebaseUser currentUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,18 +56,12 @@ public class DeleteAccountActivity extends AppCompatActivity {
         emailText = findViewById(R.id.email_input);
         passwordLayout = findViewById(R.id.password_layout);
         passwordText = findViewById(R.id.password_input);
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        toolbar.setNavigationOnClickListener(view -> {
-            finish();
-        });
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
         originalEmail = currentUser.getEmail();
+
+        toolbar.setNavigationOnClickListener(view -> finish());
+
         emailText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -87,11 +80,11 @@ public class DeleteAccountActivity extends AppCompatActivity {
                 } else {
                     disableButton();
                     if (!Patterns.EMAIL_ADDRESS.matcher(emailText.getText().toString()).matches()) {
-                        emailLayout.setError("Email address is not a valid email address");
+                        runOnUiThread(() -> emailLayout.setError("Email address is not a valid email address"));
                     } else if (!emailText.getText().toString().trim().equals(originalEmail)) {
-                        emailLayout.setError("Incorrect email address");
+                        runOnUiThread(() -> emailLayout.setError("Incorrect email address"));
                     } else {
-                        emailLayout.setError("");
+                        runOnUiThread(() -> emailLayout.setError(""));
                     }
                 }
             }
@@ -114,9 +107,9 @@ public class DeleteAccountActivity extends AppCompatActivity {
                 } else {
                     disableButton();
                     if (passwordText.getText().length() == 0) {
-                        passwordLayout.setError("Password cannot be empty");
+                        runOnUiThread(() -> passwordLayout.setError("Password cannot be empty"));
                     } else {
-                        passwordLayout.setError("");
+                        runOnUiThread(() -> passwordLayout.setError(""));
                     }
                 }
             }
@@ -132,15 +125,16 @@ public class DeleteAccountActivity extends AppCompatActivity {
                                     .setIcon(R.drawable.warning_icon)
                                     .setMessage("Deleting your account will erase all your Spotify Wraps.")
                                     .setPositiveButton("Yes", (dialog2, which) -> {
-                                        db.collection("tokens").document(currentUser.getUid()).delete();
-                                        currentUser.delete();
-                                        mAuth.signOut();
-                                        startActivity(new Intent(this, LaunchActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-                                        DeleteAccountActivity.this.finish();
+                                        db.collection("tokens").document(currentUser.getUid()).delete()
+                                                .addOnSuccessListener(t -> db.collection("pastwraps").document(currentUser.getUid()).delete()
+                                                        .addOnSuccessListener(t2 -> currentUser.delete()
+                                                                .addOnSuccessListener(t3 -> {
+                                                                    mAuth.signOut();
+                                                                    startActivity(new Intent(this, PreloginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                                                                    DeleteAccountActivity.this.finish();
+                                                                })));
                                     })
-                                    .setNegativeButton("No", (dialog2, which) -> {
-                                        finish();
-                                    })
+                                    .setNegativeButton("No", (dialog2, which) -> finish())
                                     .create();
                             dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                                 private static final int AUTO_DISMISS_MILLIS = 5000;
@@ -170,13 +164,23 @@ public class DeleteAccountActivity extends AppCompatActivity {
                             dialog.show();
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                passwordLayout.setError("Incorrect password");
-                                deleteAccount.setEnabled(false);
-                                deleteAccount.setTextColor(Color.parseColor("#b8b8b8"));
+                                runOnUiThread(() -> {
+                                    passwordLayout.setError("Incorrect password");
+                                    deleteAccount.setEnabled(false);
+                                    deleteAccount.setTextColor(Color.parseColor("#b8b8b8"));
+                                });
                             }
                         }
                     });
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        currentUser = mAuth.getCurrentUser();
+        originalEmail = currentUser.getEmail();
     }
 
     private boolean validate() {
@@ -186,14 +190,18 @@ public class DeleteAccountActivity extends AppCompatActivity {
     }
 
     private void enableButton() {
-        deleteAccount.setEnabled(true);
-        deleteAccount.setTextColor(Color.WHITE);
-        emailLayout.setError("");
-        passwordLayout.setError("");
+        runOnUiThread(() -> {
+            deleteAccount.setEnabled(true);
+            deleteAccount.setTextColor(Color.WHITE);
+            emailLayout.setError("");
+            passwordLayout.setError("");
+        });
     }
 
     private void disableButton() {
-        deleteAccount.setEnabled(false);
-        deleteAccount.setTextColor(Color.parseColor("#b8b8b8"));
+        runOnUiThread(() -> {
+            deleteAccount.setEnabled(false);
+            deleteAccount.setTextColor(Color.parseColor("#b8b8b8"));
+        });
     }
 }
