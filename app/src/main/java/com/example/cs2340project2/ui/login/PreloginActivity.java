@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cs2340project2.Homescreen;
 import com.example.cs2340project2.R;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -33,6 +34,11 @@ public class PreloginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+
+        Bundle extra = getIntent().getExtras();
+        if (extra != null && !extra.isEmpty()) {
+            Snackbar.make(findViewById(R.id.prelogin_container), extra.getString("snackbar"), Snackbar.LENGTH_SHORT).show();
+        }
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {

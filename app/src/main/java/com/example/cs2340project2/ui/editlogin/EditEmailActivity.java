@@ -9,7 +9,6 @@ import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -113,9 +112,8 @@ public class EditEmailActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             currentUser.verifyBeforeUpdateEmail(newEmailText.getText().toString().trim())
                                     .addOnCompleteListener(task2 -> {
-                                        Toast.makeText(this, "Verify email address to complete changes.", Toast.LENGTH_LONG).show();
                                         mAuth.signOut();
-                                        startActivity(new Intent(this, PreloginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                                        startActivity(new Intent(this, PreloginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("snackbar", "Verify email address to complete changes"));
                                         EditEmailActivity.this.finish();
                                     });
                         } else {

@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -80,10 +79,6 @@ public class Homescreen extends AppCompatActivity {
         startActivity(new Intent(this, PastWrapsActivity.class));
     }
 
-    public void viewAccountClicked(View view) {
-        startActivity(new Intent(this, MyAccount.class));
-    }
-
     public void editLoginClicked(View view) {
         startActivity(new Intent(this, EditLoginActivity.class));
     }
@@ -93,10 +88,6 @@ public class Homescreen extends AppCompatActivity {
         } else {
             expandFab();
         }
-    }
-
-    private void onGalleryClicked() {
-        Toast.makeText(this, "Gallery Clicked", Toast.LENGTH_SHORT).show();
     }
 
     private void shrinkFab() {

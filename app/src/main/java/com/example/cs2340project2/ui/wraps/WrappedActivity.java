@@ -1,16 +1,13 @@
 package com.example.cs2340project2.ui.wraps;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
@@ -28,7 +25,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class WrappedActivity extends AppCompatActivity {
@@ -152,7 +148,7 @@ public class WrappedActivity extends AppCompatActivity {
         cd.start();
     }
 
-    private Bitmap getScreen(int index) {
+    private Bitmap getScreen() {
         View screenView = findViewById(R.id.wrapped_fragment_container);
         Bitmap bitmap = Bitmap.createBitmap(screenView.getWidth(), screenView.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -163,27 +159,13 @@ public class WrappedActivity extends AppCompatActivity {
     private Uri saveImage(Bitmap bitmap, int index) {
         try {
             String filename = "wrapped_" + index + "_" + System.currentTimeMillis() + ".png";
-            Uri imageURI;
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.DISPLAY_NAME, filename);
-                values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
-                values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
-                imageURI = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-                try (OutputStream outputStream = getContentResolver().openOutputStream(imageURI)) {
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                }
-            } else {
-                File imagePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), filename);
-                try (FileOutputStream fos = new FileOutputStream(imagePath)) {
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                }
-                imageURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", imagePath);
+            File imagePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), filename);
+            try (FileOutputStream fos = new FileOutputStream(imagePath)) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             }
 
-            return imageURI;
+            return FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", imagePath);
         } catch (Exception e) {
             Snackbar.make(findViewById(R.id.wrapped_container), "Failed to save file", Snackbar.LENGTH_SHORT).show();
             return null;
@@ -193,7 +175,7 @@ public class WrappedActivity extends AppCompatActivity {
     private void shareImage() {
         ArrayList<Uri> imageUris = new ArrayList<>();
         if (bitmaps.size() == 5) {
-            bitmaps.add(getScreen(bitmaps.size()));
+            bitmaps.add(getScreen());
         }
 
         // Save each captured image and get the image URI
@@ -246,35 +228,35 @@ public class WrappedActivity extends AppCompatActivity {
 
     private void navigate() {
         String currFrag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        bitmaps = new ArrayList<>();
         switch (currFrag) {
             case "welcome":
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.wrapped_fragment_container, WrappedTopSingleFragment.class, null, "topSong")
                         .addToBackStack("topSong")
                         .commit();
-                bitmaps = new ArrayList<>();
-                bitmaps.add(getScreen(0));
+                bitmaps.add(getScreen());
                 break;
             case "topSong":
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.wrapped_fragment_container, WrappedTopSingleFragment.class, null, "topArtist")
                         .addToBackStack("topArtist")
                         .commit();
-                bitmaps.add(getScreen(0));
+                bitmaps.add(getScreen());
                 break;
             case "topArtist":
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.wrapped_fragment_container, WrappedTopListFragment.class, null, "topSongs")
                         .addToBackStack("topSongs")
                         .commit();
-                bitmaps.add(getScreen(0));
+                bitmaps.add(getScreen());
                 break;
             case "topSongs":
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.wrapped_fragment_container, WrappedTopListFragment.class, null, "topArtists")
                         .addToBackStack("topArtists")
                         .commit();
-                bitmaps.add(getScreen(0));
+                bitmaps.add(getScreen());
                 break;
             case "topArtists":
                 runOnUiThread(() -> {
@@ -283,7 +265,7 @@ public class WrappedActivity extends AppCompatActivity {
                     progress.hide();
                     share.show();
                     mp.reset();
-                    bitmaps.add(getScreen(0));
+                    bitmaps.add(getScreen());
                 });
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.wrapped_fragment_container, WrappedSummaryFragment.class, null, "summary")
